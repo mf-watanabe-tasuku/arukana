@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ResultList from "./components/resultList";
-import "./App.css";
+import "./styles/App.css";
 
 const App = () => {
   const searchResults = [];
