@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import ResultList from "./components/resultList";
+import ErrorText from "./components/errorText";
 import "./styles/App.css";
 
 const App = () => {
   const searchResults = [];
 
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
-  const [radius, setRadius] = useState(1000);
+  const [keywords, setKeywords] = useState([]);
+  const [radius, setRadius] = useState("");
   const [checkboxes, setCheckboxes] = useState({
     checkbox1: false,
     checkbox2: false,
@@ -15,6 +17,9 @@ const App = () => {
     checkbox5: false,
   });
   const [places, setPlaces] = useState([]);
+  const [errors, setErrors] = useState({});
+
+  let errorMessages = {};
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -27,8 +32,11 @@ const App = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
 
+    setValidationMessages();
+    const errorExists = Object.keys(errorMessages).length !== 0;
+    if (errorExists) return;
+
     const originGeocode = await getOriginGeocode();
-    const keywords = getCheckboxValues();
 
     await Promise.all(
       keywords.map(async (keyword) => {
@@ -37,6 +45,19 @@ const App = () => {
     );
 
     setPlaces(searchResults);
+  };
+
+  const setValidationMessages = () => {
+    if (!origin) errorMessages["origin"] = "基準地点を入力してください";
+    if (keywords.length === 0)
+      errorMessages["place"] = "検索する施設を選択してください";
+    if (!radius) {
+      errorMessages["radius"] = "半径距離を入力してください";
+    } else if (radius > 3000) {
+      errorMessages["radius"] = "半径3000m以下に設定してください";
+    }
+
+    setErrors(errorMessages);
   };
 
   // 基準地点の座標を取得する
@@ -53,25 +74,9 @@ const App = () => {
     };
   };
 
-  // 検索keywordを取得してフォーマットする
-  const getCheckboxValues = () => {
-    const keywordsNodeList = document.getElementsByClassName("placeCheckbox");
-    const keywordsArray = Array.prototype.slice.call(keywordsNodeList);
-    const keywords = keywordsArray
-      .filter((keyword) => keyword.checked)
-      .map((keyword) => keyword.value);
-    return keywords;
-  };
-
   // 周辺の施設を検索する
   const getNearbyPlaces = async (origin, keyword) => {
     return new Promise((resolve, reject) => {
-      const radius = parseInt(document.getElementById("radius").value);
-      if (radius > 3000) {
-        displayError("半径距離は3000m以下に設定してください");
-        return;
-      }
-
       const searchConditions = {
         location: new window.google.maps.LatLng(origin.lat, origin.lng),
         radius: radius,
@@ -142,13 +147,16 @@ const App = () => {
     return [distance, duration];
   };
 
-  const displayError = (text) => {
-    const error = document.getElementById("radiusError");
-    error.textContent = text;
-  };
-
   const handleCheckboxChange = (e) => {
+    const targetValue = e.target.value;
     const { name, checked } = e.target;
+
+    if (checked && !keywords.includes(targetValue)) {
+      setKeywords([...keywords, targetValue]);
+    } else if (!checked && keywords.includes(targetValue)) {
+      let filterdArr = keywords.filter((keyword) => keyword !== targetValue);
+      setKeywords(filterdArr);
+    }
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
 
@@ -162,6 +170,7 @@ const App = () => {
           onChange={(e) => setOrigin(e.target.value)}
           value={origin}
         />
+        <ErrorText message={errors.origin} />
       </div>
       <div>
         <label htmlFor="keyword">検索したい施設名: </label>
@@ -175,7 +184,6 @@ const App = () => {
               value="スターバックス"
               id="starbucks"
               onChange={(e) => handleCheckboxChange(e)}
-              checked={checkboxes.checked1}
             />
             <label htmlFor="starbucks">スターバックス</label>
           </li>
@@ -187,7 +195,6 @@ const App = () => {
               value="タリーズ"
               id="tullys"
               onChange={(e) => handleCheckboxChange(e)}
-              checked={checkboxes.checked2}
             />
             <label htmlFor="tullys">タリーズコーヒー</label>
           </li>
@@ -199,7 +206,6 @@ const App = () => {
               value="ドトール"
               id="doutor"
               onChange={(e) => handleCheckboxChange(e)}
-              checked={checkboxes.checked3}
             />
             <label htmlFor="doutor">ドトール</label>
           </li>
@@ -211,7 +217,6 @@ const App = () => {
               value="ジム"
               id="gym"
               onChange={(e) => handleCheckboxChange(e)}
-              checked={checkboxes.checked4}
             />
             <label htmlFor="gym">ジム</label>
           </li>
@@ -223,11 +228,11 @@ const App = () => {
               value="郵便局"
               id="postOffice"
               onChange={(e) => handleCheckboxChange(e)}
-              checked={checkboxes.checked5}
             />
             <label htmlFor="postOffice">郵便局</label>
           </li>
         </ul>
+        <ErrorText message={errors.place} />
       </div>
       <div>
         <label htmlFor="radius">検索する半径距離: </label>
@@ -237,7 +242,7 @@ const App = () => {
           value={radius}
           onChange={(e) => setRadius(e.target.value)}
         />
-        <p id="radiusError" className="error"></p>
+        <ErrorText message={errors.radius} />
       </div>
 
       <button id="submit" onClick={handleSearch}>
