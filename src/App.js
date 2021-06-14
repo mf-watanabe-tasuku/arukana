@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
+import ResultList from "./components/resultList";
 import "./App.css";
 
 const App = () => {
+  const searchResults = [];
+
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
   const [radius, setRadius] = useState(1000);
   const [checkboxes, setCheckboxes] = useState({
-    checkbox1: true,
-    checkbox2: true,
+    checkbox1: false,
+    checkbox2: false,
     checkbox3: false,
     checkbox4: false,
     checkbox5: false,
   });
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -23,20 +27,16 @@ const App = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
 
-    removeListContents();
-
     const originGeocode = await getOriginGeocode();
     const keywords = getCheckboxValues();
 
-    keywords.map(
-      async (keyword) => await getNearbyPlaces(originGeocode, keyword)
+    await Promise.all(
+      keywords.map(async (keyword) => {
+        await getNearbyPlaces(originGeocode, keyword);
+      })
     );
-  };
 
-  // 検索結果を空にする
-  const removeListContents = () => {
-    let ul = document.getElementById("result");
-    while (ul.lastChild) ul.removeChild(ul.lastChild);
+    setPlaces(searchResults);
   };
 
   // 基準地点の座標を取得する
@@ -65,36 +65,44 @@ const App = () => {
 
   // 周辺の施設を検索する
   const getNearbyPlaces = async (origin, keyword) => {
-    const radius = parseInt(document.getElementById("radius").value);
-    if (radius > 3000) {
-      displayError("半径距離は3000m以下に設定してください");
-      return;
-    }
+    return new Promise((resolve, reject) => {
+      const radius = parseInt(document.getElementById("radius").value);
+      if (radius > 3000) {
+        displayError("半径距離は3000m以下に設定してください");
+        return;
+      }
 
-    const searchConditions = {
-      location: new window.google.maps.LatLng(origin.lat, origin.lng),
-      radius: radius,
-      keyword: keyword,
-    };
+      const searchConditions = {
+        location: new window.google.maps.LatLng(origin.lat, origin.lng),
+        radius: radius,
+        keyword: keyword,
+      };
 
-    const div = document.createElement("div");
-    const service = new window.google.maps.places.PlacesService(div);
+      const div = document.createElement("div");
+      const service = new window.google.maps.places.PlacesService(div);
 
-    service.nearbySearch(searchConditions, async (results, status) => {
-      const places = results.map((result) => {
-        return {
-          name: result.name,
-          lat: result.geometry.location.lat(),
-          lng: result.geometry.location.lng(),
-        };
+      service.nearbySearch(searchConditions, async (results, status) => {
+        const formattedPlaces = results.map((result) => {
+          return {
+            name: result.name,
+            lat: result.geometry.location.lat(),
+            lng: result.geometry.location.lng(),
+          };
+        });
+        const nearestPlaceData = await getNearestPlaceData(
+          keyword,
+          origin,
+          formattedPlaces
+        );
+
+        searchResults.push(nearestPlaceData);
+        resolve();
       });
-      const nearestPlaceData = await getNearestPlaceData(origin, places);
-      displayResult(keyword, ...nearestPlaceData);
     });
   };
 
   // 検索結果から最寄りの施設を絞り込む
-  const getNearestPlaceData = async (origin, places) => {
+  const getNearestPlaceData = async (keyword, origin, places) => {
     let nearestPlace, nearestDistance, nearestDuration;
 
     for (let i = 0; i < places.length; i++) {
@@ -109,7 +117,12 @@ const App = () => {
       }
     }
 
-    const nearestPlaceData = [nearestPlace, nearestDistance, nearestDuration];
+    const nearestPlaceData = {
+      keyword: keyword,
+      name: nearestPlace,
+      distance: nearestDistance,
+      duration: nearestDuration,
+    };
     return nearestPlaceData;
   };
 
@@ -127,35 +140,6 @@ const App = () => {
     const duration = data[0].duration.text;
 
     return [distance, duration];
-  };
-
-  // 距離を表示用にフォーマットする
-  const getDisplayDistance = (value) => {
-    if (value >= 1000) {
-      value /= 1000.0;
-      value = Math.round(value * 10) / 10.0;
-      value += "km";
-    } else {
-      value += "m";
-    }
-
-    return value;
-  };
-
-  // 検索結果を表示する
-  const displayResult = (keyword, name, distance, duration) => {
-    const result = document.getElementById("result");
-    const li = document.createElement("li");
-
-    const formatDistance = getDisplayDistance(distance);
-
-    const hasResultText = `最寄りの${keyword}: <b>${name}</b> (距離: ${formatDistance} / 所要時間: ${duration})`;
-    const noResultText = `${keyword}は見つかりませんでした`;
-
-    const text = name ? hasResultText : noResultText;
-
-    li.innerHTML = text;
-    result.appendChild(li);
   };
 
   const displayError = (text) => {
@@ -260,7 +244,7 @@ const App = () => {
         検索
       </button>
 
-      <ul id="result"></ul>
+      {places.length > 0 && <ResultList results={places} />}
     </>
   );
 };
