@@ -148,8 +148,10 @@ const App = () => {
     if (checked && !keywords.includes(targetValue)) {
       setKeywords([...keywords, targetValue]);
     } else if (!checked && keywords.includes(targetValue)) {
-      let filterdArr = keywords.filter((keyword) => keyword !== targetValue);
-      setKeywords(filterdArr);
+      const filteredKeywords = keywords.filter(
+        (keyword) => keyword !== targetValue
+      );
+      setKeywords(filteredKeywords);
     }
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
