@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ResultList from "./components/resultList";
+import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import "./styles/App.css";
 
@@ -160,7 +161,7 @@ const App = () => {
 
   return (
     <>
-      <div>
+      <div className="input-row">
         <label htmlFor="place">基準となる場所: </label>
         <input
           type="text"
@@ -170,69 +171,12 @@ const App = () => {
         />
         <ErrorText message={errors.origin} />
       </div>
-      <div>
+      <div className="input-row">
         <label htmlFor="keyword">検索したい施設名: </label>
-        {/* <input type="text" id="keyword" name="keyword" value="スターバックス" /> */}
-        <ul className="place__checkbox-list">
-          <li className="place__checkbox-item">
-            <input
-              type="checkbox"
-              className="placeCheckbox"
-              name="checkbox1"
-              value="スターバックス"
-              id="starbucks"
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-            <label htmlFor="starbucks">スターバックス</label>
-          </li>
-          <li className="place__checkbox-item">
-            <input
-              type="checkbox"
-              className="placeCheckbox"
-              name="checkbox2"
-              value="タリーズ"
-              id="tullys"
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-            <label htmlFor="tullys">タリーズコーヒー</label>
-          </li>
-          <li className="place__checkbox-item">
-            <input
-              type="checkbox"
-              className="placeCheckbox"
-              name="checkbox3"
-              value="ドトール"
-              id="doutor"
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-            <label htmlFor="doutor">ドトール</label>
-          </li>
-          <li className="place__checkbox-item">
-            <input
-              type="checkbox"
-              className="placeCheckbox"
-              name="checkbox4"
-              value="ジム"
-              id="gym"
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-            <label htmlFor="gym">ジム</label>
-          </li>
-          <li className="place__checkbox-item">
-            <input
-              type="checkbox"
-              className="placeCheckbox"
-              name="checkbox5"
-              value="郵便局"
-              id="postOffice"
-              onChange={(e) => handleCheckboxChange(e)}
-            />
-            <label htmlFor="postOffice">郵便局</label>
-          </li>
-        </ul>
+        <CheckboxList onChange={handleCheckboxChange} />
         <ErrorText message={errors.place} />
       </div>
-      <div>
+      <div className="input-row">
         <label htmlFor="radius">検索する半径距離: </label>
         <input
           type="text"
