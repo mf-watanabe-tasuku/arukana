@@ -109,7 +109,9 @@ const App = () => {
         origin,
         places[i]
       );
-      if (nearestPlace == null || nearestDistance > placeDistance) {
+      if (placeDistance > radius) {
+        continue;
+      } else if (nearestPlace == null || nearestDistance > placeDistance) {
         nearestPlace = places[i].name;
         nearestDistance = placeDistance;
         nearestDuration = placeDuration;
