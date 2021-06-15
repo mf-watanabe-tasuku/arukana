@@ -163,10 +163,10 @@ const App = () => {
   return (
     <>
       <div className="input-row">
-        <label htmlFor="place">基準となる場所: </label>
+        <label htmlFor="origin">基準となる場所: </label>
         <input
           type="text"
-          id="place"
+          id="origin"
           onChange={(e) => setOrigin(e.target.value)}
           value={origin}
         />
