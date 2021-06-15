@@ -9,13 +9,7 @@ const App = () => {
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
   const [keywords, setKeywords] = useState([]);
   const [radius, setRadius] = useState("");
-  const [checkboxes, setCheckboxes] = useState({
-    checkbox1: false,
-    checkbox2: false,
-    checkbox3: false,
-    checkbox4: false,
-    checkbox5: false,
-  });
+  const [checkboxes, setCheckboxes] = useState({});
   const [places, setPlaces] = useState([]);
   const [errors, setErrors] = useState({});
 
