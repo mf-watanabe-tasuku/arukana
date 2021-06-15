@@ -1,4 +1,3 @@
-import React from "react";
 import ResultItem from "./resultItem";
 
 const resultList = (props) => {

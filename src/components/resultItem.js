@@ -1,5 +1,3 @@
-import React from "react";
-
 const resultItem = (props) => {
   // 検索結果を表示する
   const displayResult = () => {
