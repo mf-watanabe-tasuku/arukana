@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ResultList from "./components/resultList";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
+import SearchBtn from "./components/searchBtn";
 import "./styles/App.css";
 
 const App = () => {
@@ -187,9 +188,7 @@ const App = () => {
         <ErrorText message={errors.radius} />
       </div>
 
-      <button id="submit" onClick={handleSearch}>
-        検索
-      </button>
+      <SearchBtn onClick={handleSearch} />
 
       {places.length > 0 && <ResultList results={places} />}
     </>
