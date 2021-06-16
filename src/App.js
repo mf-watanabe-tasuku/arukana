@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import ResultList from "./components/resultList";
+import InputLabel from "./components/inputLabel";
+import InputForm from "./components/inputForm";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import SearchBtn from "./components/searchBtn";
 import "./styles/App.css";
 
 const App = () => {
+  const errorMessages = {};
   const searchResults = [];
 
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
@@ -14,8 +17,6 @@ const App = () => {
   const [checkboxes, setCheckboxes] = useState({});
   const [places, setPlaces] = useState([]);
   const [errors, setErrors] = useState({});
-
-  let errorMessages = {};
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -163,24 +164,22 @@ const App = () => {
   return (
     <>
       <div className="input-row">
-        <label htmlFor="origin">基準となる場所: </label>
-        <input
-          type="text"
+        <InputLabel id="origin" text="基準となる場所" />
+        <InputForm
           id="origin"
-          onChange={(e) => setOrigin(e.target.value)}
           value={origin}
+          onChange={(e) => setOrigin(e.target.value)}
         />
         <ErrorText message={errors.origin} />
       </div>
       <div className="input-row">
-        <label htmlFor="keyword">検索したい施設名: </label>
+        <InputLabel id="keyword" text="検索したい施設名" />
         <CheckboxList onChange={handleCheckboxChange} />
         <ErrorText message={errors.place} />
       </div>
       <div className="input-row">
-        <label htmlFor="radius">検索する半径距離: </label>
-        <input
-          type="text"
+        <InputLabel id="radius" text="検索する半径距離" />
+        <InputForm
           id="radius"
           value={radius}
           onChange={(e) => setRadius(e.target.value)}
