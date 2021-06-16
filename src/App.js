@@ -25,6 +25,25 @@ const App = () => {
     document.body.appendChild(googleMapScript);
   }, []);
 
+  const handleOriginChange = (e) => setOrigin(e.target.value);
+
+  const handleCheckboxChange = (e) => {
+    const targetValue = e.target.value;
+    const { name, checked } = e.target;
+
+    if (checked && !keywords.includes(targetValue)) {
+      setKeywords([...keywords, targetValue]);
+    } else if (!checked && keywords.includes(targetValue)) {
+      const filteredKeywords = keywords.filter(
+        (keyword) => keyword !== targetValue
+      );
+      setKeywords(filteredKeywords);
+    }
+    setCheckboxes({ ...checkboxes, [name]: checked });
+  };
+
+  const handleRadiusChange = (e) => setRadius(e.target.value);
+
   // 検索ボタンを押した時の処理;
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -146,30 +165,11 @@ const App = () => {
     return [distance, duration];
   };
 
-  const handleCheckboxChange = (e) => {
-    const targetValue = e.target.value;
-    const { name, checked } = e.target;
-
-    if (checked && !keywords.includes(targetValue)) {
-      setKeywords([...keywords, targetValue]);
-    } else if (!checked && keywords.includes(targetValue)) {
-      const filteredKeywords = keywords.filter(
-        (keyword) => keyword !== targetValue
-      );
-      setKeywords(filteredKeywords);
-    }
-    setCheckboxes({ ...checkboxes, [name]: checked });
-  };
-
   return (
     <>
       <div className="input-row">
         <InputLabel id="origin" text="基準となる場所" />
-        <InputForm
-          id="origin"
-          value={origin}
-          onChange={(e) => setOrigin(e.target.value)}
-        />
+        <InputForm id="origin" value={origin} onChange={handleOriginChange} />
         <ErrorText message={errors.origin} />
       </div>
       <div className="input-row">
@@ -179,11 +179,7 @@ const App = () => {
       </div>
       <div className="input-row">
         <InputLabel id="radius" text="検索する半径距離" />
-        <InputForm
-          id="radius"
-          value={radius}
-          onChange={(e) => setRadius(e.target.value)}
-        />
+        <InputForm id="radius" value={radius} onChange={handleRadiusChange} />
         <ErrorText message={errors.radius} />
       </div>
 
