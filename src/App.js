@@ -81,10 +81,16 @@ const App = () => {
     if (errorExists) return;
 
     const originGeocode = await getOriginGeocode();
+    const formattedRadius = radius.replace(",", "");
+    const hasFullWidthNum = formattedRadius.match(/\D+/);
+    if (hasFullWidthNum) {
+      setErrors({ ...errors, radius: "半角数字で入力してください" });
+      return;
+    }
 
     await Promise.all(
       searchKeywords.map(async (keyword) => {
-        await getNearbyPlaces(originGeocode, keyword);
+        await getNearbyPlaces(originGeocode, keyword, formattedRadius);
       })
     );
 
@@ -119,7 +125,7 @@ const App = () => {
   };
 
   // 周辺の施設を検索する
-  const getNearbyPlaces = async (origin, keyword) => {
+  const getNearbyPlaces = async (origin, keyword, radius) => {
     return new Promise((resolve, reject) => {
       const searchConditions = {
         location: new window.google.maps.LatLng(origin.lat, origin.lng),
