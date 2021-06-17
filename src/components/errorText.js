@@ -1,9 +1,9 @@
 import "../styles/Error.css";
 
-const errorText = (props) => {
+const errorText = ({ message }) => {
   return (
     <p id="radiusError" className="error">
-      {props.message}
+      {message}
     </p>
   );
 };

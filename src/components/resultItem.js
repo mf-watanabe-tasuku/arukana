@@ -1,7 +1,7 @@
-const resultItem = (props) => {
+const resultItem = ({ result }) => {
   // 検索結果を表示する
   const displayResult = () => {
-    const { keyword, name, distance, duration } = { ...props.result };
+    const { keyword, name, distance, duration } = { ...result };
     const formatDistance = getDisplayDistance(distance);
 
     const hasResultText = `最寄りの${keyword}: <b>${name}</b> ( 距離: ${formatDistance} / 所要時間: ${duration} )`;

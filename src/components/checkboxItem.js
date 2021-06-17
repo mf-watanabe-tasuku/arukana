@@ -1,13 +1,6 @@
 import "../styles/CheckboxItem.css";
 
-const checkboxItem = (props) => {
-  const [name, value, id, onChange] = [
-    props.name,
-    props.value,
-    props.id,
-    props.onChange,
-  ];
-
+const checkboxItem = ({ name, value, id, onChange }) => {
   return (
     <li className="place__checkbox-item">
       <input

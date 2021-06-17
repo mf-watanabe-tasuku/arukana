@@ -1,5 +1,5 @@
-const inputLabel = (props) => {
-  return <label htmlFor={props.id}>{props.text} : </label>;
+const inputLabel = ({ id, text }) => {
+  return <label htmlFor={id}>{text} : </label>;
 };
 
 export default inputLabel;

@@ -1,12 +1,5 @@
-const inputOrigin = (props) => {
-  return (
-    <input
-      type="text"
-      id={props.id}
-      onChange={props.onChange}
-      value={props.value}
-    />
-  );
+const inputOrigin = ({ id, onChange, value }) => {
+  return <input type="text" id={id} onChange={onChange} value={value} />;
 };
 
 export default inputOrigin;

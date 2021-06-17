@@ -1,7 +1,7 @@
 import CheckboxItem from "./checkboxItem";
 import "../styles/CheckboxList.css";
 
-const checkboxList = (props) => {
+const checkboxList = ({ onChange }) => {
   const placeList = [
     { name: "checkbox1", value: "スターバックス", id: "starbucks" },
     { name: "checkbox2", value: "タリーズ", id: "tullys" },
@@ -19,7 +19,7 @@ const checkboxList = (props) => {
             name={place.name}
             value={place.value}
             id={place.id}
-            onChange={props.onChange}
+            onChange={onChange}
           />
         ))}
     </ul>
