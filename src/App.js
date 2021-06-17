@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import ResultList from "./components/resultList";
-import InputLabel from "./components/inputLabel";
-import InputForm from "./components/inputForm";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import SearchBtn from "./components/searchBtn";
@@ -12,7 +10,9 @@ const App = () => {
   const searchResults = [];
 
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
-  const [keywords, setKeywords] = useState([]);
+  const [textKeyword, setTextKeyword] = useState("");
+  const [textKeywords, setTextKeywords] = useState([]);
+  const [searchKeywords, setSearchKeywords] = useState([]);
   const [radius, setRadius] = useState("");
   const [checkboxes, setCheckboxes] = useState({});
   const [places, setPlaces] = useState([]);
@@ -25,37 +25,65 @@ const App = () => {
     document.body.appendChild(googleMapScript);
   }, []);
 
-  const handleOriginChange = (e) => setOrigin(e.target.value);
-
   const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
     const { name, checked } = e.target;
+    const searchKeywordIndex = searchKeywords.indexOf(targetValue);
 
-    if (checked && !keywords.includes(targetValue)) {
-      setKeywords([...keywords, targetValue]);
-    } else if (!checked && keywords.includes(targetValue)) {
-      const filteredKeywords = keywords.filter(
-        (keyword) => keyword !== targetValue
-      );
-      setKeywords(filteredKeywords);
+    if (checked && searchKeywordIndex === -1) {
+      setSearchKeywords([...searchKeywords, targetValue]);
     }
+    if (!checked && searchKeywordIndex > -1) {
+      searchKeywords.splice(searchKeywordIndex, 1);
+      setSearchKeywords([...searchKeywords]);
+    }
+
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
 
-  const handleRadiusChange = (e) => setRadius(e.target.value);
+  const addKeyword = (e) => {
+    if (e.key !== "Enter") return;
+
+    const valueIndex = textKeywords.indexOf(e.target.value);
+    if (valueIndex > -1) {
+      setErrors({
+        ...errors,
+        keyword: `${e.target.value}はすでに入力済みです`,
+      });
+      return;
+    }
+
+    setSearchKeywords([...searchKeywords, textKeyword]);
+    setTextKeywords([...textKeywords, textKeyword]);
+    setTextKeyword("");
+  };
+
+  const removeKeyword = (keyword) => {
+    const searchKeywordIndex = searchKeywords.indexOf(keyword);
+    if (searchKeywordIndex === -1) return;
+    searchKeywords.splice(searchKeywordIndex, 1);
+    setSearchKeywords([...searchKeywords]);
+
+    const textKeywordsIndex = textKeywords.indexOf(keyword);
+    if (textKeywordsIndex === -1) return;
+    textKeywords.splice(textKeywordsIndex, 1);
+    setTextKeywords([...textKeywords]);
+  };
 
   // 検索ボタンを押した時の処理;
   const handleSearch = async (e) => {
     e.preventDefault();
 
+    setErrors({});
     setValidationMessages();
+
     const errorExists = Object.keys(errorMessages).length !== 0;
     if (errorExists) return;
 
     const originGeocode = await getOriginGeocode();
 
     await Promise.all(
-      keywords.map(async (keyword) => {
+      searchKeywords.map(async (keyword) => {
         await getNearbyPlaces(originGeocode, keyword);
       })
     );
@@ -65,8 +93,8 @@ const App = () => {
 
   const setValidationMessages = () => {
     if (!origin) errorMessages["origin"] = "基準地点を入力してください";
-    if (keywords.length === 0)
-      errorMessages["place"] = "検索する施設を選択してください";
+    if (searchKeywords.length === 0)
+      errorMessages["keyword"] = "検索する施設を選択または入力してください";
     if (!radius) {
       errorMessages["radius"] = "半径距離を入力してください";
     } else if (radius > 3000) {
@@ -81,7 +109,7 @@ const App = () => {
     const geocoder = new window.google.maps.Geocoder();
     const originGeocode = await geocoder.geocode(
       { address: origin },
-      (results, status) => (status == "OK" ? results : status)
+      (results, status) => (status === "OK" ? results : status)
     );
 
     return {
@@ -168,18 +196,53 @@ const App = () => {
   return (
     <>
       <div className="input-row">
-        <InputLabel id="origin" text="基準となる場所" />
-        <InputForm id="origin" value={origin} onChange={handleOriginChange} />
+        <label>基準となる場所 : </label>
+        <input
+          type="text"
+          className="input-l"
+          onChange={(e) => setOrigin(e.target.value)}
+          value={origin}
+        />
         <ErrorText message={errors.origin} />
       </div>
       <div className="input-row">
-        <InputLabel id="keyword" text="検索したい施設名" />
+        <label>検索したい施設を選択 : </label>
         <CheckboxList onChange={handleCheckboxChange} />
-        <ErrorText message={errors.place} />
       </div>
       <div className="input-row">
-        <InputLabel id="radius" text="検索する半径距離" />
-        <InputForm id="radius" value={radius} onChange={handleRadiusChange} />
+        <label>検索したい施設を入力 : </label>
+        <input
+          type="text"
+          className="input-l"
+          placeholder="入力してEnter"
+          onChange={(e) => setTextKeyword(e.target.value)}
+          onKeyPress={addKeyword}
+          value={textKeyword}
+        />
+        <ErrorText message={errors.keyword} />
+        <ul className="textKeyword-list">
+          {textKeywords.map((keyword, i) => (
+            <li key={i} className="textKeyword-item">
+              {keyword}{" "}
+              <span
+                className="textKeyword-close-btn"
+                onClick={() => removeKeyword(keyword)}
+              >
+                ×
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="input-row">
+        <label>検索する半径距離 : </label>
+        <input
+          type="text"
+          className="input-s"
+          onChange={(e) => setRadius(e.target.value)}
+          value={radius}
+        />{" "}
+        m
         <ErrorText message={errors.radius} />
       </div>
 
