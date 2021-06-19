@@ -10,6 +10,10 @@ const App = () => {
   let searchResults = [];
 
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
+  const [originGeocode, setOriginGeocode] = useState({
+    lat: "",
+    lng: "",
+  });
   const [textKeyword, setTextKeyword] = useState("");
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
@@ -80,7 +84,9 @@ const App = () => {
     const errorExists = Object.keys(errorMessages).length !== 0;
     if (errorExists) return;
 
-    const originGeocode = await getOriginGeocode();
+    const geocode = await getOriginGeocode();
+    setOriginGeocode(geocode);
+
     const formattedRadius = radius.replace(",", "");
     const hasFullWidthNum = formattedRadius.match(/\D+/);
     if (hasFullWidthNum) {
@@ -90,7 +96,7 @@ const App = () => {
 
     await Promise.all(
       searchKeywords.map(async (keyword) => {
-        await getNearbyPlaces(originGeocode, keyword, formattedRadius);
+        await getNearbyPlaces(geocode, keyword, formattedRadius);
       })
     );
 
@@ -113,22 +119,22 @@ const App = () => {
   // 基準地点の座標を取得する
   const getOriginGeocode = async () => {
     const geocoder = new window.google.maps.Geocoder();
-    const originGeocode = await geocoder.geocode(
+    const geocode = await geocoder.geocode(
       { address: origin },
       (results, status) => (status === "OK" ? results : status)
     );
 
     return {
-      lat: originGeocode.results[0].geometry.location.lat(),
-      lng: originGeocode.results[0].geometry.location.lng(),
+      lat: geocode.results[0].geometry.location.lat(),
+      lng: geocode.results[0].geometry.location.lng(),
     };
   };
 
   // 周辺の施設を検索する
-  const getNearbyPlaces = async (origin, keyword, radius) => {
+  const getNearbyPlaces = async (geocode, keyword, radius) => {
     return new Promise((resolve, reject) => {
       const searchConditions = {
-        location: new window.google.maps.LatLng(origin.lat, origin.lng),
+        location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
         radius: radius,
         keyword: keyword,
       };
@@ -149,9 +155,14 @@ const App = () => {
 
         await Promise.all(
           formattedPlaces.map(async (place) => {
-            const placeData = await getDistanceData(place);
-            if (placeData.distance <= radius)
+            let placeData = await getDistanceData(place);
+            if (placeData.distance <= radius) {
+              placeData = {
+                ...placeData,
+                geocode: { lat: place.lat, lng: place.lng },
+              };
               placeArr = [...placeArr, placeData];
+            }
           })
         );
 
@@ -241,7 +252,9 @@ const App = () => {
 
       <SearchBtn onClick={handleSearch} />
 
-      {places.length > 0 && <ResultList places={places} />}
+      {places.length > 0 && (
+        <ResultList originGeocode={originGeocode} places={places} />
+      )}
     </>
   );
 };

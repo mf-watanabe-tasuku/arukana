@@ -1,20 +1,45 @@
 .result-item {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
+  min-height: 250px;
+  margin-bottom: 30px;
   border-bottom: 1px solid #999;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 1px 5px #c0c0c0;
+  padding: 30px;
+}
+
+.result-item-keyword {
+  margin-bottom: 10px;
+}
+
+.result-item-data {
+  width: 56%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.result-item-map {
+  width: 40%;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
 }
 
 .otherResults-box {
   margin-top: 20px;
   background-color: #f0f0f0;
-  padding: 20px 30px 30px;
+  padding: 10px 20px 15px;
+  font-size: 0.8rem;
 }
 
 .otherResults-title {
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .otherResults-box ul {
-  padding-left: 30px;
+  padding-left: 20px;
 }
