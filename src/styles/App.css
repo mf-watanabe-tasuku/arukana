@@ -1,3 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 30px;
+}
+
 input[type="text"] {
   padding: 7px;
   border-radius: 5px;

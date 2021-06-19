@@ -1,0 +1,20 @@
+.result-item {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #999;
+}
+
+.otherResults-box {
+  margin-top: 20px;
+  background-color: #f0f0f0;
+  padding: 20px 30px 30px;
+}
+
+.otherResults-title {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.otherResults-box ul {
+  padding-left: 30px;
+}

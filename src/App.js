@@ -7,7 +7,7 @@ import "./styles/App.css";
 
 const App = () => {
   const errorMessages = {};
-  const searchResults = [];
+  let searchResults = [];
 
   const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
   const [textKeyword, setTextKeyword] = useState("");
@@ -15,7 +15,7 @@ const App = () => {
   const [searchKeywords, setSearchKeywords] = useState([]);
   const [radius, setRadius] = useState("");
   const [checkboxes, setCheckboxes] = useState({});
-  const [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState({});
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -44,11 +44,11 @@ const App = () => {
   const addKeyword = (e) => {
     if (e.key !== "Enter") return;
 
-    const valueIndex = textKeywords.indexOf(e.target.value);
-    if (valueIndex > -1) {
+    const targetValue = e.target.value;
+    if (textKeywords.indexOf(targetValue) > -1) {
       setErrors({
         ...errors,
-        keyword: `${e.target.value}はすでに入力済みです`,
+        keyword: `${targetValue}はすでに入力済みです`,
       });
       return;
     }
@@ -144,47 +144,32 @@ const App = () => {
             lng: result.geometry.location.lng(),
           };
         });
-        const nearestPlaceData = await getNearestPlaceData(
-          keyword,
-          origin,
-          formattedPlaces
+
+        let placeArr = [];
+
+        await Promise.all(
+          formattedPlaces.map(async (place) => {
+            const placeData = await getDistanceData(place);
+            if (placeData.distance <= radius)
+              placeArr = [...placeArr, placeData];
+          })
         );
 
-        searchResults.push(nearestPlaceData);
+        const arr = placeArr.sort((a, b) => a.distance - b.distance);
+        const slicedArr = arr.slice(0, 4);
+
+        const [nearestPlace, ...otherPlaces] = slicedArr;
+        const placeResults = { keyword, nearestPlace, otherPlaces };
+
+        searchResults = [...searchResults, placeResults];
+
         resolve();
       });
     });
   };
 
-  // 検索結果から最寄りの施設を絞り込む
-  const getNearestPlaceData = async (keyword, origin, places) => {
-    let nearestPlace, nearestDistance, nearestDuration;
-
-    for (let i = 0; i < places.length; i++) {
-      const [placeDistance, placeDuration] = await getDistanceData(
-        origin,
-        places[i]
-      );
-      if (placeDistance > radius) {
-        continue;
-      } else if (nearestPlace == null || nearestDistance > placeDistance) {
-        nearestPlace = places[i].name;
-        nearestDistance = placeDistance;
-        nearestDuration = placeDuration;
-      }
-    }
-
-    const nearestPlaceData = {
-      keyword: keyword,
-      name: nearestPlace,
-      distance: nearestDistance,
-      duration: nearestDuration,
-    };
-    return nearestPlaceData;
-  };
-
   // 距離と所要時間を取得してオブジェクトで返す
-  const getDistanceData = async (origin, destination) => {
+  const getDistanceData = async (destination) => {
     const service = new window.google.maps.DistanceMatrixService();
     const response = await service.getDistanceMatrix({
       origins: [origin],
@@ -193,10 +178,12 @@ const App = () => {
     });
 
     const data = response.rows[0].elements;
-    const distance = data[0].distance.value;
-    const duration = data[0].duration.text;
 
-    return [distance, duration];
+    return {
+      name: destination.name,
+      distance: data[0].distance.value,
+      duration: data[0].duration.text,
+    };
   };
 
   return (
@@ -254,7 +241,7 @@ const App = () => {
 
       <SearchBtn onClick={handleSearch} />
 
-      {places.length > 0 && <ResultList results={places} />}
+      {places.length > 0 && <ResultList places={places} />}
     </>
   );
 };

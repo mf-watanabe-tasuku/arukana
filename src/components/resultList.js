@@ -1,12 +1,12 @@
 import ResultItem from "./resultItem";
+import "../styles/ResultList.css";
 
-const resultList = ({ results }) => {
+const resultList = ({ places }) => {
   return (
-    <ul>
-      {results[0] &&
-        results.map((result, index) => (
-          <ResultItem key={index} result={result} />
-        ))}
+    <ul className="result-list">
+      {places.map((result, index) => (
+        <ResultItem key={index} result={result} />
+      ))}
     </ul>
   );
 };
