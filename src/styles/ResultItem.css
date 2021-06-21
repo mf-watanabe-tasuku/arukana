@@ -19,6 +19,10 @@
   justify-content: space-between;
 }
 
+.result-item-title {
+  margin-bottom: 15px;
+}
+
 .result-item-map {
   width: 40%;
 }
@@ -42,4 +46,26 @@
 
 .otherResults-box ul {
   padding-left: 20px;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+}
+
+.rating-icon {
+  margin-right: 7px;
+}
+
+.rating-num {
+  margin-right: 7px;
+}
+
+.rating-star-list {
+  margin-top: 2px;
+}
+
+.rating-star-item {
+  width: 20px;
+  margin-right: 3px;
 }

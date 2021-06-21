@@ -1,21 +1,62 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { faSmile } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import star_100 from "../images/star_100.svg";
+import star_75 from "../images/star_75.svg";
+import star_50 from "../images/star_50.svg";
+import star_25 from "../images/star_25.svg";
 import "../styles/ResultItem.css";
 
 const ResultItem = ({ originGeocode, result }) => {
   const { keyword, nearestPlace, otherPlaces } = result;
-  const { name, distance, duration, geocode } = nearestPlace;
+  const { name, rating, distance, duration, geocode } = nearestPlace;
+
   const map = useRef(null);
 
   useEffect(() => {
+    const drawMap = () => {
+      const directionsService = new window.google.maps.DirectionsService();
+      const directionsRenderer = new window.google.maps.DirectionsRenderer();
+      const displayMap = new window.google.maps.Map(map.current, {
+        zoom: 13,
+        center: { lat: originGeocode.lat, lng: originGeocode.lng },
+        disableDefaultUI: true,
+      });
+      directionsRenderer.setMap(displayMap);
+
+      calculateAndDisplayRoute(directionsService, directionsRenderer);
+    };
+
+    const calculateAndDisplayRoute = (
+      directionsService,
+      directionsRenderer
+    ) => {
+      directionsService.route(
+        {
+          origin: new window.google.maps.LatLng(
+            originGeocode.lat,
+            originGeocode.lng
+          ),
+          destination: new window.google.maps.LatLng(geocode.lat, geocode.lng),
+          travelMode: window.google.maps.TravelMode.WALKING,
+        },
+        (response, status) => {
+          if (status === "OK") {
+            directionsRenderer.setDirections(response);
+          } else {
+            window.alert("Directions request failed due to " + status);
+          }
+        }
+      );
+    };
+
     drawMap();
-  }, []);
+  }, [originGeocode, geocode]);
 
   // 検索結果を表示する
-  const displayResult = () => {
+  const getDisplayResult = () => {
     const formatDistance = getDisplayDistance(distance);
-    const resultText = `${name} ( 距離: ${formatDistance} / 所要時間: ${duration} )`;
-
-    return { __html: resultText };
+    return `${name} ( 距離: ${formatDistance} / 所要時間: ${duration} )`;
   };
 
   // 距離を表示用にフォーマットする
@@ -29,37 +70,24 @@ const ResultItem = ({ originGeocode, result }) => {
     return distance;
   };
 
-  const drawMap = () => {
-    const directionsService = new window.google.maps.DirectionsService();
-    const directionsRenderer = new window.google.maps.DirectionsRenderer();
-    const displayMap = new window.google.maps.Map(map.current, {
-      zoom: 13,
-      center: { lat: originGeocode.lat, lng: originGeocode.lng },
-      disableDefaultUI: true,
-    });
-    directionsRenderer.setMap(displayMap);
+  const getRatingStarsArr = () => {
+    if (!rating) return;
 
-    calculateAndDisplayRoute(directionsService, directionsRenderer);
-  };
+    let ratingStars = [];
+    for (let i = 1; i < rating; i++) {
+      ratingStars.push(star_100);
+    }
 
-  const calculateAndDisplayRoute = (directionsService, directionsRenderer) => {
-    directionsService.route(
-      {
-        origin: new window.google.maps.LatLng(
-          originGeocode.lat,
-          originGeocode.lng
-        ),
-        destination: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-        travelMode: window.google.maps.TravelMode.WALKING,
-      },
-      (response, status) => {
-        if (status === "OK") {
-          directionsRenderer.setDirections(response);
-        } else {
-          window.alert("Directions request failed due to " + status);
-        }
-      }
-    );
+    const remaining = (rating * 10) % 10;
+    if (0 < remaining && remaining < 3) {
+      ratingStars.push(star_25);
+    } else if (3 <= remaining && remaining < 7) {
+      ratingStars.push(star_50);
+    } else if (8 <= remaining) {
+      ratingStars.push(star_75);
+    }
+
+    return ratingStars;
   };
 
   return (
@@ -69,10 +97,33 @@ const ResultItem = ({ originGeocode, result }) => {
       </p>
       <li className="result-item">
         <div className="result-item-data">
-          {nearestPlace ? (
-            <p dangerouslySetInnerHTML={displayResult()}></p>
-          ) : (
-            <p>{keyword}は見つかりませんでした</p>
+          {nearestPlace && (
+            <div>
+              <p className="result-item-title">{getDisplayResult()}</p>
+              <p className="rating-box">
+                <span className="rating-icon">
+                  <FontAwesomeIcon icon={faSmile} />
+                </span>
+                {rating ? (
+                  <>
+                    <span className="rating-num">{rating}</span>
+                    <span className="rating-star-list">
+                      {getRatingStarsArr() &&
+                        getRatingStarsArr().map((star, i) => (
+                          <img
+                            key={i}
+                            src={star}
+                            className="rating-star-item"
+                            alt="Rating Star"
+                          />
+                        ))}
+                    </span>
+                  </>
+                ) : (
+                  "まだ評価がありません"
+                )}
+              </p>
+            </div>
           )}
           {otherPlaces.length > 0 && (
             <div className="otherResults-box">
@@ -90,7 +141,6 @@ const ResultItem = ({ originGeocode, result }) => {
         </div>
         <div className="result-item-map">
           <div id="map" ref={map}></div>
-          {/* <button onClick={handleClick}>button</button> */}
         </div>
       </li>
     </>

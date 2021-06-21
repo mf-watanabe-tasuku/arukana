@@ -48,6 +48,14 @@ const App = () => {
   const addKeyword = (e) => {
     if (e.key !== "Enter") return;
 
+    if (textKeywords.length + 1 > 5) {
+      setErrors({
+        ...errors,
+        keyword: "一度に検索できるのは5個までです",
+      });
+      return;
+    }
+
     const targetValue = e.target.value;
     if (textKeywords.indexOf(targetValue) > -1) {
       setErrors({
@@ -135,8 +143,8 @@ const App = () => {
     return new Promise((resolve, reject) => {
       const searchConditions = {
         location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-        radius: radius,
-        keyword: keyword,
+        radius,
+        keyword,
       };
 
       const div = document.createElement("div");
@@ -146,6 +154,7 @@ const App = () => {
         const formattedPlaces = results.map((result) => {
           return {
             name: result.name,
+            rating: result.rating,
             lat: result.geometry.location.lat(),
             lng: result.geometry.location.lng(),
           };
@@ -192,6 +201,7 @@ const App = () => {
 
     return {
       name: destination.name,
+      rating: destination.rating,
       distance: data[0].distance.value,
       duration: data[0].duration.text,
     };
