@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Header from "./components/header";
 import ResultList from "./components/resultList";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
@@ -209,6 +210,7 @@ const App = () => {
 
   return (
     <>
+      <Header />
       <div className="input-row">
         <label>基準となる場所 : </label>
         <input

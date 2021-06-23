@@ -1,0 +1,14 @@
+header {
+  text-align: center;
+}
+
+.header__ttl {
+  font-size: 40px;
+  line-height: 1;
+  color: #003972;
+  margin-bottom: 30px;
+}
+
+.header__desc {
+  margin-bottom: 50px;
+}
