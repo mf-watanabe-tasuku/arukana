@@ -1,7 +1,9 @@
+import "../styles/SearchBtn.css";
+
 const searchBtn = ({ onClick }) => {
   return (
-    <button id="submit" onClick={onClick}>
-      検索
+    <button className="btn-search" onClick={onClick}>
+      検索する
     </button>
   );
 };

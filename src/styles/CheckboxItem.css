@@ -1,3 +1,28 @@
-.place__checkbox-item {
-  margin-right: 15px;
+.place-checkbox__item {
+  width: 100%;
+  border: 2px solid #36759c;
+  background: #fff;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.place-checkbox__item:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.place-checkbox__input {
+  display: none;
+}
+
+.place-checkbox__label {
+  padding: 10px 0;
+  display: block;
+  transition-duration: 0.2s;
+
+  cursor: pointer;
+}
+
+.place-checkbox__input:checked + .place-checkbox__label {
+  color: #fff;
+  background: #50b6f1;
 }
