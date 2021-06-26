@@ -116,11 +116,8 @@ const App = () => {
     if (!origin) errorMessages["origin"] = "基準地点を入力してください";
     if (searchKeywords.length === 0)
       errorMessages["keyword"] = "検索する施設を選択または入力してください";
-    if (!radius) {
-      errorMessages["radius"] = "半径距離を入力してください";
-    } else if (radius > 3000) {
+    if (radius > 3000)
       errorMessages["radius"] = "半径3000m以下に設定してください";
-    }
 
     setErrors(errorMessages);
   };
@@ -141,6 +138,8 @@ const App = () => {
 
   // 周辺の施設を検索する
   const getNearbyPlaces = async (geocode, keyword, radius) => {
+    if (!radius) radius = 2000;
+
     return new Promise((resolve, reject) => {
       const searchConditions = {
         location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
