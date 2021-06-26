@@ -33,20 +33,29 @@
   height: 100%;
 }
 
-.otherResults-box {
+.other-results__box {
   margin-top: 20px;
   background-color: #f0f0f0;
   padding: 10px 20px 15px;
   font-size: 0.8rem;
 }
 
-.otherResults-title {
+.other-results__title {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.otherResults-box ul {
+.other-results__box ul {
   padding-left: 20px;
+}
+
+.other-results__list {
+  list-style-type: square;
+  color: #555;
+}
+
+.other-results__item {
+  font-size: 12px;
 }
 
 .rating-box {

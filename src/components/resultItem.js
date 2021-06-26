@@ -138,11 +138,11 @@ const ResultItem = ({ originGeocode, result }) => {
             </div>
           )}
           {otherPlaces.length > 0 && (
-            <div className="otherResults-box">
-              <p className="otherResults-title">検索にヒットした場所</p>
-              <ul>
+            <div className="other-results__box">
+              <p className="other-results__title">検索にヒットした場所</p>
+              <ul className="other-results__list">
                 {otherPlaces.map((place, i) => (
-                  <li key={i}>
+                  <li key={i} className="other-results__item">
                     {place.name} ( 距離: {getDisplayDistance(place.distance)} /
                     所要時間: {place.duration} )
                   </li>
