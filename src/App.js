@@ -111,6 +111,7 @@ const App = () => {
     );
 
     setPlaces(searchResults);
+    window.scrollTo(0, 0);
   };
 
   const setValidationMessages = () => {
@@ -212,6 +213,7 @@ const App = () => {
 
   const handleBackToTop = () => {
     setPlaces([]);
+    window.scrollTo(0, 0);
   };
 
   return (
