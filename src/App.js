@@ -222,83 +222,98 @@ const App = () => {
   return (
     <>
       <Header />
-      {places.length > 0 ? (
-        <>
-          <p className="search-results__origin-text">「{origin}」の検索結果</p>
-          <div className="search-results__back-box">
-            <p className="search-results__back-link" onClick={handleBackToTop}>
-              トップへ戻る
-            </p>
-          </div>
-          <ResultList originGeocode={originGeocode} places={places} />
-          <BackToTopBtn onClick={handleBackToTop} />
-        </>
-      ) : (
-        <>
-          <div className="search-step__list">
-            <div className="search-step__item input-row">
-              <span className="search-step__num">STEP1</span>
-              <p className="search-step__ttl">調べたい住所を入力してください</p>
-              <input
-                className="search-step__input"
-                type="text"
-                onChange={(e) => setOrigin(e.target.value)}
-                value={origin}
-              />
-              <ErrorText message={errors.origin} />
-            </div>
-            <div className="search-step__item input-row">
-              <span className="search-step__num">STEP2</span>
-              <p className="search-step__ttl">検索したい施設を選んでください</p>
-              <p className="search-step__sub-ttl">選択肢から選ぶ</p>
-              <CheckboxList onChange={handleCheckboxChange} />
-              <p className="search-step__sub-ttl">自由に入力する (最大5個)</p>
-              <input
-                type="text"
-                className="search-step__input input-keyword"
-                placeholder="入力してEnterを押してください  例) セブンイレブン"
-                onChange={(e) => setTextKeyword(e.target.value)}
-                onKeyPress={addKeyword}
-                value={textKeyword}
-              />
-              <ErrorText message={errors.keyword} />
-              <ul className="textKeyword-list">
-                {textKeywords.map((keyword, i) => (
-                  <li key={i} className="textKeyword-item">
-                    {keyword}{" "}
-                    <span
-                      className="textKeyword-close-btn"
-                      onClick={() => removeKeyword(keyword)}
-                    >
-                      ×
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="search-step__item input-row">
-              <span className="search-step__num">
-                STEP3<span> (任意)</span>
-              </span>
-              <p className="search-step__ttl">検索する半径距離</p>
-              <input
-                type="text"
-                className="search-step__input input-radius"
-                onChange={(e) => setRadius(e.target.value)}
-                value={radius}
-              />
-              <span className="search-step__unit">m</span>
-              <span className="search-step__range">(50 ~ 3,000m)</span>
-              <ErrorText message={errors.radius} />
-              <p className="search-step__info-text">
-                ※未入力の場合は半径2,000mで検索されます。
+      <main>
+        <div className="wrapper">
+          {places.length > 0 ? (
+            <>
+              <p className="search-results__origin-text">
+                「{origin}」の検索結果
               </p>
-            </div>
-          </div>
+              <div className="search-results__back-box">
+                <p
+                  className="search-results__back-link"
+                  onClick={handleBackToTop}
+                >
+                  トップへ戻る
+                </p>
+              </div>
+              <ResultList originGeocode={originGeocode} places={places} />
+              <BackToTopBtn onClick={handleBackToTop} />
+            </>
+          ) : (
+            <>
+              <div className="search-step__list">
+                <div className="search-step__item input-row">
+                  <span className="search-step__num">STEP1</span>
+                  <p className="search-step__ttl">
+                    調べたい住所を入力してください
+                  </p>
+                  <input
+                    className="search-step__input"
+                    type="text"
+                    onChange={(e) => setOrigin(e.target.value)}
+                    value={origin}
+                  />
+                  <ErrorText message={errors.origin} />
+                </div>
+                <div className="search-step__item input-row">
+                  <span className="search-step__num">STEP2</span>
+                  <p className="search-step__ttl">
+                    検索したい施設を選んでください
+                  </p>
+                  <p className="search-step__sub-ttl">選択肢から選ぶ</p>
+                  <CheckboxList onChange={handleCheckboxChange} />
+                  <p className="search-step__sub-ttl">
+                    自由に入力する (最大5個)
+                  </p>
+                  <input
+                    type="text"
+                    className="search-step__input input-keyword"
+                    placeholder="入力してEnterを押してください  例) セブンイレブン"
+                    onChange={(e) => setTextKeyword(e.target.value)}
+                    onKeyPress={addKeyword}
+                    value={textKeyword}
+                  />
+                  <ErrorText message={errors.keyword} />
+                  <ul className="textKeyword-list">
+                    {textKeywords.map((keyword, i) => (
+                      <li key={i} className="textKeyword-item">
+                        {keyword}{" "}
+                        <span
+                          className="textKeyword-close-btn"
+                          onClick={() => removeKeyword(keyword)}
+                        >
+                          ×
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="search-step__item input-row">
+                  <span className="search-step__num">
+                    STEP3<span> (任意)</span>
+                  </span>
+                  <p className="search-step__ttl">検索する半径距離</p>
+                  <input
+                    type="text"
+                    className="search-step__input input-radius"
+                    onChange={(e) => setRadius(e.target.value)}
+                    value={radius}
+                  />
+                  <span className="search-step__unit">m</span>
+                  <span className="search-step__range">(50 ~ 3,000m)</span>
+                  <ErrorText message={errors.radius} />
+                  <p className="search-step__info-text">
+                    ※未入力の場合は半径2,000mで検索されます。
+                  </p>
+                </div>
+              </div>
 
-          <SearchBtn onClick={handleSearch} />
-        </>
-      )}
+              <SearchBtn onClick={handleSearch} />
+            </>
+          )}
+        </div>
+      </main>
     </>
   );
 };

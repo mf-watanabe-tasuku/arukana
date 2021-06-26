@@ -11,9 +11,13 @@ body {
   background-color: #f5f6f9;
 }
 
-.search-step__list {
+.wrapper {
   width: 800px;
-  margin: 0 auto 40px;
+  margin: 0 auto;
+}
+
+.search-step__list {
+  margin-bottom: 40px;
 }
 
 .search-step__item {
@@ -116,8 +120,6 @@ body {
 }
 
 .search-results__back-box {
-  width: 800px;
-  margin: 0 auto;
   margin-bottom: 40px;
 }
 
