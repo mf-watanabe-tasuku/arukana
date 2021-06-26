@@ -13,7 +13,8 @@ import "../styles/ResultItem.css";
 
 const ResultItem = ({ originGeocode, result }) => {
   const { keyword, nearestPlace, otherPlaces } = result;
-  const { name, rating, distance, duration, geocode } = nearestPlace;
+  const { name, rating, ratings_total, distance, duration, geocode } =
+    nearestPlace;
 
   const map = useRef(null);
 
@@ -116,6 +117,7 @@ const ResultItem = ({ originGeocode, result }) => {
                           />
                         ))}
                     </span>
+                    <span>({ratings_total})</span>
                   </>
                 ) : (
                   "まだ評価がありません"

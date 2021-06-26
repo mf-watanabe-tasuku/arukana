@@ -155,6 +155,7 @@ const App = () => {
           return {
             name: result.name,
             rating: result.rating,
+            ratings_total: result.user_ratings_total,
             lat: result.geometry.location.lat(),
             lng: result.geometry.location.lng(),
           };
@@ -202,6 +203,7 @@ const App = () => {
     return {
       name: destination.name,
       rating: destination.rating,
+      ratings_total: destination.ratings_total,
       distance: data[0].distance.value,
       duration: data[0].duration.text,
     };
