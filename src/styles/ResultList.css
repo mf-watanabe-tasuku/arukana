@@ -1,3 +1,14 @@
+.no-results {
+  margin-bottom: 40px;
+  border: 2px solid tomato;
+  border-radius: 5px;
+  background-color: rgb(255, 194, 194);
+  padding: 30px 30px 30px 50px;
+}
+
+.no-results__list {
+}
+
 .result-list {
   list-style-type: none;
   margin: 0 auto;
