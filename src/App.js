@@ -118,8 +118,11 @@ const App = () => {
     if (!origin) errorMessages["origin"] = "基準地点を入力してください";
     if (searchKeywords.length === 0)
       errorMessages["keyword"] = "検索する施設を選択または入力してください";
-    if (radius > 3000)
-      errorMessages["radius"] = "半径3000m以下に設定してください";
+    if (radius > 3000) {
+      errorMessages["radius"] = "半径5000mより大きな値は指定できません";
+    } else if (radius && radius < 50) {
+      errorMessages["radius"] = "半径50m未満は指定できません";
+    }
 
     setErrors(errorMessages);
   };
@@ -285,7 +288,7 @@ const App = () => {
                 value={radius}
               />
               <span className="search-step__unit">m</span>
-              <span className="search-step__range">(0 ~ 3,000m)</span>
+              <span className="search-step__range">(50 ~ 3,000m)</span>
               <ErrorText message={errors.radius} />
               <p className="search-step__info-text">
                 ※未入力の場合は半径2,000mで検索されます。
