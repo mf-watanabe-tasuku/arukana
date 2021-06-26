@@ -4,6 +4,7 @@ import ResultList from "./components/resultList";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import SearchBtn from "./components/searchBtn";
+import BackToTopBtn from "./components/backToTopBtn";
 import "./styles/App.css";
 
 const App = () => {
@@ -209,13 +210,23 @@ const App = () => {
     };
   };
 
+  const handleBackToTop = () => {
+    setPlaces([]);
+  };
+
   return (
     <>
       <Header />
       {places.length > 0 ? (
         <>
-          <p className="search-origin">「{origin}」の検索結果</p>
+          <p className="search-results__origin-text">「{origin}」の検索結果</p>
+          <div className="search-results__back-box">
+            <p className="search-results__back-link" onClick={handleBackToTop}>
+              トップへ戻る
+            </p>
+          </div>
           <ResultList originGeocode={originGeocode} places={places} />
+          <BackToTopBtn onClick={handleBackToTop} />
         </>
       ) : (
         <>
