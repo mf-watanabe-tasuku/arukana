@@ -14,7 +14,7 @@ const resultList = ({ originGeocode, places }) => {
   });
 
   return (
-    <>
+    <div className="result-list">
       <ul>
         {noResults.map((result, i) => (
           <li key={i}>{result.keyword}は見つかりませんでした</li>
@@ -33,7 +33,7 @@ const resultList = ({ originGeocode, places }) => {
           );
         })}
       </ul>
-    </>
+    </div>
   );
 };
 
