@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { faSmile } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSmile,
+  faMapMarkerAlt,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import star_100 from "../images/star_100.svg";
 import star_75 from "../images/star_75.svg";
@@ -53,12 +57,6 @@ const ResultItem = ({ originGeocode, result }) => {
     drawMap();
   }, [originGeocode, geocode]);
 
-  // 検索結果を表示する
-  const getDisplayResult = () => {
-    const formatDistance = getDisplayDistance(distance);
-    return `${name} ( 距離: ${formatDistance} / 所要時間: ${duration} )`;
-  };
-
   // 距離を表示用にフォーマットする
   const getDisplayDistance = (distance) => {
     if (distance >= 1000) {
@@ -99,7 +97,7 @@ const ResultItem = ({ originGeocode, result }) => {
         <div className="result-item-data">
           {nearestPlace && (
             <div>
-              <p className="result-item-title">{getDisplayResult()}</p>
+              <p className="result-item-title">{name}</p>
               <p className="rating-box">
                 <span className="rating-icon">
                   <FontAwesomeIcon icon={faSmile} />
@@ -122,6 +120,20 @@ const ResultItem = ({ originGeocode, result }) => {
                 ) : (
                   "まだ評価がありません"
                 )}
+              </p>
+              <p className="">
+                <span className="rating-icon">
+                  <FontAwesomeIcon icon={faMapMarkerAlt} />
+                </span>
+                <span>距離 : </span>
+                <span>{getDisplayDistance(distance)}</span>
+              </p>
+              <p className="">
+                <span className="rating-icon">
+                  <FontAwesomeIcon icon={faClock} />
+                </span>
+                <span>所要時間(徒歩) : </span>
+                <span>{duration}</span>
               </p>
             </div>
           )}
