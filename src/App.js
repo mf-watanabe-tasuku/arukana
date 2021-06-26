@@ -227,7 +227,7 @@ const App = () => {
           {places.length > 0 ? (
             <>
               <p className="search-results__origin-text">
-                「{origin}」の検索結果
+                「{origin}」から半径{radius}m圏内の検索結果
               </p>
               <div className="search-results__back-box">
                 <p
