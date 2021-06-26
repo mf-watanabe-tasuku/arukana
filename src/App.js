@@ -211,7 +211,10 @@ const App = () => {
     <>
       <Header />
       {places.length > 0 ? (
-        <ResultList originGeocode={originGeocode} places={places} />
+        <>
+          <p className="search-origin">「{origin}」の検索結果</p>
+          <ResultList originGeocode={originGeocode} places={places} />
+        </>
       ) : (
         <>
           <div className="search-step__list">

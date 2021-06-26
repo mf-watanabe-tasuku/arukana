@@ -108,3 +108,9 @@ body {
   color: #fff;
   cursor: pointer;
 }
+
+.search-origin {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
