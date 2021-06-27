@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   box-shadow: 0 1px 5px #c0c0c0;
-  padding: 30px;
+  padding: 25px 30px;
 }
 
 .result-item-keyword {
@@ -21,7 +21,8 @@
 }
 
 .result-item-title {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  font-size: 20px;
 }
 
 .result-item-map {
@@ -65,6 +66,10 @@
 
 .rating-icon {
   margin-right: 7px;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  color: #777;
 }
 
 .rating-num {
