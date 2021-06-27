@@ -143,7 +143,7 @@ const App = () => {
 
   // 周辺の施設を検索する
   const getNearbyPlaces = async (geocode, keyword, radius) => {
-    if (!radius) radius = 2000;
+    if (!radius) radius = process.env.REACT_APP_DEFAULT_SEARCH_RADIUS;
 
     return new Promise((resolve, reject) => {
       const searchConditions = {
@@ -227,7 +227,9 @@ const App = () => {
           {places.length > 0 ? (
             <>
               <p className="search-results__origin-text">
-                「{origin}」から半径{radius}m圏内の検索結果
+                「{origin}」から半径
+                {radius || process.env.REACT_APP_DEFAULT_SEARCH_RADIUS}
+                m以内の検索結果
               </p>
               <div className="search-results__back-box">
                 <p
