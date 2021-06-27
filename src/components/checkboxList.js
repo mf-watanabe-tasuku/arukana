@@ -5,9 +5,8 @@ const checkboxList = ({ checkboxes, onChange }) => {
   const placeList = [
     { name: "checkbox1", value: "スターバックス", id: "starbucks" },
     { name: "checkbox2", value: "タリーズ", id: "tullys" },
-    { name: "checkbox3", value: "ドトール", id: "doutor" },
+    { name: "checkbox3", value: "コンビニ", id: "conveniencestore" },
     { name: "checkbox4", value: "ジム", id: "gym" },
-    { name: "checkbox5", value: "郵便局", id: "postoffice" },
   ];
 
   return (
