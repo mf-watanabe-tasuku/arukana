@@ -11,7 +11,7 @@ const App = () => {
   const errorMessages = {};
   let searchResults = [];
 
-  const [origin, setOrigin] = useState("東京都世田谷区経堂5-15-1");
+  const [origin, setOrigin] = useState("");
   const [originGeocode, setOriginGeocode] = useState({
     lat: "",
     lng: "",
