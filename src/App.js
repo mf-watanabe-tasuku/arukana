@@ -264,7 +264,10 @@ const App = () => {
                     検索したい施設を選んでください
                   </p>
                   <p className="search-step__sub-ttl">選択肢から選ぶ</p>
-                  <CheckboxList onChange={handleCheckboxChange} />
+                  <CheckboxList
+                    checkboxes={checkboxes}
+                    onChange={handleCheckboxChange}
+                  />
                   <p className="search-step__sub-ttl">
                     自由に入力する (最大5個)
                   </p>

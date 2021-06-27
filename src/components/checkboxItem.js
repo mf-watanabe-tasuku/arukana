@@ -1,6 +1,7 @@
 import "../styles/CheckboxItem.css";
 
-const checkboxItem = ({ name, value, id, onChange }) => {
+const checkboxItem = ({ name, value, id, onChange, checked }) => {
+  console.log(checked);
   return (
     <li className="place-checkbox__item">
       <input
@@ -10,6 +11,7 @@ const checkboxItem = ({ name, value, id, onChange }) => {
         value={value}
         id={id}
         onChange={onChange}
+        defaultChecked={checked}
       />
       <label className="place-checkbox__label" htmlFor={id}>
         {value}

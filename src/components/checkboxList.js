@@ -1,7 +1,7 @@
 import CheckboxItem from "./checkboxItem";
 import "../styles/CheckboxList.css";
 
-const checkboxList = ({ onChange }) => {
+const checkboxList = ({ checkboxes, onChange }) => {
   const placeList = [
     { name: "checkbox1", value: "スターバックス", id: "starbucks" },
     { name: "checkbox2", value: "タリーズ", id: "tullys" },
@@ -13,13 +13,14 @@ const checkboxList = ({ onChange }) => {
   return (
     <ul className="place__checkbox-list">
       {placeList.length > 0 &&
-        placeList.map((place) => (
+        placeList.map((place, i) => (
           <CheckboxItem
             key={place.id}
             name={place.name}
             value={place.value}
             id={place.id}
             onChange={onChange}
+            checked={checkboxes[placeList[i].name]}
           />
         ))}
     </ul>
