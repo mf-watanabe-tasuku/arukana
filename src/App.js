@@ -99,16 +99,10 @@ const App = () => {
     const geocode = await getOriginGeocode();
     setOriginGeocode(geocode);
 
-    let searchRadius;
-
-    if (radius) {
-      searchRadius = radius.replace(",", "");
-      if (searchRadius.match(/\D+/)) {
-        setErrors({ ...errors, radius: "半角数字で入力してください" });
-        return;
-      }
-    } else {
-      searchRadius = process.env.REACT_APP_DEFAULT_SEARCH_RADIUS;
+    const searchRadius = radius.replace(",", "");
+    if (searchRadius.match(/\D+/)) {
+      setErrors({ ...errors, radius: "半角数字で入力してください" });
+      return;
     }
 
     await Promise.all(
