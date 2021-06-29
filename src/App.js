@@ -12,10 +12,7 @@ const App = () => {
   let searchResults = [];
 
   const [origin, setOrigin] = useState("");
-  const [originGeocode, setOriginGeocode] = useState({
-    lat: "",
-    lng: "",
-  });
+  const [originGeocode, setOriginGeocode] = useState({});
   const [textKeyword, setTextKeyword] = useState("");
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
