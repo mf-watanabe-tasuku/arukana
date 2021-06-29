@@ -62,6 +62,7 @@ body {
   color: #bbb;
 }
 
+.search-step__input.input-origin,
 .search-step__input.input-keyword {
   margin-bottom: 10px;
 }

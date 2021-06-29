@@ -16,7 +16,7 @@ const App = () => {
   const [textKeyword, setTextKeyword] = useState("");
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
-  const [radius, setRadius] = useState("");
+  const [radius, setRadius] = useState("3000");
   const [checkboxes, setCheckboxes] = useState({});
   const [places, setPlaces] = useState({});
   const [errors, setErrors] = useState({});
@@ -121,7 +121,9 @@ const App = () => {
     if (searchKeywords.length === 0)
       errorMessages["keyword"] = "検索する施設を選択または入力してください";
 
-    if (radius > 3000) {
+    if (!radius) {
+      errorMessages["radius"] = "検索したい半径距離を入力してください";
+    } else if (radius > 3000) {
       errorMessages["radius"] = "半径5000mより大きな値は指定できません";
     } else if (radius && radius < 50) {
       errorMessages["radius"] = "半径50m未満は指定できません";
@@ -256,7 +258,7 @@ const App = () => {
                     調べたい住所を入力してください
                   </p>
                   <input
-                    className="search-step__input"
+                    className="search-step__input input-origin"
                     type="text"
                     onChange={(e) => setOrigin(e.target.value)}
                     value={origin}
@@ -300,9 +302,7 @@ const App = () => {
                   </ul>
                 </div>
                 <div className="search-step__item input-row">
-                  <span className="search-step__num">
-                    STEP3<span> (任意)</span>
-                  </span>
+                  <span className="search-step__num">STEP3</span>
                   <p className="search-step__ttl">検索する半径距離</p>
                   <input
                     type="text"
