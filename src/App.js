@@ -47,10 +47,10 @@ const App = () => {
   const addKeyword = (e) => {
     if (e.key !== "Enter") return;
 
-    if (textKeywords.length + 1 > 5) {
+    if (textKeywords.length + 1 > 4) {
       setErrors({
         ...errors,
-        keyword: "一度に検索できるのは5個までです",
+        keyword: "一度に入力できるのは4個までです",
       });
       return;
     }
@@ -88,22 +88,32 @@ const App = () => {
     setErrors({});
     setValidationMessages();
 
+    if (searchKeywords.length > 10) {
+      alert("検索する施設は8個以内にしてください");
+      return;
+    }
+
     const errorExists = Object.keys(errorMessages).length !== 0;
     if (errorExists) return;
 
     const geocode = await getOriginGeocode();
     setOriginGeocode(geocode);
 
-    const formattedRadius = radius.replace(",", "");
-    const hasFullWidthNum = formattedRadius.match(/\D+/);
-    if (hasFullWidthNum) {
-      setErrors({ ...errors, radius: "半角数字で入力してください" });
-      return;
+    let searchRadius;
+
+    if (radius) {
+      searchRadius = radius.replace(",", "");
+      if (searchRadius.match(/\D+/)) {
+        setErrors({ ...errors, radius: "半角数字で入力してください" });
+        return;
+      }
+    } else {
+      searchRadius = process.env.REACT_APP_DEFAULT_SEARCH_RADIUS;
     }
 
     await Promise.all(
       searchKeywords.map(async (keyword) => {
-        await getNearbyPlaces(geocode, keyword, formattedRadius);
+        await getNearbyPlaces(geocode, keyword, searchRadius);
       })
     );
 
@@ -113,8 +123,10 @@ const App = () => {
 
   const setValidationMessages = () => {
     if (!origin) errorMessages["origin"] = "基準地点を入力してください";
+
     if (searchKeywords.length === 0)
       errorMessages["keyword"] = "検索する施設を選択または入力してください";
+
     if (radius > 3000) {
       errorMessages["radius"] = "半径5000mより大きな値は指定できません";
     } else if (radius && radius < 50) {
@@ -140,8 +152,6 @@ const App = () => {
 
   // 周辺の施設を検索する
   const getNearbyPlaces = async (geocode, keyword, radius) => {
-    if (!radius) radius = process.env.REACT_APP_DEFAULT_SEARCH_RADIUS;
-
     return new Promise((resolve, reject) => {
       const searchConditions = {
         location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
@@ -194,21 +204,25 @@ const App = () => {
   // 距離と所要時間を取得してオブジェクトで返す
   const getDistanceData = async (destination) => {
     const service = new window.google.maps.DistanceMatrixService();
-    const response = await service.getDistanceMatrix({
-      origins: [origin],
-      destinations: [destination],
-      travelMode: window.google.maps.TravelMode.WALKING,
-    });
-
-    const data = response.rows[0].elements;
-
-    return {
-      name: destination.name,
-      rating: destination.rating,
-      ratings_total: destination.ratings_total,
-      distance: data[0].distance.value,
-      duration: data[0].duration.text,
-    };
+    return service
+      .getDistanceMatrix({
+        origins: [origin],
+        destinations: [destination],
+        travelMode: window.google.maps.TravelMode.WALKING,
+      })
+      .then((res) => {
+        const data = res.rows[0].elements;
+        return {
+          name: destination.name,
+          rating: destination.rating,
+          ratings_total: destination.ratings_total,
+          distance: data[0].distance.value,
+          duration: data[0].duration.text,
+        };
+      })
+      .catch((err) => {
+        console.log("Error: " + err.message);
+      });
   };
 
   const handleBackToTop = () => {
@@ -266,7 +280,7 @@ const App = () => {
                     onChange={handleCheckboxChange}
                   />
                   <p className="search-step__sub-ttl">
-                    自由に入力する (最大5個)
+                    自由に入力する (最大4個)
                   </p>
                   <input
                     type="text"
@@ -306,7 +320,7 @@ const App = () => {
                   <span className="search-step__range">(50 ~ 3,000m)</span>
                   <ErrorText message={errors.radius} />
                   <p className="search-step__info-text">
-                    ※未入力の場合は半径2,000mで検索されます。
+                    ※未入力の場合は半径3,000mで検索されます。
                   </p>
                 </div>
               </div>
