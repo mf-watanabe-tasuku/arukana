@@ -313,9 +313,6 @@ const App = () => {
                   <span className="search-step__unit">m</span>
                   <span className="search-step__range">(50 ~ 3,000m)</span>
                   <ErrorText message={errors.radius} />
-                  <p className="search-step__info-text">
-                    ※未入力の場合は半径3,000mで検索されます。
-                  </p>
                 </div>
               </div>
 
