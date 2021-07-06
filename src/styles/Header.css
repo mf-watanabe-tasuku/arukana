@@ -19,3 +19,13 @@ header {
     margin-bottom: 30px;
   }
 }
+
+.header__br {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .header__br {
+    display: block;
+  }
+}
