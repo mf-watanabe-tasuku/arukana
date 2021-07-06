@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import Header from "./components/header";
-import ResultList from "./components/resultList";
+import ResultHeader from "./components/resultHeader";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import SearchBtn from "./components/searchBtn";
-import BackToTopBtn from "./components/backToTopBtn";
 import "./styles/App.css";
 
 const App = () => {
   const errorMessages = {};
   let searchResults = [];
 
-  const [origin, setOrigin] = useState("");
+  const [originAddress, setOrigin] = useState("");
   const [originGeocode, setOriginGeocode] = useState({});
   const [textKeyword, setTextKeyword] = useState("");
   const [textKeywords, setTextKeywords] = useState([]);
@@ -116,7 +115,8 @@ const App = () => {
   };
 
   const setValidationMessages = () => {
-    if (!origin) errorMessages["origin"] = "基準地点を入力してください";
+    if (!originAddress)
+      errorMessages["originAddress"] = "基準地点を入力してください";
 
     if (searchKeywords.length === 0)
       errorMessages["keyword"] = "検索する施設を選択または入力してください";
@@ -136,7 +136,7 @@ const App = () => {
   const getOriginGeocode = async () => {
     const geocoder = new window.google.maps.Geocoder();
     const geocode = await geocoder.geocode(
-      { address: origin },
+      { address: originAddress },
       (results, status) => (status === "OK" ? results : status)
     );
 
@@ -202,7 +202,7 @@ const App = () => {
     const service = new window.google.maps.DistanceMatrixService();
     return service
       .getDistanceMatrix({
-        origins: [origin],
+        origins: [originAddress],
         destinations: [destination],
         travelMode: window.google.maps.TravelMode.WALKING,
       })
@@ -232,23 +232,13 @@ const App = () => {
       <main>
         <div className="wrapper">
           {places.length > 0 ? (
-            <>
-              <p className="search-results__origin-text">
-                「{origin}」から半径
-                {radius || process.env.REACT_APP_DEFAULT_SEARCH_RADIUS}
-                m以内の検索結果
-              </p>
-              <div className="search-results__back-box">
-                <p
-                  className="search-results__back-link"
-                  onClick={handleBackToTop}
-                >
-                  トップへ戻る
-                </p>
-              </div>
-              <ResultList originGeocode={originGeocode} places={places} />
-              <BackToTopBtn onClick={handleBackToTop} />
-            </>
+            <ResultHeader
+              originAddress={originAddress}
+              radius={radius}
+              originGeocode={originGeocode}
+              places={places}
+              handleBackToTop={handleBackToTop}
+            />
           ) : (
             <>
               <div className="search-step__list">
@@ -259,9 +249,9 @@ const App = () => {
                     className="search-step__input input-origin"
                     type="text"
                     onChange={(e) => setOrigin(e.target.value)}
-                    value={origin}
+                    value={originAddress}
                   />
-                  <ErrorText message={errors.origin} />
+                  <ErrorText message={errors.originAddress} />
                 </div>
                 <div className="search-step__item input-row">
                   <span className="search-step__num">STEP2</span>
