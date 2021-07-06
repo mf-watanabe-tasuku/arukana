@@ -21,10 +21,16 @@
 }
 
 .place-checkbox__label {
-  padding: 10px 0;
+  padding: 12px 0;
   display: block;
   transition-duration: 0.2s;
   cursor: pointer;
+}
+
+@media (max-width: 424px) {
+  .place-checkbox__label {
+    font-size: 14px;
+  }
 }
 
 .place-checkbox__input:checked + .place-checkbox__label {

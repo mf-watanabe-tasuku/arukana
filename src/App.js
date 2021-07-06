@@ -254,9 +254,7 @@ const App = () => {
               <div className="search-step__list">
                 <div className="search-step__item input-row">
                   <span className="search-step__num">STEP1</span>
-                  <p className="search-step__ttl">
-                    調べたい住所を入力してください
-                  </p>
+                  <p className="search-step__ttl">調べたい住所を入力</p>
                   <input
                     className="search-step__input input-origin"
                     type="text"
@@ -267,9 +265,7 @@ const App = () => {
                 </div>
                 <div className="search-step__item input-row">
                   <span className="search-step__num">STEP2</span>
-                  <p className="search-step__ttl">
-                    検索したい施設を選んでください
-                  </p>
+                  <p className="search-step__ttl">検索したい施設を選ぶ</p>
                   <p className="search-step__sub-ttl">選択肢から選ぶ</p>
                   <CheckboxList
                     checkboxes={checkboxes}
