@@ -3,12 +3,19 @@ header {
 }
 
 .header__ttl {
-  font-size: 40px;
+  font-size: 50px;
+  font-family: "Kanit", sans-serif;
   line-height: 1;
   color: #003972;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .header__desc {
   margin-bottom: 50px;
+}
+
+@media (max-width: 767px) {
+  .header__desc {
+    margin-bottom: 30px;
+  }
 }

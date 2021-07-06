@@ -1,13 +1,19 @@
 .place-checkbox__item {
-  width: 100%;
+  width: 24%;
   border: 2px solid #36759c;
   background: #fff;
   border-radius: 5px;
   text-align: center;
 }
 
-.place-checkbox__item:not(:last-of-type) {
-  margin-right: 10px;
+@media (max-width: 767px) {
+  .place-checkbox__item {
+    width: 49%;
+  }
+
+  .place-checkbox__item:nth-of-type(-n + 2) {
+    margin-bottom: 5px;
+  }
 }
 
 .place-checkbox__input {
@@ -18,7 +24,6 @@
   padding: 10px 0;
   display: block;
   transition-duration: 0.2s;
-
   cursor: pointer;
 }
 
