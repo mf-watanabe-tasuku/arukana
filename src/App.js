@@ -9,6 +9,7 @@ import "./styles/App.css";
 const App = () => {
   const errorMessages = {};
   let searchResults = [];
+  const textKeywordMaxLength = 10;
 
   const [originAddress, setOrigin] = useState("");
   const [originGeocode, setOriginGeocode] = useState({});
@@ -46,10 +47,10 @@ const App = () => {
   const addKeyword = (e) => {
     if (e.key !== "Enter") return;
 
-    if (textKeywords.length + 1 > 4) {
+    if (textKeywords.length + 1 > textKeywordMaxLength) {
       setErrors({
         ...errors,
-        keyword: "一度に入力できるのは4個までです",
+        keyword: `一度に入力できるのは${textKeywordMaxLength}個までです`,
       });
       return;
     }
@@ -87,8 +88,8 @@ const App = () => {
     setErrors({});
     setValidationMessages();
 
-    if (searchKeywords.length > 10) {
-      alert("自由入力は最大10個までです");
+    if (textKeywords.length > textKeywordMaxLength) {
+      alert(`自由入力は最大${textKeywordMaxLength}個までです`);
       return;
     }
 
