@@ -88,7 +88,7 @@ const App = () => {
     setValidationMessages();
 
     if (searchKeywords.length > 10) {
-      alert("検索する施設は8個以内にしてください");
+      alert("自由入力は最大10個までです");
       return;
     }
 
@@ -104,13 +104,16 @@ const App = () => {
       return;
     }
 
-    await Promise.all(
-      searchKeywords.map(async (keyword) => {
-        await getNearbyPlaces(geocode, keyword, searchRadius);
-      })
-    );
+    let i = 0;
+    const len = searchKeywords.length;
 
-    setPlaces(searchResults);
+    const searchKeywordPlaces = () => {
+      getNearbyPlaces(geocode, searchKeywords[i], searchRadius);
+      i++;
+      if (i < len) setTimeout(() => searchKeywordPlaces(), 1000);
+    };
+    searchKeywordPlaces();
+
     window.scrollTo(0, 0);
   };
 
@@ -191,7 +194,7 @@ const App = () => {
         const placeResults = { keyword, nearestPlace, otherPlaces };
 
         searchResults = [...searchResults, placeResults];
-
+        setPlaces(searchResults);
         resolve();
       });
     });
