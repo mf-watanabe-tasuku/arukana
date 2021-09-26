@@ -159,6 +159,7 @@ body {
 .textKeyword-list {
   list-style-type: none;
   display: flex;
+  flex-wrap: wrap;
   padding: 0;
   margin-top: 8px;
 }
@@ -168,7 +169,8 @@ body {
   border: 2px solid #0077c3;
   border-radius: 100px;
   background: #33aaee;
-  margin-right: 12px;
+  margin-right: 7px;
+  margin-bottom: 7px;
   padding: 3px 9px 3px 16px;
 }
 
