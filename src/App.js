@@ -266,7 +266,7 @@ const App = () => {
                     onChange={handleCheckboxChange}
                   />
                   <p className="search-step__sub-ttl">
-                    自由に入力する (最大4個)
+                    自由に入力する (最大{textKeywordMaxLength}個)
                   </p>
                   <input
                     type="text"
