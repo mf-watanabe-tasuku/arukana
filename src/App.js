@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Header from "./components/header";
-import ResultHeader from "./components/resultHeader";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import SearchBtn from "./components/searchBtn";
+import Places from "./components/places/places";
 import "./styles/App.css";
 
 const App = () => {
@@ -236,13 +236,25 @@ const App = () => {
       <main>
         <div className="wrapper">
           {places.length > 0 ? (
-            <ResultHeader
-              originAddress={originAddress}
-              radius={radius}
-              originGeocode={originGeocode}
-              places={places}
-              handleBackToTop={handleBackToTop}
-            />
+            <>
+              <p className="search-results__origin-text">
+                「{originAddress}」から半径
+                {radius || process.env.REACT_APP_DEFAULT_SEARCH_RADIUS}
+                m以内の検索結果
+              </p>
+              <div className="search-results__back-box">
+                <p
+                  className="search-results__back-link"
+                  onClick={handleBackToTop}
+                >
+                  トップへ戻る
+                </p>
+              </div>
+              <Places originGeocode={originGeocode} places={places} />
+              <button className="btn-back" onClick={handleBackToTop}>
+                トップへ戻る
+              </button>
+            </>
           ) : (
             <>
               <div className="search-step__list">

@@ -1,7 +1,7 @@
-import ResultItem from "./resultItem";
-import "../styles/ResultList.css";
+import PlaceItem from "./placeItem";
+import "../../styles/Places.css";
 
-const resultList = ({ originGeocode, places }) => {
+const places = ({ originGeocode, places }) => {
   let noResults = [];
   let withResults = [];
 
@@ -28,7 +28,7 @@ const resultList = ({ originGeocode, places }) => {
         {withResults.map((result, i) => {
           return (
             result.nearestPlace && (
-              <ResultItem
+              <PlaceItem
                 key={i}
                 originGeocode={originGeocode}
                 result={result}
@@ -41,4 +41,4 @@ const resultList = ({ originGeocode, places }) => {
   );
 };
 
-export default resultList;
+export default places;
