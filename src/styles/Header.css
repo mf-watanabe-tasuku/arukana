@@ -1,0 +1,31 @@
+header {
+  text-align: center;
+}
+
+.header__ttl {
+  font-size: 50px;
+  font-family: "Kanit", sans-serif;
+  line-height: 1;
+  color: #003972;
+  margin-bottom: 20px;
+}
+
+.header__desc {
+  margin-bottom: 50px;
+}
+
+@media (max-width: 767px) {
+  .header__desc {
+    margin-bottom: 30px;
+  }
+}
+
+.header__br {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .header__br {
+    display: block;
+  }
+}

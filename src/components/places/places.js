@@ -1,3 +1,4 @@
+import React from "react";
 import PlaceItem from "./placeItem";
 import "../../styles/Places.css";
 
