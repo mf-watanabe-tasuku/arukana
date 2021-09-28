@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
-import SearchBtn from "./components/searchBtn";
 import Places from "./components/places/places";
 import "./styles/App.css";
 
@@ -326,7 +325,9 @@ const App = () => {
                 </div>
               </div>
 
-              <SearchBtn onClick={handleSearch} />
+              <button className="btn-search" onClick={handleSearch}>
+                検索する
+              </button>
             </>
           )}
         </div>
