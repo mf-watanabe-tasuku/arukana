@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Header from "./components/header";
 import CheckboxList from "./components/checkboxList";
 import ErrorText from "./components/errorText";
 import SearchBtn from "./components/searchBtn";
@@ -232,7 +231,16 @@ const App = () => {
 
   return (
     <>
-      <Header />
+      <header>
+        <h1 className="header__ttl">ARUKANA</h1>
+        <p className="header__desc">
+          周辺施設までの距離を一括検索
+          <br className="header__br" />
+          できるサービスです。
+          <br />
+          引っ越しや旅行にお役立てください。
+        </p>
+      </header>
       <main>
         <div className="wrapper">
           {places.length > 0 ? (
