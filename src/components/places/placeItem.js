@@ -95,48 +95,50 @@ const PlaceItem = ({ originGeocode, result }) => {
         <b>最寄りの{keyword}</b>
       </p>
       <li className="result-item">
-        <div className="result-item-data">
+        <div className="result-item-data-box">
           {nearestPlace && (
             <div>
               <p className="result-item-title">{name}</p>
-              <p className="rating-box">
-                <span className="rating-icon">
-                  <FontAwesomeIcon icon={faSmile} />
-                </span>
-                {rating ? (
-                  <>
-                    <span className="rating-num">{rating}</span>
-                    <span className="rating-star-list">
-                      {getRatingStarsArr() &&
-                        getRatingStarsArr().map((star, i) => (
-                          <img
-                            key={i}
-                            src={star}
-                            className="rating-star-item"
-                            alt="Rating Star"
-                          />
-                        ))}
-                    </span>
-                    <span>({ratings_total})</span>
-                  </>
-                ) : (
-                  "まだ評価がありません"
-                )}
-              </p>
-              <p className="">
-                <span className="rating-icon">
-                  <FontAwesomeIcon icon={faMapMarkerAlt} />
-                </span>
-                <span>距離 : </span>
-                <span>{getDisplayDistance(distance)}</span>
-              </p>
-              <p className="">
-                <span className="rating-icon">
-                  <FontAwesomeIcon icon={faClock} />
-                </span>
-                <span>所要時間(徒歩) : </span>
-                <span>{duration}</span>
-              </p>
+              <ul className="data-list">
+                <li className="data-list-item rating-box">
+                  <span className="rating-icon">
+                    <FontAwesomeIcon icon={faSmile} />
+                  </span>
+                  {rating ? (
+                    <>
+                      <span className="rating-num">{rating}</span>
+                      <span className="rating-star-list">
+                        {getRatingStarsArr() &&
+                          getRatingStarsArr().map((star, i) => (
+                            <img
+                              key={i}
+                              src={star}
+                              className="rating-star-item"
+                              alt="Rating Star"
+                            />
+                          ))}
+                      </span>
+                      <span>({ratings_total})</span>
+                    </>
+                  ) : (
+                    "まだ評価がありません"
+                  )}
+                </li>
+                <li className="data-list-item">
+                  <span className="rating-icon">
+                    <FontAwesomeIcon icon={faMapMarkerAlt} />
+                  </span>
+                  <span>距離 : </span>
+                  <span>{getDisplayDistance(distance)}</span>
+                </li>
+                <li className="data-list-item">
+                  <span className="rating-icon">
+                    <FontAwesomeIcon icon={faClock} />
+                  </span>
+                  <span>所要時間(徒歩) : </span>
+                  <span>{duration}</span>
+                </li>
+              </ul>
             </div>
           )}
           {otherPlaces.length > 0 && (
@@ -145,8 +147,8 @@ const PlaceItem = ({ originGeocode, result }) => {
               <ul className="other-results__list">
                 {otherPlaces.map((place, i) => (
                   <li key={i} className="other-results__item">
-                    {place.name} ( 距離: {getDisplayDistance(place.distance)} /
-                    所要時間: {place.duration} )
+                    {place.name} ( {getDisplayDistance(place.distance)} /{" "}
+                    {place.duration} )
                   </li>
                 ))}
               </ul>
