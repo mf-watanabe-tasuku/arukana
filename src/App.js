@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Loading from "./components/layouts/loading";
 import Header from "./components/layouts/header";
 import CheckboxList from "./components/layouts/checkboxList";
 import ErrorText from "./components/layouts/errorText";
@@ -21,6 +22,7 @@ const App = () => {
   const [checkboxes, setCheckboxes] = useState({});
   const [places, setPlaces] = useState({});
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -86,6 +88,7 @@ const App = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
     setErrors({});
     setValidationMessages();
 
@@ -112,11 +115,14 @@ const App = () => {
     const searchKeywordPlaces = () => {
       getNearbyPlaces(geocode, searchKeywords[i], searchRadius);
       i++;
-      if (i < len) setTimeout(() => searchKeywordPlaces(), 1000);
+      if (i < len) {
+        setTimeout(() => searchKeywordPlaces(), 1000);
+      } else {
+        setLoading(false);
+        window.scrollTo(0, 0);
+      }
     };
     searchKeywordPlaces();
-
-    window.scrollTo(0, 0);
   };
 
   const setValidationMessages = () => {
@@ -227,6 +233,7 @@ const App = () => {
   };
 
   const handleBackToTop = () => {
+    setLoading(false);
     setPlaces([]);
     window.scrollTo(0, 0);
   };
@@ -248,18 +255,26 @@ const App = () => {
                       {radius || process.env.REACT_APP_DEFAULT_SEARCH_RADIUS}
                       m以内の検索結果
                     </p>
-                    <div className="search-results__back-box">
-                      <p
-                        className="search-results__back-link"
-                        onClick={handleBackToTop}
-                      >
-                        トップへ戻る
-                      </p>
-                    </div>
-                    <Places originGeocode={originGeocode} places={places} />
-                    <button className="btn-back" onClick={handleBackToTop}>
-                      トップへ戻る
-                    </button>
+                    {loading ? (
+                      <Fragment>
+                        <Loading />
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        <div className="search-results__back-box">
+                          <p
+                            className="search-results__back-link"
+                            onClick={handleBackToTop}
+                          >
+                            トップへ戻る
+                          </p>
+                        </div>
+                        <Places originGeocode={originGeocode} places={places} />
+                        <button className="btn-back" onClick={handleBackToTop}>
+                          トップへ戻る
+                        </button>
+                      </Fragment>
+                    )}
                   </Fragment>
                 ) : (
                   <Fragment>
