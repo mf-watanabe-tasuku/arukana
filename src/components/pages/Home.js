@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect, useContext } from "react";
-import Loading from "./components/layouts/loading";
-import CheckboxList from "./components/layouts/checkboxList";
-import ErrorText from "./components/layouts/errorText";
-import Places from "./components/places/places";
-import LoadingContext from "./context/loading/LoadingContext";
+import Loading from "../layouts/loading";
+import CheckboxList from "../layouts/checkboxList";
+import ErrorText from "../layouts/errorText";
+import Places from "../places/places";
+import LoadingContext from "../../context/loading/loadingContext";
 
 const Home = () => {
   const loadingContext = useContext(LoadingContext);
