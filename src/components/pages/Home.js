@@ -1,17 +1,14 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import Loading from "../layouts/loading";
 import CheckboxList from "../layouts/checkboxList";
-import ErrorText from "../layouts/errorText";
 import Places from "../places/places";
-import LoadingContext from "../../context/loading/loadingContext";
+import PlaceContext from "../../context/place/placeContext";
 
 const Home = () => {
-  const loadingContext = useContext(LoadingContext);
-
-  const { loading } = loadingContext;
+  const placeContext = useContext(PlaceContext);
+  const { places, loading } = placeContext;
 
   const errorMessages = {};
-  let searchResults = [];
   const textKeywordMaxLength = 10;
 
   const [originAddress, setOrigin] = useState("");
@@ -21,15 +18,7 @@ const Home = () => {
   const [searchKeywords, setSearchKeywords] = useState([]);
   const [radius, setRadius] = useState("3000");
   const [checkboxes, setCheckboxes] = useState({});
-  const [places, setPlaces] = useState({});
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    const googleMapScript = document.createElement("script");
-    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&v=weekly`;
-    googleMapScript.async = true;
-    document.body.appendChild(googleMapScript);
-  }, []);
 
   const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
@@ -84,47 +73,6 @@ const Home = () => {
     setTextKeywords([...textKeywords]);
   };
 
-  // 検索ボタンを押した時の処理;
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    setLoading(true);
-    setErrors({});
-    setValidationMessages();
-
-    if (textKeywords.length > textKeywordMaxLength) {
-      alert(`自由入力は最大${textKeywordMaxLength}個までです`);
-      return;
-    }
-
-    const errorExists = Object.keys(errorMessages).length !== 0;
-    if (errorExists) return;
-
-    const geocode = await getOriginGeocode();
-    setOriginGeocode(geocode);
-
-    const searchRadius = radius.replace(",", "");
-    if (searchRadius.match(/\D+/)) {
-      setErrors({ ...errors, radius: "半角数字で入力してください" });
-      return;
-    }
-
-    let i = 0;
-    const len = searchKeywords.length;
-
-    const searchKeywordPlaces = () => {
-      getNearbyPlaces(geocode, searchKeywords[i], searchRadius);
-      i++;
-      if (i < len) {
-        setTimeout(() => searchKeywordPlaces(), 1000);
-      } else {
-        setLoading(false);
-        window.scrollTo(0, 0);
-      }
-    };
-    searchKeywordPlaces();
-  };
-
   const setValidationMessages = () => {
     if (!originAddress)
       errorMessages["originAddress"] = "基準地点を入力してください";
@@ -140,102 +88,48 @@ const Home = () => {
       errorMessages["radius"] = "半径50m未満は指定できません";
     }
 
-    setErrors(errorMessages);
+    // setErrors(errorMessages);
   };
 
-  // 基準地点の座標を取得する
-  const getOriginGeocode = async () => {
-    const geocoder = new window.google.maps.Geocoder();
-    const geocode = await geocoder.geocode(
-      { address: originAddress },
-      (results, status) => (status === "OK" ? results : status)
-    );
+  // 検索ボタンを押した時の処理;
+  const handleSearch = async (e) => {
+    e.preventDefault();
 
-    return {
-      lat: geocode.results[0].geometry.location.lat(),
-      lng: geocode.results[0].geometry.location.lng(),
+    // setLoading(true);
+    // setErrors({});
+    setValidationMessages();
+
+    if (textKeywords.length > textKeywordMaxLength) {
+      alert(`自由入力は最大${textKeywordMaxLength}個までです`);
+      return;
+    }
+
+    const errorExists = Object.keys(errorMessages).length !== 0;
+    if (errorExists) return;
+
+    const geocode = await placeContext.getOriginGeocode();
+    setOriginGeocode(geocode);
+
+    const searchRadius = radius.replace(",", "");
+    if (searchRadius.match(/\D+/)) {
+      // setErrors({ ...errors, radius: "半角数字で入力してください" });
+      return;
+    }
+
+    let i = 0;
+    const len = searchKeywords.length;
+
+    const searchKeywordPlaces = () => {
+      placeContext.getNearbyPlaces(geocode, searchKeywords[i], searchRadius);
+      i++;
+      if (i < len) {
+        setTimeout(() => searchKeywordPlaces(), 1000);
+      } else {
+        // setLoading(false);
+        window.scrollTo(0, 0);
+      }
     };
-  };
-
-  // 周辺の施設を検索する
-  const getNearbyPlaces = async (geocode, keyword, radius) => {
-    return new Promise((resolve, reject) => {
-      const searchConditions = {
-        location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-        radius,
-        keyword,
-      };
-
-      const div = document.createElement("div");
-      const service = new window.google.maps.places.PlacesService(div);
-
-      service.nearbySearch(searchConditions, async (results, status) => {
-        const formattedPlaces = results.map((result) => {
-          return {
-            name: result.name,
-            rating: result.rating,
-            ratings_total: result.user_ratings_total,
-            lat: result.geometry.location.lat(),
-            lng: result.geometry.location.lng(),
-          };
-        });
-
-        let placeArr = [];
-
-        await Promise.all(
-          formattedPlaces.map(async (place) => {
-            let placeData = await getDistanceData(place);
-            if (placeData.distance <= radius) {
-              placeData = {
-                ...placeData,
-                geocode: { lat: place.lat, lng: place.lng },
-              };
-              placeArr = [...placeArr, placeData];
-            }
-          })
-        );
-
-        const arr = placeArr.sort((a, b) => a.distance - b.distance);
-        const slicedArr = arr.slice(0, 4);
-
-        const [nearestPlace, ...otherPlaces] = slicedArr;
-        const placeResults = { keyword, nearestPlace, otherPlaces };
-
-        searchResults = [...searchResults, placeResults];
-        setPlaces(searchResults);
-        resolve();
-      });
-    });
-  };
-
-  // 距離と所要時間を取得してオブジェクトで返す
-  const getDistanceData = async (destination) => {
-    const service = new window.google.maps.DistanceMatrixService();
-    return service
-      .getDistanceMatrix({
-        origins: [originAddress],
-        destinations: [destination],
-        travelMode: window.google.maps.TravelMode.WALKING,
-      })
-      .then((res) => {
-        const data = res.rows[0].elements;
-        return {
-          name: destination.name,
-          rating: destination.rating,
-          ratings_total: destination.ratings_total,
-          distance: data[0].distance.value,
-          duration: data[0].duration.text,
-        };
-      })
-      .catch((err) => {
-        console.log("Error: " + err.message);
-      });
-  };
-
-  const handleBackToTop = () => {
-    setLoading(false);
-    setPlaces([]);
-    window.scrollTo(0, 0);
+    searchKeywordPlaces();
   };
 
   return places.length > 0 ? (
@@ -246,90 +140,83 @@ const Home = () => {
         m以内の検索結果
       </p>
       {loading ? (
-        <Fragment>
-          <Loading />
-        </Fragment>
+        <Loading />
       ) : (
         <Fragment>
           <div className="search-results__back-box">
-            <p className="search-results__back-link" onClick={handleBackToTop}>
+            <p
+              className="search-results__back-link"
+              onClick={placeContext.clearPlaces}
+            >
               トップへ戻る
             </p>
           </div>
-          <Places originGeocode={originGeocode} places={places} />
-          <button className="btn-back" onClick={handleBackToTop}>
+          <Places places={places} />
+          <button className="btn-back" onClick={placeContext.clearPlaces}>
             トップへ戻る
           </button>
         </Fragment>
       )}
     </Fragment>
   ) : (
-    <Fragment>
-      <div className="search-step__list">
-        <div className="search-step__item input-row">
-          <span className="search-step__num">STEP1</span>
-          <p className="search-step__ttl">調べたい住所を入力</p>
-          <input
-            className="search-step__input input-origin"
-            type="text"
-            onChange={(e) => setOrigin(e.target.value)}
-            value={originAddress}
-          />
-          <ErrorText message={errors.originAddress} />
-        </div>
-        <div className="search-step__item input-row">
-          <span className="search-step__num">STEP2</span>
-          <p className="search-step__ttl">検索したい施設を選ぶ</p>
-          <p className="search-step__sub-ttl">選択肢から選ぶ</p>
-          <CheckboxList
-            checkboxes={checkboxes}
-            onChange={handleCheckboxChange}
-          />
-          <p className="search-step__sub-ttl">
-            自由に入力する (最大{textKeywordMaxLength}個)
-          </p>
-          <input
-            type="text"
-            className="search-step__input input-keyword"
-            placeholder="入力してEnterを押してください  例) セブンイレブン"
-            onChange={(e) => setTextKeyword(e.target.value)}
-            onKeyPress={addKeyword}
-            value={textKeyword}
-          />
-          <ErrorText message={errors.keyword} />
-          <ul className="textKeyword-list">
-            {textKeywords.map((keyword, i) => (
-              <li key={i} className="textKeyword-item">
-                {keyword}{" "}
-                <span
-                  className="textKeyword-close-btn"
-                  onClick={() => removeKeyword(keyword)}
-                >
-                  ×
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="search-step__item input-row">
-          <span className="search-step__num">STEP3</span>
-          <p className="search-step__ttl">検索する半径距離</p>
-          <input
-            type="text"
-            className="search-step__input input-radius"
-            onChange={(e) => setRadius(e.target.value)}
-            value={radius}
-          />
-          <span className="search-step__unit">m</span>
-          <span className="search-step__range">(50 ~ 3,000m)</span>
-          <ErrorText message={errors.radius} />
-        </div>
+    <form onSubmit={handleSearch}>
+      <div className="search-step__item input-row">
+        <span className="search-step__num">STEP1</span>
+        <p className="search-step__ttl">調べたい住所を入力</p>
+        <input
+          className="search-step__input input-origin"
+          type="text"
+          onChange={(e) => setOrigin(e.target.value)}
+          value={originAddress}
+        />
+        {/* <ErrorText message={errors.originAddress} /> */}
       </div>
-
-      <button className="btn-search" onClick={handleSearch}>
-        検索する
-      </button>
-    </Fragment>
+      <div className="search-step__item input-row">
+        <span className="search-step__num">STEP2</span>
+        <p className="search-step__ttl">検索したい施設を選ぶ</p>
+        <p className="search-step__sub-ttl">選択肢から選ぶ</p>
+        <CheckboxList checkboxes={checkboxes} onChange={handleCheckboxChange} />
+        <p className="search-step__sub-ttl">
+          自由に入力する (最大{textKeywordMaxLength}個)
+        </p>
+        <input
+          type="text"
+          className="search-step__input input-keyword"
+          placeholder="入力してEnterを押してください  例) セブンイレブン"
+          onChange={(e) => setTextKeyword(e.target.value)}
+          onKeyPress={addKeyword}
+          value={textKeyword}
+        />
+        {/* <ErrorText message={errors.keyword} /> */}
+        <ul className="textKeyword-list">
+          {textKeywords.map((keyword, i) => (
+            <li key={i} className="textKeyword-item">
+              {keyword}{" "}
+              <span
+                className="textKeyword-close-btn"
+                onClick={() => removeKeyword(keyword)}
+              >
+                ×
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="search-step__item input-row">
+        <span className="search-step__num">STEP3</span>
+        <p className="search-step__ttl">検索する半径距離</p>
+        <input
+          type="text"
+          className="search-step__input input-radius"
+          onChange={(e) => setRadius(e.target.value)}
+          value={radius}
+        />
+        <span className="search-step__unit">m</span>
+        <span className="search-step__range">(50 ~ 3,000m)</span>
+        {/* <ErrorText message={errors.radius} /> */}
+      </div>
+      <input type="submit" value="検索する" className="btn-search" />
+    </form>
   );
 };
 

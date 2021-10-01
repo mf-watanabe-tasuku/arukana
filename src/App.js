@@ -4,13 +4,13 @@ import Header from "./components/layouts/header";
 import Home from "./components/pages/Home";
 import NotFound from "./components/pages/NotFound";
 
-import LoadingState from "./context/loading/LoadingState";
+import PlaceState from "./context/place/PlaceState";
 
 import "./styles/App.css";
 
 const App = () => {
   return (
-    <LoadingState>
+    <PlaceState>
       <Router>
         <Header />
         <main>
@@ -22,7 +22,7 @@ const App = () => {
           </div>
         </main>
       </Router>
-    </LoadingState>
+    </PlaceState>
   );
 };
 

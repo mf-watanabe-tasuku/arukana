@@ -32,13 +32,13 @@ body {
   }
 }
 
-.search-step__list {
-  margin-bottom: 40px;
+.btn-search {
+  margin-top: 40px;
 }
 
 @media (max-width: 767px) {
-  .search-step__list {
-    margin-bottom: 20px;
+  .btn-search {
+    margin-top: 20px;
   }
 }
 
