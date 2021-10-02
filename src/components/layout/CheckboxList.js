@@ -1,5 +1,5 @@
 import React from "react";
-import CheckboxItem from "./checkboxItem";
+import CheckboxItem from "./CheckboxItem";
 import "../../styles/CheckboxList.css";
 
 const checkboxList = ({ checkboxes, onChange }) => {

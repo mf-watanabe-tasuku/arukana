@@ -4,25 +4,28 @@ import Header from "./components/layouts/header";
 import Home from "./components/pages/Home";
 import NotFound from "./components/pages/NotFound";
 
+import SearchState from "./context/search/SearchState";
 import PlaceState from "./context/place/PlaceState";
 
 import "./styles/App.css";
 
 const App = () => {
   return (
-    <PlaceState>
-      <Router>
-        <Header />
-        <main>
-          <div className="wrapper">
-            <Switch>
-              <Route exact path="/" render={Home} />
-              <Route component={NotFound} />
-            </Switch>
-          </div>
-        </main>
-      </Router>
-    </PlaceState>
+    <SearchState>
+      <PlaceState>
+        <Router>
+          <Header />
+          <main>
+            <div className="wrapper">
+              <Switch>
+                <Route exact path="/" render={Home} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
+          </main>
+        </Router>
+      </PlaceState>
+    </SearchState>
   );
 };
 

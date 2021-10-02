@@ -1,45 +1,49 @@
-import React from "react";
-import PlaceItem from "./placeItem";
+import React, { useContext } from "react";
+import PlaceItem from "./PlaceItem";
 import "../../styles/Places.css";
+import PlaceContext from "../../context/place/placeContext";
 
-const places = ({ originGeocode, places }) => {
-  let noResults = [];
-  let withResults = [];
+const Places = ({ originGeocode, places }) => {
+  const placeContext = useContext(PlaceContext);
 
-  places.forEach((place) => {
-    if (place.nearestPlace) {
-      withResults = [...withResults, place];
-    } else {
-      noResults = [...noResults, place];
-    }
-  });
+  // let noResults = [];
+  // let withResults = [];
 
-  return (
-    <>
-      {noResults.length > 0 && (
-        <div className="no-results">
-          <ul className="no-results__list">
-            {noResults.map((result, i) => (
-              <li key={i}>{result.keyword}は見つかりませんでした</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <ul className="result-list">
-        {withResults.map((result, i) => {
-          return (
-            result.nearestPlace && (
-              <PlaceItem
-                key={i}
-                originGeocode={originGeocode}
-                result={result}
-              />
-            )
-          );
-        })}
-      </ul>
-    </>
-  );
+  // places.forEach((place) => {
+  //   if (place.nearestPlace) {
+  //     withResults = [...withResults, place];
+  //   } else {
+  //     noResults = [...noResults, place];
+  //   }
+  // });
+
+  // return (
+  //   <>
+  //     {noResults.length > 0 && (
+  //       <div className="no-results">
+  //         <ul className="no-results__list">
+  //           {noResults.map((result, i) => (
+  //             <li key={i}>{result.keyword}は見つかりませんでした</li>
+  //           ))}
+  //         </ul>
+  //       </div>
+  //     )}
+  //     <ul className="result-list">
+  //       {withResults.map((result, i) => {
+  //         return (
+  //           result.nearestPlace && (
+  //             <PlaceItem
+  //               key={i}
+  //               originGeocode={originGeocode}
+  //               result={result}
+  //             />
+  //           )
+  //         );
+  //       })}
+  //     </ul>
+  //   </>
+  // );
+  return <div>test</div>;
 };
 
-export default places;
+export default Places;
