@@ -1,7 +1,13 @@
-import { CLEAR_PLACES, SET_LOADING } from "../types";
+import { SET_PLACES, CLEAR_PLACES, SET_LOADING } from "../types";
 
 const type = (state, action) => {
   switch (action.type) {
+    case SET_PLACES:
+      return {
+        ...state,
+        loading: false,
+        places: action.payload,
+      };
     case CLEAR_PLACES:
       return {
         ...state,

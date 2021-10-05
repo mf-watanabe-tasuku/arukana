@@ -3,6 +3,7 @@ import Loading from "../layout/Loading";
 import CheckboxList from "../form/CheckboxList";
 import Places from "../places/Places";
 import PlaceContext from "../../context/place/placeContext";
+import SearchContext from "../../context/search/searchContext";
 import { SEARCH_PLACES } from "../../context/types";
 
 let searchResults = [];
@@ -10,12 +11,12 @@ let searchResults = [];
 const Home = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, clearPlaces, setLoading } = placeContext;
+  const searchContext = useContext(SearchContext);
 
   const errorMessages = {};
   const textKeywordMaxLength = 10;
 
   const [originAddress, setAddress] = useState("");
-  const [originGeocode, setGeocode] = useState({});
   const [textKeyword, setTextKeyword] = useState("");
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
@@ -143,7 +144,7 @@ const Home = () => {
         const placeResults = { keyword, nearestPlace, otherPlaces };
 
         searchResults = [...searchResults, placeResults];
-
+        placeContext.setPlaces(searchResults);
         resolve();
       });
     });
@@ -186,7 +187,7 @@ const Home = () => {
     const errorExists = Object.keys(errorMessages).length !== 0;
     if (errorExists) return;
     const geocode = await getOriginGeocode();
-    setGeocode(geocode);
+    searchContext.setGeocode(geocode);
     const searchRadius = radius.replace(",", "");
     if (searchRadius.match(/\D+/)) {
       // setErrors({ ...errors, radius: "半角数字で入力してください" });
@@ -229,9 +230,8 @@ const Home = () => {
           </button>
         </Fragment>
       )}
+      <Places />
     </Fragment>
-  ) : places.length > 0 ? (
-    <Places />
   ) : (
     <form onSubmit={handleSearch}>
       <div className="search-step__item input-row">

@@ -45,7 +45,6 @@ const Places = ({ originGeocode }) => {
       </ul>
     </>
   );
-  // return <div>test</div>;
 };
 
 export default Places;

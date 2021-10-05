@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react";
 import PlaceContext from "./placeContext";
 import PlaceReducer from "./placeReducer";
-import { SEARCH_PLACES, CLEAR_PLACES, SET_LOADING } from "../types";
+import { SET_PLACES, CLEAR_PLACES, SET_LOADING } from "../types";
 
 const PlaceState = (props) => {
   const initialState = {
@@ -18,6 +18,8 @@ const PlaceState = (props) => {
     document.body.appendChild(googleMapScript);
   }, []);
 
+  const setPlaces = (places) => dispatch({ type: SET_PLACES, payload: places });
+
   const clearPlaces = () => dispatch({ type: CLEAR_PLACES });
 
   const setLoading = () => dispatch({ type: SET_LOADING });
@@ -27,6 +29,7 @@ const PlaceState = (props) => {
       value={{
         loading: state.loading,
         places: state.places,
+        setPlaces,
         clearPlaces,
         setLoading,
       }}
