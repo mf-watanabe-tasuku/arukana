@@ -1,13 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import PlaceItem from "./PlaceItem";
 import "../../styles/Places.css";
-import PlaceContext from "../../context/place/placeContext";
 
-const Places = ({ originGeocode }) => {
-  const placeContext = useContext(PlaceContext);
-
-  const { places } = placeContext;
-
+const Places = ({ places, originGeocode }) => {
   let noResults = [];
   let withResults = [];
 
