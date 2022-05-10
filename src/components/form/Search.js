@@ -16,7 +16,7 @@ const Home = () => {
   const errorMessages = {};
   const textKeywordMaxLength = 10;
 
-  const [originAddress, setAddress] = useState('');
+  const [originAddress, setOriginAddress] = useState('');
   const [textKeyword, setTextKeyword] = useState('');
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
@@ -246,7 +246,7 @@ const Home = () => {
         <input
           className='search-step__input input-origin'
           type='text'
-          onChange={(e) => setAddress(e.target.value)}
+          onChange={(e) => setOriginAddress(e.target.value)}
           value={originAddress}
         />
         {/* <ErrorText message={errors.originAddress} /> */}
