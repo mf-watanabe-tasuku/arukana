@@ -6,8 +6,6 @@ import PlaceContext from '../../context/place/placeContext';
 import SearchContext from '../../context/search/searchContext';
 import { SEARCH_PLACES } from '../../context/types';
 
-let searchResults = [];
-
 const Home = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, clearPlaces, setLoading } = placeContext;
@@ -104,7 +102,7 @@ const Home = () => {
   };
 
   // 周辺の施設を検索する
-  const getNearbyPlaces = async (geocode, keyword, radius) => {
+  const getNearbyPlaces = (geocode, keyword, radius) => {
     return new Promise((resolve) => {
       const searchConditions = {
         location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
@@ -115,7 +113,7 @@ const Home = () => {
       const div = document.createElement('div');
       const service = new window.google.maps.places.PlacesService(div);
 
-      service.nearbySearch(searchConditions, async (results, status) => {
+      service.nearbySearch(searchConditions, async (results) => {
         const formattedPlaces = results.map((result) => {
           return {
             name: result.name,
@@ -141,15 +139,11 @@ const Home = () => {
           })
         );
 
-        const arr = placeArr.sort((a, b) => a.distance - b.distance);
-        const slicedArr = arr.slice(0, 4);
+        const sortedPlaces = placeArr.sort((a, b) => a.distance - b.distance);
+        const [nearestPlace, ...otherPlaces] = sortedPlaces.slice(0, 4);
+        const placeResult = { keyword, nearestPlace, otherPlaces };
 
-        const [nearestPlace, ...otherPlaces] = slicedArr;
-        const placeResults = { keyword, nearestPlace, otherPlaces };
-
-        searchResults = [...searchResults, placeResults];
-        placeContext.setPlaces(searchResults);
-        resolve();
+        resolve(placeResult);
       });
     });
   };
@@ -200,17 +194,22 @@ const Home = () => {
       // setErrors({ ...errors, radius: "半角数字で入力してください" });
       return;
     }
+
     let i = 0;
-    const len = searchKeywords.length;
+    let results = [];
+
     const searchKeywordPlaces = () => {
-      getNearbyPlaces(geocode, searchKeywords[i], searchRadius);
-      i++;
-      if (i < len) {
-        setTimeout(() => searchKeywordPlaces(), 1000);
-      } else {
-        // setLoading(false);
-        window.scrollTo(0, 0);
-      }
+      getNearbyPlaces(geocode, searchKeywords[i], searchRadius).then((placeResult) => {
+        results.push(placeResult);
+        i++;
+        if (i < searchKeywords.length) {
+          setTimeout(() => searchKeywordPlaces(), 1000);
+        } else {
+          // setLoading(false);
+          window.scrollTo(0, 0);
+          placeContext.setPlaces(results);
+        }
+      });
     };
     searchKeywordPlaces();
   };
