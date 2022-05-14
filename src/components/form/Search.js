@@ -10,6 +10,7 @@ const Home = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
+  const { setGeocode } = searchContext;
 
   const errorMessages = {};
   const textKeywordMaxLength = 10;
@@ -89,7 +90,7 @@ const Home = () => {
   const getOriginGeocode = async () => {
     const geocoder = new window.google.maps.Geocoder();
     const geocode = await geocoder.geocode(
-      { address: '東京都世田谷区経堂5-15-18' },
+      { address: originAddress },
       (results, status) => (status === 'OK' ? results : status)
     );
 
@@ -153,7 +154,7 @@ const Home = () => {
     const service = new window.google.maps.DistanceMatrixService();
     return service
       .getDistanceMatrix({
-        origins: ['東京都世田谷区経堂5-15-18'],
+        origins: [originAddress],
         destinations: [destination],
         travelMode: window.google.maps.TravelMode.WALKING,
       })
@@ -188,7 +189,7 @@ const Home = () => {
     const geocode = await getOriginGeocode();
     setOriginGeocode(geocode);
 
-    searchContext.setGeocode(geocode);
+    setGeocode(geocode);
     const searchRadius = radius.replace(',', '');
     if (searchRadius.match(/\D+/)) {
       // setErrors({ ...errors, radius: "半角数字で入力してください" });
