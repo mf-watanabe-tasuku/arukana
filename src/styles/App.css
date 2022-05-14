@@ -21,6 +21,10 @@ body {
   }
 }
 
+.text-center {
+  text-align: center;
+}
+
 .wrapper {
   width: 860px;
   margin: 0 auto;
@@ -96,10 +100,12 @@ body {
   border: 1px solid #b1b1b1;
   width: 100%;
   border-radius: 5px;
+  margin-bottom: 5px;
 }
 
 .search-step__input::placeholder {
   color: #bbb;
+  font-size: 14px;
 }
 
 @media (max-width: 767px) {
@@ -114,15 +120,9 @@ body {
   }
 }
 
-.search-step__input.input-origin,
-.search-step__input.input-keyword {
-  margin-bottom: 10px;
-}
-
 .search-step__input.input-radius {
   width: 150px;
   margin-right: 8px;
-  margin-bottom: 7px;
 }
 
 @media (max-width: 767px) {
@@ -228,7 +228,7 @@ body {
   box-shadow: 0 6px 0 #006ba3;
   border: none;
   border-radius: 5px;
-  margin: 0 auto;
+  margin: 0 auto 15px;
   display: block;
   cursor: pointer;
   transition-duration: 0.3s;
