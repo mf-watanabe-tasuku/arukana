@@ -61,10 +61,6 @@ body {
   }
 }
 
-.search-step__item:last-of-type {
-  margin-bottom: 0;
-}
-
 .search-step__num {
   color: #999999;
   font-size: 16px;
@@ -146,7 +142,7 @@ body {
   color: #999;
 }
 
-.input-row {
+.input-wrap {
   margin-bottom: 30px;
 }
 

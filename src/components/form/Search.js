@@ -240,7 +240,7 @@ const Home = () => {
     </Fragment>
   ) : (
     <form onSubmit={handleSearch}>
-      <div className='search-step__item input-row'>
+      <div className='search-step__item input-wrap'>
         <span className='search-step__num'>STEP1</span>
         <p className='search-step__ttl'>調べたい住所を入力</p>
         <input
@@ -251,7 +251,7 @@ const Home = () => {
         />
         {/* <ErrorText message={errors.originAddress} /> */}
       </div>
-      <div className='search-step__item input-row'>
+      <div className='search-step__item input-wrap'>
         <span className='search-step__num'>STEP2</span>
         <p className='search-step__ttl'>検索したい施設を選ぶ</p>
         <p className='search-step__sub-ttl'>選択肢から選ぶ</p>
@@ -282,7 +282,7 @@ const Home = () => {
           ))}
         </ul>
       </div>
-      <div className='search-step__item input-row'>
+      <div className='search-step__item input-wrap'>
         <span className='search-step__num'>STEP3</span>
         <p className='search-step__ttl'>検索する半径距離</p>
         <input
