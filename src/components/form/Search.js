@@ -4,7 +4,6 @@ import CheckboxList from '../form/CheckboxList';
 import Places from '../places/Places';
 import PlaceContext from '../../context/place/placeContext';
 import SearchContext from '../../context/search/searchContext';
-import { SEARCH_PLACES } from '../../context/types';
 
 const Home = () => {
   const placeContext = useContext(PlaceContext);
@@ -176,7 +175,7 @@ const Home = () => {
   // 検索ボタンを押した時の処理;
   const handleSearch = async (e) => {
     e.preventDefault();
-    // setLoading(true);
+    setLoading(true);
     // setErrors({});
     setValidationMessages();
     if (textKeywords.length > textKeywordMaxLength) {
@@ -200,44 +199,44 @@ const Home = () => {
     let results = [];
 
     const searchKeywordPlaces = () => {
-      getNearbyPlaces(geocode, searchKeywords[i], searchRadius).then((placeResult) => {
-        results.push(placeResult);
-        i++;
-        if (i < searchKeywords.length) {
-          setTimeout(() => searchKeywordPlaces(), 1000);
-        } else {
-          // setLoading(false);
-          window.scrollTo(0, 0);
-          placeContext.setPlaces(results);
+      getNearbyPlaces(geocode, searchKeywords[i], searchRadius).then(
+        (placeResult) => {
+          results.push(placeResult);
+          i++;
+          if (i < searchKeywords.length) {
+            setTimeout(() => searchKeywordPlaces(), 1000);
+          } else {
+            setLoading(false);
+            window.scrollTo(0, 0);
+            placeContext.setPlaces(results);
+          }
         }
-      });
+      );
     };
     searchKeywordPlaces();
   };
 
   return places.length > 0 ? (
-    <Fragment>
+    <>
       <p className='search-results__origin-text'>
         「{originAddress}」から半径
         {radius || process.env.REACT_APP_DEFAULT_SEARCH_RADIUS}
         m以内の検索結果
       </p>
-      {loading ? (
-        <Loading />
-      ) : (
-        <Fragment>
-          <div className='search-results__back-box'>
-            <p className='search-results__back-link' onClick={clearPlaces}>
-              トップへ戻る
-            </p>
-          </div>
-          <Places places={places} originGeocode={originGeocode} />
-          <button className='btn-back' onClick={clearPlaces}>
+      <>
+        <div className='search-results__back-box'>
+          <p className='search-results__back-link' onClick={clearPlaces}>
             トップへ戻る
-          </button>
-        </Fragment>
-      )}
-    </Fragment>
+          </p>
+        </div>
+        <Places places={places} originGeocode={originGeocode} />
+        <button className='btn-back' onClick={clearPlaces}>
+          トップへ戻る
+        </button>
+      </>
+    </>
+  ) : loading ? (
+    <Loading />
   ) : (
     <form onSubmit={handleSearch}>
       <div className='search-step__item input-wrap'>
