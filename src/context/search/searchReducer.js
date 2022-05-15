@@ -1,15 +1,20 @@
-import { SET_GEOCODE } from "../types";
+import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE } from "../types";
 
-const searchReducer = (state, action) => {
+const type = (state, action) => {
   switch (action.type) {
-    case SET_GEOCODE:
+    case SET_ORIGIN_ADDRESS:
       return {
         ...state,
-        geocode: action.payload,
+        originAddress: action.payload,
+      };
+    case SET_ORIGIN_GEOCODE:
+      return {
+        ...state,
+        originGeocode: action.payload,
       };
     default:
       return state;
   }
 };
 
-export default searchReducer;
+export default type;

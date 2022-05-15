@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useContext, useReducer } from 'react';
+import React, { useState, useContext } from 'react';
 import Loading from '../layout/Loading';
 import CheckboxList from '../form/CheckboxList';
 import Places from '../places/Places';
@@ -8,9 +8,9 @@ import ErrorText from './ErrorText';
 
 const Home = () => {
   const placeContext = useContext(PlaceContext);
-  const { loading, places, clearPlaces, setLoading } = placeContext;
+  const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
-  const { setGeocode } = searchContext;
+  const { originAddress, originGeocode, setOriginAddress, setOriginGeocode } = searchContext;
 
   const errorMessages = {};
   const textKeywordMaxLength = 4;
@@ -19,15 +19,12 @@ const Home = () => {
   const formattedMaxRadius = maxRadius.toLocaleString('en');
   const formattedMinRadius = minRadius.toLocaleString('en');
 
-  const [originAddress, setOriginAddress] = useState('');
   const [textKeyword, setTextKeyword] = useState('');
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
   const [radius, setRadius] = useState(maxRadius);
   const [checkboxes, setCheckboxes] = useState({});
   const [errors, setErrors] = useState({});
-
-  const [originGeocode, setOriginGeocode] = useState({});
 
   const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
@@ -104,17 +101,19 @@ const Home = () => {
   // 基準地点の座標を取得する
   const getOriginGeocode = async () => {
     const geocoder = new window.google.maps.Geocoder();
-    const geocode = await geocoder.geocode(
+    const originGeocode = await geocoder.geocode(
       { address: originAddress },
       (results, status) => (status === 'OK' ? results : status)
     );
 
-    const originGeocode = {
-      lat: geocode.results[0].geometry.location.lat(),
-      lng: geocode.results[0].geometry.location.lng(),
+    const formattedOriginGeocode = {
+      lat: originGeocode.results[0].geometry.location.lat(),
+      lng: originGeocode.results[0].geometry.location.lng(),
     };
 
-    return originGeocode;
+    setOriginGeocode(formattedOriginGeocode);
+
+    return formattedOriginGeocode;
   };
 
   // 周辺の施設を検索する
@@ -196,10 +195,7 @@ const Home = () => {
 
   // 検索ボタンを押した時の処理;
   const handleSearch = async (e) => {
-    console.log(e);
     if (e.key === 'Enter') {
-      console.log('Enterによる送信');
-      e.preventDefault();
       return;
     }
     e.preventDefault();
@@ -210,21 +206,18 @@ const Home = () => {
     if (hasError) {
       errorMessages['notice'] = '入力内容を確認してください';
       setErrors(errorMessages);
-
       return
     } else {
       setLoading(true);
     }
 
-    const geocode = await getOriginGeocode();
-    setOriginGeocode(geocode);
-    setGeocode(geocode);
+    const originGeocode = await getOriginGeocode();
 
     let i = 0;
     let results = [];
 
     const searchKeywordPlaces = () => {
-      getNearbyPlaces(geocode, searchKeywords[i]).then(
+      getNearbyPlaces(originGeocode, searchKeywords[i]).then(
         (placeResult) => {
           results.push(placeResult);
           i++;
@@ -233,7 +226,7 @@ const Home = () => {
           } else {
             setLoading(false);
             window.scrollTo(0, 0);
-            placeContext.setPlaces(results);
+            setPlaces(results);
           }
         }
       );
@@ -244,9 +237,7 @@ const Home = () => {
   return places.length > 0 ? (
     <>
       <p className='search-results__origin-text'>
-        「{originAddress}」から半径
-        {radius || process.env.REACT_APP_DEFAULT_SEARCH_RADIUS}
-        m以内の検索結果
+        「{originAddress}」から半径{radius}m以内の検索結果
       </p>
       <>
         <div className='search-results__back-box'>

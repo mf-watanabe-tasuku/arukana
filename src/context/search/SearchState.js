@@ -1,24 +1,36 @@
-import React, { useReducer } from "react";
-import SearchContext from "./searchContext";
-import SearchReducer from "./searchReducer";
-import { SET_GEOCODE } from "../types";
+import React, { useReducer } from 'react';
+import SearchContext from './searchContext';
+import SearchReducer from './searchReducer';
+import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE } from '../types';
 
 const SearchState = (props) => {
   const initialState = {
-    originAddress: "",
+    originAddress: '',
+    originGeocode: {},
   };
 
   const [state, dispatch] = useReducer(SearchReducer, initialState);
 
-  const setGeocode = (geocode) =>
+  const setOriginAddress = (originAddress) =>
     dispatch({
-      type: SET_GEOCODE,
-      payload: geocode,
+      type: SET_ORIGIN_ADDRESS,
+      payload: originAddress,
+    });
+
+  const setOriginGeocode = (originGeocode) =>
+    dispatch({
+      type: SET_ORIGIN_GEOCODE,
+      payload: originGeocode,
     });
 
   return (
     <SearchContext.Provider
-      value={{ originAddress: state.originAddress, setGeocode }}
+      value={{
+        originAddress: state.originAddress,
+        originGeocode: state.originGeocode,
+        setOriginAddress,
+        setOriginGeocode,
+      }}
     >
       {props.children}
     </SearchContext.Provider>
