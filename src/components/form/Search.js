@@ -13,13 +13,17 @@ const Home = () => {
   const { setGeocode } = searchContext;
 
   const errorMessages = {};
-  const textKeywordMaxLength = 10;
+  const textKeywordMaxLength = 4;
+  const maxRadius = 5000;
+  const minRadius = 50;
+  const formattedMaxRadius = maxRadius.toLocaleString('en');
+  const formattedMinRadius = minRadius.toLocaleString('en');
 
   const [originAddress, setOriginAddress] = useState('');
   const [textKeyword, setTextKeyword] = useState('');
   const [textKeywords, setTextKeywords] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
-  const [radius, setRadius] = useState('3000');
+  const [radius, setRadius] = useState(maxRadius);
   const [checkboxes, setCheckboxes] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -40,7 +44,6 @@ const Home = () => {
   };
 
   const addKeyword = (e) => {
-    console.log(e);
     if (e.key !== 'Enter') return;
 
     if (textKeywords.length + 1 > textKeywordMaxLength) {
@@ -83,13 +86,13 @@ const Home = () => {
       errorMessages['keyword'] = '検索する施設を選択または入力してください';
     if (!radius) {
       errorMessages['radius'] = '検索したい半径距離を入力してください';
-    } else if (radius > 3000) {
-      errorMessages['radius'] = '半径5000mより大きな値は指定できません';
-    } else if (radius && radius < 50) {
-      errorMessages['radius'] = '半径50m未満は指定できません';
+    } else if (radius > maxRadius) {
+      errorMessages['radius'] =  `半径${formattedMaxRadius}mより大きな値は指定できません`;
+    } else if (radius < minRadius) {
+      errorMessages['radius'] = `半径${formattedMinRadius}m未満は指定できません`;
     }
 
-    if (radius.match(/\D+/)) {
+    if (String(radius).match(/\D+/)) {
       errorMessages['radius'] = '半角数字で入力してください';
     }
 
@@ -187,8 +190,8 @@ const Home = () => {
 
   const handleInputRadius = async (e) => {
     e.preventDefault();
-    let val = e.target.value;
-    setRadius(val.replace(',', ''));
+    const inputVal = String(e.target.value).replace(',', '');
+    setRadius(inputVal);
   }
 
   // 検索ボタンを押した時の処理;
@@ -313,7 +316,7 @@ const Home = () => {
           value={radius}
         />
         <span className='search-step__unit'>m</span>
-        <span className='search-step__range'>(50 ~ 3,000m)</span>
+        <span className='search-step__range'>({formattedMinRadius} ~ {formattedMaxRadius}m)</span>
         <ErrorText message={errors.radius} />
       </div>
       <input type='button' onClick={handleSearch} value='検索する' className='btn-search' />
