@@ -87,9 +87,7 @@ const Home = () => {
       errorMessages['radius'] =  `半径${formattedMaxRadius}mより大きな値は指定できません`;
     } else if (radius < minRadius) {
       errorMessages['radius'] = `半径${formattedMinRadius}m未満は指定できません`;
-    }
-
-    if (String(radius).match(/\D+/)) {
+    } else if (String(radius).match(/\D+/)) {
       errorMessages['radius'] = '半角数字で入力してください';
     }
 
