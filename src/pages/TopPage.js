@@ -1,4 +1,4 @@
-import Search from "../form/Search";
+import Search from "../components/form/Search";
 
 const Home = () => {
   return <Search />;
