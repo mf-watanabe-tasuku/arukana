@@ -1,4 +1,3 @@
-import React from "react";
 import CheckboxItem from "./CheckboxItem";
 import "../../styles/CheckboxList.css";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import "../../styles/Error.css";
 
 const ErrorText = ({ message, className }) => {

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import Loading from '../layout/Loading';
 import CheckboxList from '../form/CheckboxList';
 import Places from '../places/Places';

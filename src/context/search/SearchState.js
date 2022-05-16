@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import { useReducer } from 'react';
 import SearchContext from './searchContext';
 import SearchReducer from './searchReducer';
 import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE } from '../types';

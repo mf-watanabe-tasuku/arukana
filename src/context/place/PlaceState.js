@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import PlaceContext from "./placeContext";
 import PlaceReducer from "./placeReducer";
 import { SET_PLACES, CLEAR_PLACES, SET_LOADING } from "../types";

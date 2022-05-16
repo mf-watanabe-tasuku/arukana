@@ -1,4 +1,3 @@
-import React from "react";
 import "../../styles/CheckboxItem.css";
 
 const checkboxItem = ({ name, value, id, onChange, checked }) => {
