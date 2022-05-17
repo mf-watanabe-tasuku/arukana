@@ -115,75 +115,82 @@ const Home = () => {
   };
 
   // 周辺の施設を検索する
-  const getNearbyPlaces = (geocode, keyword) => {
-    return new Promise((resolve) => {
-      const searchConditions = {
-        location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-        radius,
-        keyword,
+  const getFormattedNearbyPlace = async (geocode, keyword) => {
+    const searchConditions = {
+      location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
+      radius,
+      keyword,
+    };
+
+    const div = document.createElement('div');
+    const service = new window.google.maps.places.PlacesService(div);
+
+    ervice.nearbySearch(searchConditions, nearbySearchCallback);
+  }
+
+  const nearbySearchCallback = (results) => {
+    const formattedNearbyPlaces = results.map((place) => {
+      return {
+        name: place.name,
+        rating: place.rating,
+        ratings_total: place.user_ratings_total,
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
       };
-
-      const div = document.createElement('div');
-      const service = new window.google.maps.places.PlacesService(div);
-
-      service.nearbySearch(searchConditions, async (results) => {
-        const formattedPlaces = results.map((result) => {
-          return {
-            name: result.name,
-            rating: result.rating,
-            ratings_total: result.user_ratings_total,
-            lat: result.geometry.location.lat(),
-            lng: result.geometry.location.lng(),
-          };
-        });
-
-        let placeArr = [];
-
-        await Promise.all(
-          formattedPlaces.map(async (place) => {
-            let placeData = await getDistanceData(place);
-            if (placeData.distance <= radius) {
-              placeData = {
-                ...placeData,
-                geocode: { lat: place.lat, lng: place.lng },
-              };
-              placeArr = [...placeArr, placeData];
-            }
-          })
-        );
-
-        const sortedPlaces = placeArr.sort((a, b) => a.distance - b.distance);
-        const [nearestPlace, ...otherPlaces] = sortedPlaces.slice(0, 4);
-        const placeResult = { keyword, nearestPlace, otherPlaces };
-
-        resolve(placeResult);
-      });
     });
+
+    return formattedNearbyPlaces;
+  };
+
+  const getPlaceDistanceData = (places) => {
+    const placeArr = [];
+
+    places.map(async (place) => {
+      const distanceData = await getDistanceData(place);
+
+      const placeWithDistance = {
+        name: place.name,
+        rating: place.rating,
+        ratings_total: place.ratings_total,
+        ...distanceData
+      }
+
+      if (placeWithDistance.distance <= radius) {
+        placeWithDistance = {
+          ...placeWithDistance,
+          geocode: { lat: place.lat, lng: place.lng },
+        };
+        placeArr = [...placeArr, placeWithDistance];
+      }
+    })
+
+    const sortedPlaces = placeArr.sort((a, b) => a.distance - b.distance);
+    const [nearestPlace, ...otherPlaces] = sortedPlaces.slice(0, 4);
+    const placeDistanceData = { nearestPlace, otherPlaces };
+
+    return placeDistanceData;
   };
 
   // 距離と所要時間を取得してオブジェクトで返す
-  const getDistanceData = async (destination) => {
+  const getDistanceData = (destination) => {
     const service = new window.google.maps.DistanceMatrixService();
-    return service
-      .getDistanceMatrix({
-        origins: [originAddress],
-        destinations: [destination],
-        travelMode: window.google.maps.TravelMode.WALKING,
-      })
-      .then((res) => {
-        const data = res.rows[0].elements;
-        return {
-          name: destination.name,
-          rating: destination.rating,
-          ratings_total: destination.ratings_total,
-          distance: data[0].distance.value,
-          duration: data[0].duration.text,
-        };
-      })
-      .catch((err) => {
-        console.log('Error: ' + err.message);
-      });
+
+    service.getDistanceMatrix({
+      origins: [originAddress],
+      destinations: [destination],
+      travelMode: window.google.maps.TravelMode.WALKING,
+    }, distanceMatrixCallback);
   };
+
+  const distanceMatrixCallback = (res, status) => {
+    const data = res.rows[0].elements;
+    const distanceData = {
+      distance: data[0].distance.value,
+      duration: data[0].duration.text,
+    };
+
+    return distanceData;
+  }
 
   const handleInputRadius = async (e) => {
     e.preventDefault();
@@ -200,36 +207,34 @@ const Home = () => {
 
     setErrors({});
     const errorMessages = setValidationMessages();
-    const hasError = Object.keys(errorMessages).length !== 0;
+    const hasError = Object.keys(errorMessages).length > 0;
     if (hasError) {
       errorMessages['notice'] = '入力内容を確認してください';
       setErrors(errorMessages);
-      return
+      return;
     } else {
       setLoading(true);
     }
 
     const originGeocode = await getOriginGeocode();
+    let nearbyPlaceResults = [];
 
-    let i = 0;
-    let results = [];
-
-    const searchKeywordPlaces = () => {
-      getNearbyPlaces(originGeocode, searchKeywords[i]).then(
-        (placeResult) => {
-          results.push(placeResult);
-          i++;
-          if (i < searchKeywords.length) {
-            setTimeout(() => searchKeywordPlaces(), 1000);
-          } else {
-            setLoading(false);
-            window.scrollTo(0, 0);
-            setPlaces(results);
-          }
-        }
-      );
+    for(const searchKeyword of searchKeywords) {
+      setTimeout(() => {
+        const formattedNearbyPlaces = getFormattedNearbyPlace(originGeocode, searchKeyword);
+        const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
+        console.log(placeDistanceData);
+        // const nearbyPlaceGroup = {
+        //   keyword: searchKeyword,
+        //   ...nearbyPlaceResult
+        // }
+        // nearbyPlaceResults.push(nearbyPlaceGroup);
+      }, 1000);
     };
-    searchKeywordPlaces();
+
+    setLoading(false);
+    window.scrollTo(0, 0);
+    setPlaces(nearbyPlaceResults);
   };
 
   return places.length > 0 ? (
