@@ -97,7 +97,7 @@ const Home = () => {
   };
 
   // 基準地点の座標を取得する
-  const getOriginGeocode = async () => {
+  const fetchOriginGeocode = async () => {
     const geocoder = new window.google.maps.Geocoder();
     const originGeocode = await geocoder.geocode(
       { address: originAddress },
@@ -115,97 +115,68 @@ const Home = () => {
   };
 
   // 周辺の施設を検索する
-  const getFormattedNearbyPlace = async (geocode, keyword) => {
+  const fetchNearbyPlaces = async (geocode, keyword) => {
+    const div = document.createElement('div');
+    const service = new window.google.maps.places.PlacesService(div);
     const searchConditions = {
       location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
       radius,
       keyword,
     };
 
-    const div = document.createElement('div');
-    const service = new window.google.maps.places.PlacesService(div);
-
-    service.nearbySearch(searchConditions, (results) => {
-      const formattedNearbyPlaces = results.map((place) => {
+    service.nearbySearch(searchConditions, (nearbyPlaces) => {
+      const formattedNearbyPlaces = nearbyPlaces.map((nearbyPlace) => {
         return {
-          name: place.name,
-          rating: place.rating,
-          ratings_total: place.user_ratings_total,
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
+          name: nearbyPlace.name,
+          rating: nearbyPlace.rating,
+          ratings_total: nearbyPlace.user_ratings_total,
+          lat: nearbyPlace.geometry.location.lat(),
+          lng: nearbyPlace.geometry.location.lng(),
         };
       });
 
-      const nearbyPlaceResults = [];
       const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
-      const nearbyPlaceGroup = {
+      const keywordWithPlaces = {
         keyword,
         ...placeDistanceData
       }
-      nearbyPlaceResults.push(nearbyPlaceGroup);
+
+      console.log(keywordWithPlaces);
 
       setLoading(false);
       window.scrollTo(0, 0);
-      setPlaces(nearbyPlaceResults);
+      setPlaces(keywordWithPlaces);
     });
   }
 
-  // const nearbySearchCallback = (results) => {
-  //   const formattedNearbyPlaces = results.map((place) => {
-  //     return {
-  //       name: place.name,
-  //       rating: place.rating,
-  //       ratings_total: place.user_ratings_total,
-  //       lat: place.geometry.location.lat(),
-  //       lng: place.geometry.location.lng(),
-  //     };
-  //   });
+  const getPlaceDistanceData = async (places) => {
+    const placesWithDistance = await Promise.all(
+      places.map(async (place) => {
+        const distanceData = await fetchDistanceData(place);
 
-  //   const nearbyPlaceResults = [];
-  //   const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
-  //   const nearbyPlaceGroup = {
-  //     keyword: keyword,
-  //     ...placeDistanceData
-  //   }
-  //   nearbyPlaceResults.push(nearbyPlaceGroup);
+        if (distanceData.distance <= radius) {
+          const placeWithDistanceObj = {
+            name: place.name,
+            rating: place.rating,
+            ratings_total: place.ratings_total,
+            geocode: { lat: place.lat, lng: place.lng },
+            ...distanceData
+          }
+          return placeWithDistanceObj;
+        }
+      })
+    );
 
-  //   setLoading(false);
-  //   window.scrollTo(0, 0);
-  //   setPlaces(nearbyPlaceResults);
-  // };
-
-
-  const getPlaceDistanceData = (places) => {
-    const placeArr = [];
-
-    places.map(async (place) => {
-      const distanceData = await getDistanceData(place);
-
-      const placeWithDistance = {
-        name: place.name,
-        rating: place.rating,
-        ratings_total: place.ratings_total,
-        ...distanceData
-      }
-
-      if (placeWithDistance.distance <= radius) {
-        placeWithDistance = {
-          ...placeWithDistance,
-          geocode: { lat: place.lat, lng: place.lng },
-        };
-        placeArr = [...placeArr, placeWithDistance];
-      }
-    });
-
-    const sortedPlaces = placeArr.sort((a, b) => a.distance - b.distance);
-    const [nearestPlace, ...otherPlaces] = sortedPlaces.slice(0, 4);
-    const placeDistanceData = { nearestPlace, otherPlaces };
+    const filteredPlaces = placesWithDistance.filter(place => place)
+    const sortedPlaces = filteredPlaces.sort((a, b) => a.distance - b.distance);
+    const [nearestPlace, ...nearbyPlaces] = sortedPlaces.slice(0, 4);
+    const placeDistanceData = { nearestPlace, nearbyPlaces };
 
     return placeDistanceData;
   };
 
   // 距離と所要時間を取得してオブジェクトで返す
-  const getDistanceData = (destination) => {
+  const fetchDistanceData = (destination) => {
     const service = new window.google.maps.DistanceMatrixService();
 
     const distanceMatrixConditions = {
@@ -214,16 +185,19 @@ const Home = () => {
       travelMode: window.google.maps.TravelMode.WALKING,
     };
 
-    service.getDistanceMatrix(distanceMatrixConditions, (res, status) => {
-      const data = res.rows[0].elements;
-      const distanceData = {
-        distance: data[0].distance.value,
-        duration: data[0].duration.text,
-      }});
-    };
+    return new Promise((resolve) => {
+      service.getDistanceMatrix(distanceMatrixConditions, (res, status) => {
+        const data = res.rows[0].elements;
+        const distanceDataObj = {
+          distance: data[0].distance.value,
+          duration: data[0].duration.text,
+        };
+        resolve(distanceDataObj);
+      });
+    });
   };
 
-  const handleInputRadius = async (e) => {
+  const handleInputRadius = (e) => {
     e.preventDefault();
     const inputVal = String(e.target.value).replace(',', '');
     setRadius(inputVal);
@@ -231,9 +205,7 @@ const Home = () => {
 
   // 検索ボタンを押した時の処理;
   const handleSearch = async (e) => {
-    if (e.key === 'Enter') {
-      return;
-    }
+    if (e.key === 'Enter') return;
     e.preventDefault();
 
     setErrors({});
@@ -243,16 +215,15 @@ const Home = () => {
       errorMessages['notice'] = '入力内容を確認してください';
       setErrors(errorMessages);
       return;
-    } else {
-      setLoading(true);
     }
 
-    const originGeocode = await getOriginGeocode();
-    let nearbyPlaceResults = [];
+    setLoading(true);
+
+    const originGeocode = await fetchOriginGeocode();
 
     for(const searchKeyword of searchKeywords) {
       setTimeout(() => {
-        getFormattedNearbyPlace(originGeocode, searchKeyword);
+        fetchNearbyPlaces(originGeocode, searchKeyword);
       }, 1000);
     };
   };
