@@ -125,22 +125,55 @@ const Home = () => {
     const div = document.createElement('div');
     const service = new window.google.maps.places.PlacesService(div);
 
-    ervice.nearbySearch(searchConditions, nearbySearchCallback);
+    service.nearbySearch(searchConditions, (results) => {
+      const formattedNearbyPlaces = results.map((place) => {
+        return {
+          name: place.name,
+          rating: place.rating,
+          ratings_total: place.user_ratings_total,
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        };
+      });
+
+      const nearbyPlaceResults = [];
+      const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
+      const nearbyPlaceGroup = {
+        keyword,
+        ...placeDistanceData
+      }
+      nearbyPlaceResults.push(nearbyPlaceGroup);
+
+      setLoading(false);
+      window.scrollTo(0, 0);
+      setPlaces(nearbyPlaceResults);
+    });
   }
 
-  const nearbySearchCallback = (results) => {
-    const formattedNearbyPlaces = results.map((place) => {
-      return {
-        name: place.name,
-        rating: place.rating,
-        ratings_total: place.user_ratings_total,
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-      };
-    });
+  // const nearbySearchCallback = (results) => {
+  //   const formattedNearbyPlaces = results.map((place) => {
+  //     return {
+  //       name: place.name,
+  //       rating: place.rating,
+  //       ratings_total: place.user_ratings_total,
+  //       lat: place.geometry.location.lat(),
+  //       lng: place.geometry.location.lng(),
+  //     };
+  //   });
 
-    return formattedNearbyPlaces;
-  };
+  //   const nearbyPlaceResults = [];
+  //   const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
+  //   const nearbyPlaceGroup = {
+  //     keyword: keyword,
+  //     ...placeDistanceData
+  //   }
+  //   nearbyPlaceResults.push(nearbyPlaceGroup);
+
+  //   setLoading(false);
+  //   window.scrollTo(0, 0);
+  //   setPlaces(nearbyPlaceResults);
+  // };
+
 
   const getPlaceDistanceData = (places) => {
     const placeArr = [];
@@ -162,7 +195,7 @@ const Home = () => {
         };
         placeArr = [...placeArr, placeWithDistance];
       }
-    })
+    });
 
     const sortedPlaces = placeArr.sort((a, b) => a.distance - b.distance);
     const [nearestPlace, ...otherPlaces] = sortedPlaces.slice(0, 4);
@@ -175,22 +208,20 @@ const Home = () => {
   const getDistanceData = (destination) => {
     const service = new window.google.maps.DistanceMatrixService();
 
-    service.getDistanceMatrix({
+    const distanceMatrixConditions = {
       origins: [originAddress],
       destinations: [destination],
       travelMode: window.google.maps.TravelMode.WALKING,
-    }, distanceMatrixCallback);
-  };
-
-  const distanceMatrixCallback = (res, status) => {
-    const data = res.rows[0].elements;
-    const distanceData = {
-      distance: data[0].distance.value,
-      duration: data[0].duration.text,
     };
 
-    return distanceData;
-  }
+    service.getDistanceMatrix(distanceMatrixConditions, (res, status) => {
+      const data = res.rows[0].elements;
+      const distanceData = {
+        distance: data[0].distance.value,
+        duration: data[0].duration.text,
+      }});
+    };
+  };
 
   const handleInputRadius = async (e) => {
     e.preventDefault();
@@ -221,20 +252,9 @@ const Home = () => {
 
     for(const searchKeyword of searchKeywords) {
       setTimeout(() => {
-        const formattedNearbyPlaces = getFormattedNearbyPlace(originGeocode, searchKeyword);
-        const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
-        console.log(placeDistanceData);
-        // const nearbyPlaceGroup = {
-        //   keyword: searchKeyword,
-        //   ...nearbyPlaceResult
-        // }
-        // nearbyPlaceResults.push(nearbyPlaceGroup);
+        getFormattedNearbyPlace(originGeocode, searchKeyword);
       }, 1000);
     };
-
-    setLoading(false);
-    window.scrollTo(0, 0);
-    setPlaces(nearbyPlaceResults);
   };
 
   return places.length > 0 ? (
