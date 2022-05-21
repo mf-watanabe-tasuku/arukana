@@ -124,7 +124,7 @@ const Home = () => {
       keyword,
     };
 
-    service.nearbySearch(searchConditions, (nearbyPlaces) => {
+    service.nearbySearch(searchConditions, async (nearbyPlaces) => {
       const formattedNearbyPlaces = nearbyPlaces.map((nearbyPlace) => {
         return {
           name: nearbyPlace.name,
@@ -135,13 +135,11 @@ const Home = () => {
         };
       });
 
-      const placeDistanceData = getPlaceDistanceData(formattedNearbyPlaces);
+      const placeDistanceData = await getPlaceDistanceData(formattedNearbyPlaces);
       const keywordWithPlaces = {
         keyword,
         ...placeDistanceData
       }
-
-      console.log(keywordWithPlaces);
 
       setLoading(false);
       window.scrollTo(0, 0);
@@ -154,16 +152,17 @@ const Home = () => {
       places.map(async (place) => {
         const distanceData = await fetchDistanceData(place);
 
+        let placeWithDistanceObj = {};
         if (distanceData.distance <= radius) {
-          const placeWithDistanceObj = {
+          placeWithDistanceObj = {
             name: place.name,
             rating: place.rating,
             ratings_total: place.ratings_total,
             geocode: { lat: place.lat, lng: place.lng },
             ...distanceData
           }
-          return placeWithDistanceObj;
         }
+        return placeWithDistanceObj;
       })
     );
 
