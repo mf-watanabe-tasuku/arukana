@@ -12,9 +12,8 @@ import star_25 from "../../images/star_25.svg";
 import "../../styles/PlaceItem.css";
 
 const PlaceItem = ({ originGeocode, result }) => {
-  const { keyword, nearestPlace, otherPlaces } = result;
-  const { name, rating, ratings_total, distance, duration, geocode } =
-    nearestPlace;
+  const { keyword, nearestPlace, nearbyPlaces } = result;
+  const { name, rating, ratings_total, distance, duration, geocode } = nearestPlace;
 
   const map = useRef(null);
 
@@ -141,11 +140,11 @@ const PlaceItem = ({ originGeocode, result }) => {
               </ul>
             </div>
           )}
-          {otherPlaces.length > 0 && (
+          {nearbyPlaces.length > 0 && (
             <div className="other-results__box">
               <p className="other-results__title">検索にヒットした場所</p>
               <ul className="other-results__list">
-                {otherPlaces.map((place, i) => (
+                {nearbyPlaces.map((place, i) => (
                   <li key={i} className="other-results__item">
                     {place.name} ( {getDisplayDistance(place.distance)} /{" "}
                     {place.duration} )

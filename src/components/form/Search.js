@@ -115,35 +115,35 @@ const Home = () => {
   };
 
   // 周辺の施設を検索する
-  const fetchNearbyPlaces = async (geocode, keyword) => {
-    const div = document.createElement('div');
-    const service = new window.google.maps.places.PlacesService(div);
-    const searchConditions = {
-      location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-      radius,
-      keyword,
-    };
-
-    service.nearbySearch(searchConditions, async (nearbyPlaces) => {
-      const formattedNearbyPlaces = nearbyPlaces.map((nearbyPlace) => {
-        return {
-          name: nearbyPlace.name,
-          rating: nearbyPlace.rating,
-          ratings_total: nearbyPlace.user_ratings_total,
-          lat: nearbyPlace.geometry.location.lat(),
-          lng: nearbyPlace.geometry.location.lng(),
-        };
-      });
-
-      const placeDistanceData = await getPlaceDistanceData(formattedNearbyPlaces);
-      const keywordWithPlaces = {
+  const fetchNearbyPlaces = (geocode, keyword) => {
+      const div = document.createElement('div');
+      const service = new window.google.maps.places.PlacesService(div);
+      const searchConditions = {
+        location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
+        radius,
         keyword,
-        ...placeDistanceData
-      }
+      };
 
-      setLoading(false);
-      window.scrollTo(0, 0);
-      setPlaces(keywordWithPlaces);
+      return new Promise(resolve => {
+        service.nearbySearch(searchConditions, async (nearbyPlaces) => {
+          const formattedNearbyPlaces = nearbyPlaces.map((nearbyPlace) => {
+            return {
+              name: nearbyPlace.name,
+              rating: nearbyPlace.rating,
+              ratings_total: nearbyPlace.user_ratings_total,
+              lat: nearbyPlace.geometry.location.lat(),
+              lng: nearbyPlace.geometry.location.lng(),
+            };
+          });
+
+          const placeDistanceData = await getPlaceDistanceData(formattedNearbyPlaces);
+          const keywordWithPlaces = {
+            keyword,
+            ...placeDistanceData
+          }
+
+          resolve(keywordWithPlaces);
+        });
     });
   }
 
@@ -166,8 +166,7 @@ const Home = () => {
       })
     );
 
-    const filteredPlaces = placesWithDistance.filter(place => place)
-    const sortedPlaces = filteredPlaces.sort((a, b) => a.distance - b.distance);
+    const sortedPlaces = placesWithDistance.sort((a, b) => a.distance - b.distance);
     const [nearestPlace, ...nearbyPlaces] = sortedPlaces.slice(0, 4);
     const placeDistanceData = { nearestPlace, nearbyPlaces };
 
@@ -219,12 +218,20 @@ const Home = () => {
     setLoading(true);
 
     const originGeocode = await fetchOriginGeocode();
+    const resultPlaces = await Promise.all(
+      searchKeywords.map(keyword => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            const nearbyPlaces = fetchNearbyPlaces(originGeocode, keyword);
+            resolve(nearbyPlaces);
+          }, 1000);
+        })
+      })
+    );
 
-    for(const searchKeyword of searchKeywords) {
-      setTimeout(() => {
-        fetchNearbyPlaces(originGeocode, searchKeyword);
-      }, 1000);
-    };
+    setLoading(false);
+    window.scrollTo(0, 0);
+    setPlaces(resultPlaces);
   };
 
   return places.length > 0 ? (
