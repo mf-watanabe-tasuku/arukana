@@ -13,15 +13,15 @@ const Home = () => {
   const { originAddress, originGeocode, setOriginAddress, setOriginGeocode } = searchContext;
 
   const errorMessages = {};
-  const textKeywordMaxLength = 4;
+  const keywordMaxCount = 4;
   const maxRadius = 5000;
   const minRadius = 50;
-  const formattedMaxRadius = maxRadius.toLocaleString('en');
-  const formattedMinRadius = minRadius.toLocaleString('en');
+  const formattedMaxRadius = maxRadius.toLocaleString();
+  const formattedMinRadius = minRadius.toLocaleString();
 
-  const [textKeyword, setTextKeyword] = useState('');
-  const [textKeywords, setTextKeywords] = useState([]);
-  const [searchKeywords, setSearchKeywords] = useState([]);
+  const [freeKeyword, setFreeKeyword] = useState('');
+  const [freeKeywords, setFreeKeywords] = useState([]);
+  const [targetKeywords, setTargetKeywords] = useState([]);
   const [radius, setRadius] = useState(maxRadius);
   const [checkboxes, setCheckboxes] = useState({});
   const [errors, setErrors] = useState({});
@@ -29,57 +29,58 @@ const Home = () => {
   const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
     const { name, checked } = e.target;
-    const searchKeywordIndex = searchKeywords.indexOf(targetValue);
-    if (checked && searchKeywordIndex === -1) {
-      setSearchKeywords([...searchKeywords, targetValue]);
+    const keywordIndex = targetKeywords.indexOf(targetValue);
+    if (checked && keywordIndex === -1) {
+      setTargetKeywords([...targetKeywords, targetValue]);
     }
-    if (!checked && searchKeywordIndex > -1) {
-      searchKeywords.splice(searchKeywordIndex, 1);
-      setSearchKeywords([...searchKeywords]);
+    if (!checked && keywordIndex > -1) {
+      targetKeywords.splice(keywordIndex, 1);
+      setTargetKeywords([...targetKeywords]);
     }
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
 
-  const addKeyword = (e) => {
+  const addFreeKeywords = (e) => {
     if (e.key !== 'Enter') return;
 
-    if (textKeywords.length + 1 > textKeywordMaxLength) {
-      const newErrors = {...errors, keyword: `一度に入力できるのは${textKeywordMaxLength}個までです` };
+    if (freeKeywords.length + 1 > keywordMaxCount) {
+      const newErrors = {...errors, keyword: `一度に入力できるのは${keywordMaxCount}個までです` };
       setErrors(newErrors);
 
       return;
     }
 
-    const targetValue = e.target.value;
-    if (textKeywords.indexOf(targetValue) > -1) {
+    const targetValue = e.target.value.trim();
+    if (freeKeywords.indexOf(targetValue) > -1) {
       setErrors({
         keyword: `${targetValue}はすでに入力済みです`,
       });
       return;
     }
 
-    if ( targetValue.trim() ) {
-      setSearchKeywords([...searchKeywords, textKeyword]);
-      setTextKeywords([...textKeywords, textKeyword]);
-      setTextKeyword('');
+    if ( targetValue ) {
+      setTargetKeywords([...targetKeywords, freeKeyword]);
+      setFreeKeywords([...freeKeywords, freeKeyword]);
+      setFreeKeyword('');
     }
   };
 
-  const removeKeyword = (keyword) => {
-    const searchKeywordIndex = searchKeywords.indexOf(keyword);
-    if (searchKeywordIndex === -1) return;
-    searchKeywords.splice(searchKeywordIndex, 1);
-    setSearchKeywords([...searchKeywords]);
-    const textKeywordsIndex = textKeywords.indexOf(keyword);
-    if (textKeywordsIndex === -1) return;
-    textKeywords.splice(textKeywordsIndex, 1);
-    setTextKeywords([...textKeywords]);
+  const removeFreeKeyword = (keyword) => {
+    const keywordIndex = freeKeywords.indexOf(keyword);
+    if (keywordIndex === -1) return;
+    freeKeywords.splice(keywordIndex, 1);
+    setFreeKeywords([...freeKeywords]);
+
+    const targetKeywordsIndex = targetKeywords.indexOf(keyword);
+    if (targetKeywordsIndex === -1) return;
+    targetKeywords.splice(targetKeywordsIndex, 1);
+    setTargetKeywords([...targetKeywords]);
   };
 
   const setValidationMessages = () => {
     if (!originAddress)
       errorMessages['originAddress'] = '基準地点を入力してください';
-    if (searchKeywords.length === 0)
+    if (targetKeywords.length === 0)
       errorMessages['keyword'] = '検索する施設を選択または入力してください';
     if (!radius) {
       errorMessages['radius'] = '検索したい半径距離を入力してください';
@@ -219,7 +220,7 @@ const Home = () => {
 
     const originGeocode = await fetchOriginGeocode();
     const resultPlaces = await Promise.all(
-      searchKeywords.map(keyword => {
+      targetKeywords.map(keyword => {
         return new Promise(resolve => {
           setTimeout(() => {
             const nearbyPlaces = fetchNearbyPlaces(originGeocode, keyword);
@@ -272,23 +273,23 @@ const Home = () => {
         <p className='search-step__sub-ttl'>選択肢から選ぶ</p>
         <CheckboxList checkboxes={checkboxes} onChange={handleCheckboxChange} />
         <p className='search-step__sub-ttl'>
-          自由に入力する (最大{textKeywordMaxLength}個)
+          自由に入力する (最大{keywordMaxCount}個)
         </p>
         <input
           type='text'
           className='search-step__input input-keyword'
           placeholder='入力してEnterを押してください  例) セブンイレブン'
-          onChange={(e) => setTextKeyword(e.target.value)}
-          onKeyPress={addKeyword}
-          value={textKeyword}
+          onChange={(e) => setFreeKeyword(e.target.value)}
+          onKeyPress={addFreeKeywords}
+          value={freeKeyword}
         />
-        <ul className='textKeyword-list'>
-          {textKeywords.map((keyword, i) => (
-            <li key={i} className='textKeyword-item'>
+        <ul className='freeKeyword-list'>
+          {freeKeywords.map((keyword, i) => (
+            <li key={i} className='freeKeyword-item'>
               {keyword}{' '}
               <span
-                className='textKeyword-close-btn'
-                onClick={() => removeKeyword(keyword)}
+                className='freeKeyword-close-btn'
+                onClick={() => removeFreeKeyword(keyword)}
               >
                 ×
               </span>
