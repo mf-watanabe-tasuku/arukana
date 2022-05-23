@@ -1,9 +1,8 @@
 import "../../styles/Error.css";
 
-const ErrorText = ({ message, className }) => {
+const ErrorMessage = ({ message, className }) => {
   return (
     <p
-      id="radiusError"
       className={`error-text ${className}`}
       style={{ display: message ? "block" : "none" }}
     >
@@ -12,4 +11,4 @@ const ErrorText = ({ message, className }) => {
   );
 };
 
-export default ErrorText;
+export default ErrorMessage;

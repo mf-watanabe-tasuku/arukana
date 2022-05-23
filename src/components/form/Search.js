@@ -4,7 +4,7 @@ import CheckboxList from '../form/CheckboxList';
 import Places from '../places/Places';
 import PlaceContext from '../../context/place/placeContext';
 import SearchContext from '../../context/search/searchContext';
-import ErrorText from './ErrorText';
+import ErrorMessage from './ErrorMessage';
 
 const Home = () => {
   const placeContext = useContext(PlaceContext);
@@ -12,7 +12,6 @@ const Home = () => {
   const searchContext = useContext(SearchContext);
   const { originAddress, originGeocode, setOriginAddress, setOriginGeocode } = searchContext;
 
-  const errorMessages = {};
   const keywordMaxCount = 4;
   const maxRadius = 5000;
   const minRadius = 50;
@@ -24,7 +23,7 @@ const Home = () => {
   const [targetKeywords, setTargetKeywords] = useState([]);
   const [radius, setRadius] = useState(maxRadius);
   const [checkboxes, setCheckboxes] = useState({});
-  const [errors, setErrors] = useState({});
+  const [errorMessages, setErrorMessages] = useState({});
 
   const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
@@ -44,17 +43,15 @@ const Home = () => {
     if (e.key !== 'Enter') return;
 
     if (freeKeywords.length + 1 > keywordMaxCount) {
-      const newErrors = {...errors, keyword: `一度に入力できるのは${keywordMaxCount}個までです` };
-      setErrors(newErrors);
-
+      setErrorMessages({...errorMessages, keyword: `一度に入力できるのは${keywordMaxCount}個までです` });
       return;
     }
 
     const targetValue = e.target.value.trim();
-    if (freeKeywords.indexOf(targetValue) > -1) {
-      setErrors({
-        keyword: `${targetValue}はすでに入力済みです`,
-      });
+    if (freeKeywords.indexOf(targetValue) === -1) {
+      setErrorMessages(delete errorMessages.keyword);
+    } else {
+      setErrorMessages({...errorMessages, keyword: `${targetValue}はすでに入力済みです`});
       return;
     }
 
@@ -77,24 +74,30 @@ const Home = () => {
     setTargetKeywords([...targetKeywords]);
   };
 
-  const setValidationMessages = () => {
+  const validateSearchValues = () => {
+    setErrorMessages({});
+    const validationErrors = {};
+
     if (!originAddress)
-      errorMessages['originAddress'] = '基準地点を入力してください';
+      validationErrors.originAddress = '基準地点を入力してください';
     if (targetKeywords.length === 0)
-      errorMessages['keyword'] = '検索する施設を選択または入力してください';
+      validationErrors.keyword = '検索する施設を選択または入力してください';
     if (!radius) {
-      errorMessages['radius'] = '検索したい半径距離を入力してください';
+      validationErrors.radius = '検索したい半径距離を入力してください';
     } else if (radius > maxRadius) {
-      errorMessages['radius'] =  `半径${formattedMaxRadius}mより大きな値は指定できません`;
+      validationErrors.radius =  `半径${formattedMaxRadius}mより大きな値は指定できません`;
     } else if (radius < minRadius) {
-      errorMessages['radius'] = `半径${formattedMinRadius}m未満は指定できません`;
+      validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
     } else if (String(radius).match(/\D+/)) {
-      errorMessages['radius'] = '半角数字で入力してください';
+      validationErrors.radius = '半角数字で入力してください';
+    }
+    if (validationErrors.originAddress || validationErrors.keyword || validationErrors.radius) {
+      validationErrors.notice = '入力内容を確認してください';
     }
 
-    setErrors(errorMessages);
+    setErrorMessages(validationErrors);
 
-    return errorMessages;
+    return validationErrors;
   };
 
   // 基準地点の座標を取得する
@@ -207,14 +210,8 @@ const Home = () => {
     if (e.key === 'Enter') return;
     e.preventDefault();
 
-    setErrors({});
-    const errorMessages = setValidationMessages();
-    const hasError = Object.keys(errorMessages).length > 0;
-    if (hasError) {
-      errorMessages['notice'] = '入力内容を確認してください';
-      setErrors(errorMessages);
-      return;
-    }
+    const validationErrors = validateSearchValues();
+    if (Object.keys(validationErrors).length !== 0) return;
 
     setLoading(true);
 
@@ -265,7 +262,7 @@ const Home = () => {
           onChange={(e) => setOriginAddress(e.target.value)}
           value={originAddress}
         />
-        <ErrorText message={errors.originAddress} />
+        <ErrorMessage message={errorMessages.originAddress} />
       </div>
       <div className='search-step__item input-wrap'>
         <span className='search-step__num'>STEP2</span>
@@ -296,7 +293,7 @@ const Home = () => {
             </li>
           ))}
         </ul>
-        <ErrorText message={errors.keyword} />
+        <ErrorMessage message={errorMessages.keyword} />
       </div>
       <div className='search-step__item input-wrap'>
         <span className='search-step__num'>STEP3</span>
@@ -309,10 +306,10 @@ const Home = () => {
         />
         <span className='search-step__unit'>m</span>
         <span className='search-step__range'>({formattedMinRadius} ~ {formattedMaxRadius}m)</span>
-        <ErrorText message={errors.radius} />
+        <ErrorMessage message={errorMessages.radius} />
       </div>
       <input type='button' onClick={handleSearch} value='検索する' className='btn-search' />
-      <ErrorText message={errors.notice} className='text-center' />
+      <ErrorMessage message={errorMessages.notice} className='text-center' />
     </form>
   );
 };
