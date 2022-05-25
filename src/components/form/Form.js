@@ -305,7 +305,7 @@ const Form = () => {
         <span className='search-step__range'>({formattedMinRadius} ~ {formattedMaxRadius}m)</span>
         <ErrorMessage message={errorMessages.radius} />
       </div>
-      <input type='button' onClick={handleSearch} value='検索する' className='btn-search' />
+      <button onClick={handleSearch} className='btn-search'>検索する</button>
       <ErrorMessage message={errorMessages.notice} className='text-center' />
     </form>
   );
