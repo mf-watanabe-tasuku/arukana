@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
-import SearchContext from './searchContext';
-import SearchReducer from './searchReducer';
+import SearchContext from './SearchContext';
+import SearchReducer from './SearchReducer';
 import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE } from '../types';
 
 const SearchState = (props) => {

@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
-import PlaceContext from "./placeContext";
-import PlaceReducer from "./placeReducer";
+import PlaceContext from "./PlaceContext";
+import PlaceReducer from "./PlaceReducer";
 import { SET_PLACES, CLEAR_PLACES, SET_LOADING } from "../types";
 
 const PlaceState = (props) => {

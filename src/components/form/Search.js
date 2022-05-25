@@ -2,8 +2,8 @@ import { useState, useContext } from 'react';
 import Loading from '../layout/Loading';
 import CheckboxList from '../form/CheckboxList';
 import Places from '../places/Places';
-import PlaceContext from '../../context/place/placeContext';
-import SearchContext from '../../context/search/searchContext';
+import PlaceContext from '../../context/place/PlaceContext';
+import SearchContext from '../../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 
 const Home = () => {
