@@ -1,12 +1,12 @@
 import { useState, useContext } from 'react';
 import Loading from '../layout/Loading';
-import CheckboxList from '../form/CheckboxList';
+import CheckboxList from './CheckboxList';
 import Places from '../places/Places';
 import PlaceContext from '../../context/place/PlaceContext';
 import SearchContext from '../../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 
-const Home = () => {
+const Form = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
@@ -314,4 +314,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Form;

@@ -1,7 +1,7 @@
-import Search from "../components/form/Search";
+import Form from "../components/form/Form";
 
-const Home = () => {
-  return <Search />;
+const TopPage = () => {
+  return <Form />;
 };
 
-export default Home;
+export default TopPage;
