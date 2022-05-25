@@ -10,7 +10,7 @@ const Form = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
-  const { originAddress, originGeocode, freeKeyword, setOriginAddress, setOriginGeocode, setFreeKeyword } = searchContext;
+  const { originAddress, originGeocode, freeKeyword, freeKeywords, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords } = searchContext;
 
   const keywordMaxCount = 4;
   const maxRadius = 5000;
@@ -18,7 +18,6 @@ const Form = () => {
   const formattedMaxRadius = maxRadius.toLocaleString();
   const formattedMinRadius = minRadius.toLocaleString();
 
-  const [freeKeywords, setFreeKeywords] = useState([]);
   const [targetKeywords, setTargetKeywords] = useState([]);
   const [radius, setRadius] = useState(maxRadius);
   const [checkboxes, setCheckboxes] = useState({});
