@@ -10,15 +10,12 @@ const Form = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
-  const { originAddress, originGeocode, freeKeyword, freeKeywords, targetKeywords, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords } = searchContext;
+  const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius } = searchContext;
 
   const keywordMaxCount = 4;
-  const maxRadius = 5000;
-  const minRadius = 50;
-  const formattedMaxRadius = maxRadius.toLocaleString();
-  const formattedMinRadius = minRadius.toLocaleString();
+  const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
+  const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
 
-  const [radius, setRadius] = useState(maxRadius);
   const [checkboxes, setCheckboxes] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
 
@@ -81,9 +78,9 @@ const Form = () => {
       validationErrors.keyword = '検索する施設を選択または入力してください';
     if (!radius) {
       validationErrors.radius = '検索したい半径距離を入力してください';
-    } else if (radius > maxRadius) {
+    } else if (radius > process.env.REACT_APP_MAX_RADIUS) {
       validationErrors.radius =  `半径${formattedMaxRadius}mより大きな値は指定できません`;
-    } else if (radius < minRadius) {
+    } else if (radius < process.env.REACT_APP_MIN_RADIUS) {
       validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
     } else if (String(radius).match(/\D+/)) {
       validationErrors.radius = '半角数字で入力してください';

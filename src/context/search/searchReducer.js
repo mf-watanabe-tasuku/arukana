@@ -1,4 +1,4 @@
-import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE, SET_FREE_KEYWORD, SET_FREE_KEYWORDS, SET_TARGET_KEYWORDS } from "../types";
+import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE, SET_FREE_KEYWORD, SET_FREE_KEYWORDS, SET_TARGET_KEYWORDS, SET_RADIUS } from "../types";
 
 const type = (state, action) => {
   switch (action.type) {
@@ -26,6 +26,11 @@ const type = (state, action) => {
       return {
         ...state,
         targetKeywords: action.payload
+      }
+    case SET_RADIUS:
+      return {
+        ...state,
+        radius: action.payload
       }
     default:
       return state;
