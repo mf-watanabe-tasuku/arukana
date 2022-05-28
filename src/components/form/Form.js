@@ -10,13 +10,12 @@ const Form = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
-  const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius } = searchContext;
+  const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, recommendChecks, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius, setRecommendChecks } = searchContext;
 
   const keywordMaxCount = 4;
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
 
-  const [checkboxes, setCheckboxes] = useState({});
   const [errorMessages, setErrorMessages] = useState({});
 
   const handleCheckboxChange = (e) => {
@@ -30,7 +29,7 @@ const Form = () => {
       targetKeywords.splice(keywordIndex, 1);
       setTargetKeywords([...targetKeywords]);
     }
-    setCheckboxes({ ...checkboxes, [name]: checked });
+    setRecommendChecks({ ...recommendChecks, [name]: checked });
   };
 
   const addFreeKeywords = (e) => {
@@ -262,7 +261,7 @@ const Form = () => {
         <span className='search-step__num'>STEP2</span>
         <p className='search-step__ttl'>検索したい施設を選ぶ</p>
         <p className='search-step__sub-ttl'>選択肢から選ぶ</p>
-        <CheckboxList checkboxes={checkboxes} onChange={handleCheckboxChange} />
+        <CheckboxList recommendChecks={recommendChecks} onChange={handleCheckboxChange} />
         <p className='search-step__sub-ttl'>
           自由に入力する (最大{keywordMaxCount}個)
         </p>

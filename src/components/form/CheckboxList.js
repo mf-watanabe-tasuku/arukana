@@ -1,7 +1,7 @@
 import CheckboxItem from "./CheckboxItem";
 import "../../styles/CheckboxList.css";
 
-const checkboxList = ({ checkboxes, onChange }) => {
+const checkboxList = ({ recommendChecks, onChange }) => {
   const placeList = [
     { name: "checkbox1", value: "スターバックス", id: "starbucks" },
     { name: "checkbox2", value: "タリーズ", id: "tullys" },
@@ -19,7 +19,7 @@ const checkboxList = ({ checkboxes, onChange }) => {
             value={place.value}
             id={place.id}
             onChange={onChange}
-            checked={checkboxes[placeList[i].name]}
+            checked={recommendChecks[placeList[i].name]}
           />
         ))}
     </ul>
