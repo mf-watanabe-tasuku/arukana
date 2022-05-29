@@ -152,7 +152,7 @@ const Form = () => {
           placeWithDistanceObj = {
             name: place.name,
             rating: place.rating,
-            ratings_total: place.ratings_total,
+            reviewCount: place.ratings_total,
             geocode: { lat: place.lat, lng: place.lng },
             ...distanceData
           }
