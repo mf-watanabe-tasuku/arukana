@@ -193,8 +193,9 @@ const Form = () => {
 
   const handleInputRadius = (e) => {
     e.preventDefault();
-    const inputVal = String(e.target.value).replace(',', '');
-    setRadius(parseInt(inputVal));
+    let radiusVal = String(e.target.value).replace(',', '');
+    if (radiusVal) radiusVal = parseInt(radiusVal);
+    setRadius(radiusVal);
   }
 
   // 検索ボタンを押した時の処理;

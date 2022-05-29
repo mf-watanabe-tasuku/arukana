@@ -9,6 +9,7 @@ import star_100 from "../../images/star_100.svg";
 import star_75 from "../../images/star_75.svg";
 import star_50 from "../../images/star_50.svg";
 import star_25 from "../../images/star_25.svg";
+import star_0 from "../../images/star_0.svg";
 import "../../styles/PlaceItem.css";
 
 const PlaceItem = ({ originGeocode, result }) => {
@@ -68,21 +69,25 @@ const PlaceItem = ({ originGeocode, result }) => {
     return distance;
   };
 
-  const getRatingStarsArr = () => {
+  const getRatingStars = () => {
     if (!rating) return;
 
     let ratingStars = [];
-    for (let i = 1; i < rating; i++) {
+    for (let i = 1; i <= rating; i++) {
       ratingStars.push(star_100);
     }
 
     const remaining = (rating * 10) % 10;
     if (0 < remaining && remaining < 3) {
       ratingStars.push(star_25);
-    } else if (3 <= remaining && remaining < 7) {
+    } else if (3 <= remaining && remaining < 8) {
       ratingStars.push(star_50);
     } else if (8 <= remaining) {
       ratingStars.push(star_75);
+    }
+
+    while (ratingStars.length < 5) {
+      ratingStars.push(star_0);
     }
 
     return ratingStars;
@@ -107,8 +112,8 @@ const PlaceItem = ({ originGeocode, result }) => {
                     <>
                       <span className="rating-num">{rating}</span>
                       <span className="rating-star-list">
-                        {getRatingStarsArr() &&
-                          getRatingStarsArr().map((star, i) => (
+                        {getRatingStars() &&
+                          getRatingStars().map((star, i) => (
                             <img
                               key={i}
                               src={star}
