@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
-import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE, SET_FREE_KEYWORD, SET_FREE_KEYWORDS, SET_TARGET_KEYWORDS, SET_RADIUS, SET_RECOMMEND_CHECKS } from '../types';
+import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE, SET_FREE_KEYWORD, SET_FREE_KEYWORDS, SET_TARGET_KEYWORDS, SET_RADIUS, SET_RECOMMEND_CHECKS, SET_ERROR_MESSAGES } from '../types';
 
 const SearchState = (props) => {
   const initialState = {
@@ -11,7 +11,8 @@ const SearchState = (props) => {
     freeKeywords: [],
     targetKeywords: [],
     radius: process.env.REACT_APP_MAX_RADIUS,
-    recommendChecks: {}
+    recommendChecks: {},
+    errorMessages: {}
   };
 
   const [state, dispatch] = useReducer(SearchReducer, initialState);
@@ -63,6 +64,13 @@ const SearchState = (props) => {
     })
   }
 
+  const setErrorMessages = (errorMessages) => {
+    dispatch({
+      type: SET_ERROR_MESSAGES,
+      payload: errorMessages
+    })
+  }
+
   return (
     <SearchContext.Provider
       value={{
@@ -73,13 +81,15 @@ const SearchState = (props) => {
         targetKeywords: state.targetKeywords,
         radius: state.radius,
         recommendChecks: state.recommendChecks,
+        errorMessages: state.errorMessages,
         setOriginAddress,
         setOriginGeocode,
         setFreeKeyword,
         setFreeKeywords,
         setTargetKeywords,
         setRadius,
-        setRecommendChecks
+        setRecommendChecks,
+        setErrorMessages
       }}
     >
       {props.children}

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import Loading from '../layout/Loading';
 import CheckboxList from './CheckboxList';
 import Places from '../places/Places';
@@ -10,13 +10,11 @@ const Form = () => {
   const placeContext = useContext(PlaceContext);
   const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
   const searchContext = useContext(SearchContext);
-  const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, recommendChecks, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius, setRecommendChecks } = searchContext;
+  const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, recommendChecks, errorMessages, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius, setRecommendChecks, setErrorMessages } = searchContext;
 
   const keywordMaxCount = 4;
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
-
-  const [errorMessages, setErrorMessages] = useState({});
 
   const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
@@ -163,7 +161,8 @@ const Form = () => {
       })
     );
 
-    const sortedPlaces = placesWithDistance.sort((a, b) => a.distance - b.distance);
+    const filteredPlaces = placesWithDistance.filter(place => place.distance);
+    const sortedPlaces = filteredPlaces.sort((a, b) => a.distance - b.distance);
     const [nearestPlace, ...nearbyPlaces] = sortedPlaces.slice(0, 4);
     const placeDistanceData = { nearestPlace, nearbyPlaces };
 
@@ -195,7 +194,7 @@ const Form = () => {
   const handleInputRadius = (e) => {
     e.preventDefault();
     const inputVal = String(e.target.value).replace(',', '');
-    setRadius(inputVal);
+    setRadius(parseInt(inputVal));
   }
 
   // 検索ボタンを押した時の処理;
