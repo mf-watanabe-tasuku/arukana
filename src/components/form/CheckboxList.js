@@ -14,7 +14,7 @@ const checkboxList = ({ recommendChecks, onChange }) => {
       {placeList.length > 0 &&
         placeList.map((place, i) => (
           <CheckboxItem
-            key={place.id}
+            key={i}
             name={place.name}
             value={place.value}
             id={place.id}
