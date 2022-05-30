@@ -1,15 +1,15 @@
 import { useEffect, useReducer } from "react";
-import PlaceContext from "./PlaceContext";
-import PlaceReducer from "./PlaceReducer";
-import { SET_PLACES, CLEAR_PLACES, SET_LOADING } from "../types";
+import ResultContext from "./ResultContext";
+import ResultReducer from "./ResultReducer";
+import { SET_RESULTS, CLEAR_RESULTS, SET_LOADING } from "../types";
 
-const PlaceState = (props) => {
+const ResultState = (props) => {
   const initialState = {
     loading: false,
-    places: [],
+    results: [],
   };
 
-  const [state, dispatch] = useReducer(PlaceReducer, initialState);
+  const [state, dispatch] = useReducer(ResultReducer, initialState);
 
   useEffect(() => {
     const googleMapScript = document.createElement("script");
@@ -18,25 +18,25 @@ const PlaceState = (props) => {
     document.body.appendChild(googleMapScript);
   }, []);
 
-  const setPlaces = (places) => dispatch({ type: SET_PLACES, payload: places });
+  const setResults = (results) => dispatch({ type: SET_RESULTS, payload: results });
 
-  const clearPlaces = () => dispatch({ type: CLEAR_PLACES });
+  const clearResults = () => dispatch({ type: CLEAR_RESULTS });
 
   const setLoading = () => dispatch({ type: SET_LOADING });
 
   return (
-    <PlaceContext.Provider
+    <ResultContext.Provider
       value={{
         loading: state.loading,
-        places: state.places,
-        setPlaces,
-        clearPlaces,
+        results: state.results,
+        setResults,
+        clearResults,
         setLoading,
       }}
     >
       {props.children}
-    </PlaceContext.Provider>
+    </ResultContext.Provider>
   );
 };
 
-export default PlaceState;
+export default ResultState;

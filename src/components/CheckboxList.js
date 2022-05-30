@@ -1,5 +1,5 @@
 import CheckboxItem from "./CheckboxItem";
-import "../../styles/CheckboxList.css";
+import "../styles/CheckboxList.css";
 
 const checkboxList = ({ recommendChecks, onChange }) => {
   const placeList = [

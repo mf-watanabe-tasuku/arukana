@@ -5,14 +5,14 @@ import {
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import star_100 from "../../images/star_100.svg";
-import star_75 from "../../images/star_75.svg";
-import star_50 from "../../images/star_50.svg";
-import star_25 from "../../images/star_25.svg";
-import star_0 from "../../images/star_0.svg";
-import "../../styles/PlaceItem.css";
+import star_100 from "../images/star_100.svg";
+import star_75 from "../images/star_75.svg";
+import star_50 from "../images/star_50.svg";
+import star_25 from "../images/star_25.svg";
+import star_0 from "../images/star_0.svg";
+import "../styles/Result.css";
 
-const PlaceItem = ({ originGeocode, result }) => {
+const Result = ({ originGeocode, result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
   const { name, rating, reviewCount, distance, duration, geocode } = nearestPlace;
 
@@ -167,4 +167,4 @@ const PlaceItem = ({ originGeocode, result }) => {
   );
 };
 
-export default PlaceItem;
+export default Result;

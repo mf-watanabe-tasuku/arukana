@@ -1,15 +1,15 @@
-import PlaceItem from "./PlaceItem";
-import "../../styles/Places.css";
+import Result from "./Result";
+import "../styles/Results.css";
 
-const Places = ({ places, originGeocode }) => {
+const Results = ({ results, originGeocode }) => {
   let noResults = [];
   let withResults = [];
 
-  places.forEach((place) => {
-    if (place.nearestPlace) {
-      withResults = [...withResults, place];
+  results.forEach((result) => {
+    if (result.nearestPlace) {
+      withResults = [...withResults, result];
     } else {
-      noResults = [...noResults, place];
+      noResults = [...noResults, result];
     }
   });
 
@@ -28,7 +28,7 @@ const Places = ({ places, originGeocode }) => {
         {withResults.map((result, i) => {
           return (
             result.nearestPlace && (
-              <PlaceItem
+              <Result
                 key={i}
                 originGeocode={originGeocode}
                 result={result}
@@ -41,4 +41,4 @@ const Places = ({ places, originGeocode }) => {
   );
 };
 
-export default Places;
+export default Results;

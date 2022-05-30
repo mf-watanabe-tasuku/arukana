@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import Loading from '../layout/Loading';
+import Loading from './Loading';
 import CheckboxList from './CheckboxList';
-import Places from '../places/Places';
-import PlaceContext from '../../context/place/PlaceContext';
-import SearchContext from '../../context/search/SearchContext';
+import Results from './Results';
+import ResultContext from '../context/result/ResultContext';
+import SearchContext from '../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 
 const Form = () => {
-  const placeContext = useContext(PlaceContext);
-  const { loading, places, setPlaces, clearPlaces, setLoading } = placeContext;
+  const resultContext = useContext(ResultContext);
+  const { loading, results, setResults, clearResults, setLoading } = resultContext;
   const searchContext = useContext(SearchContext);
   const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, recommendChecks, errorMessages, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius, setRecommendChecks, setErrorMessages } = searchContext;
 
@@ -132,12 +132,12 @@ const Form = () => {
           });
 
           const placeDistanceData = await getPlaceDistanceData(formattedNearbyPlaces);
-          const keywordWithPlaces = {
+          const keywordWithResults = {
             keyword,
             ...placeDistanceData
           }
 
-          resolve(keywordWithPlaces);
+          resolve(keywordWithResults);
         });
     });
   }
@@ -161,9 +161,9 @@ const Form = () => {
       })
     );
 
-    const filteredPlaces = placesWithDistance.filter(place => place.distance);
-    const sortedPlaces = filteredPlaces.sort((a, b) => a.distance - b.distance);
-    const [nearestPlace, ...nearbyPlaces] = sortedPlaces.slice(0, 4);
+    const filteredResults = placesWithDistance.filter(place => place.distance);
+    const sortedResults = filteredResults.sort((a, b) => a.distance - b.distance);
+    const [nearestPlace, ...nearbyPlaces] = sortedResults.slice(0, 4);
     const placeDistanceData = { nearestPlace, nearbyPlaces };
 
     return placeDistanceData;
@@ -209,7 +209,7 @@ const Form = () => {
     setLoading(true);
 
     const originGeocode = await fetchOriginGeocode();
-    const resultPlaces = await Promise.all(
+    const results = await Promise.all(
       targetKeywords.map(keyword => {
         return new Promise(resolve => {
           setTimeout(() => {
@@ -222,22 +222,22 @@ const Form = () => {
 
     setLoading(false);
     window.scrollTo(0, 0);
-    setPlaces(resultPlaces);
+    setResults(results);
   };
 
-  return places.length > 0 ? (
+  return results.length > 0 ? (
     <>
       <p className='search-results__origin-text'>
         「{originAddress}」から半径{radius}m以内の検索結果
       </p>
       <>
         <div className='search-results__back-box'>
-          <p className='search-results__back-link' onClick={clearPlaces}>
+          <p className='search-results__back-link' onClick={clearResults}>
             トップへ戻る
           </p>
         </div>
-        <Places places={places} originGeocode={originGeocode} />
-        <button className='btn-back' onClick={clearPlaces}>
+        <Results results={results} originGeocode={originGeocode} />
+        <button className='btn-back' onClick={clearResults}>
           トップへ戻る
         </button>
       </>

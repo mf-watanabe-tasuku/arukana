@@ -1,4 +1,4 @@
-import "../../styles/Error.css";
+import "../styles/Error.css";
 
 const ErrorMessage = ({ message, className }) => {
   return (

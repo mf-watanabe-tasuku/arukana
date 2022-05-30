@@ -1,17 +1,16 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Header from "./components/layout/Header";
+import Header from "./components/Header";
 import TopPage from "./pages/TopPage";
 import NotFound from "./pages/NotFound";
-
 import SearchState from "./context/search/SearchState";
-import PlaceState from "./context/place/PlaceState";
+import ResultState from "./context/result/ResultState";
 
 import "./styles/App.css";
 
 const App = () => {
   return (
     <SearchState>
-      <PlaceState>
+      <ResultState>
         <Router>
           <Header />
           <main>
@@ -23,7 +22,7 @@ const App = () => {
             </div>
           </main>
         </Router>
-      </PlaceState>
+      </ResultState>
     </SearchState>
   );
 };
