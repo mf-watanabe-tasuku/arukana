@@ -340,7 +340,7 @@ const Form = () => {
         </span>
         <ErrorMessage message={errorMessages.radius} />
       </div>
-      <button onClick={handleSearch} className='btn-search'>
+      <button onClick={handleSearch} type='button' className='btn-search'>
         検索する
       </button>
       <ErrorMessage message={errorMessages.notice} className='text-center' />
