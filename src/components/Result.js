@@ -1,20 +1,21 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 import {
   faSmile,
   faMapMarkerAlt,
   faClock,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import star_100 from "../images/star_100.svg";
-import star_75 from "../images/star_75.svg";
-import star_50 from "../images/star_50.svg";
-import star_25 from "../images/star_25.svg";
-import star_0 from "../images/star_0.svg";
-import "../styles/Result.css";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import star_100 from '../images/star_100.svg';
+import star_75 from '../images/star_75.svg';
+import star_50 from '../images/star_50.svg';
+import star_25 from '../images/star_25.svg';
+import star_0 from '../images/star_0.svg';
+import '../styles/Result.css';
 
 const Result = ({ originGeocode, result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
-  const { name, rating, reviewCount, distance, duration, geocode } = nearestPlace;
+  const { name, rating, reviewCount, distance, duration, geocode } =
+    nearestPlace;
 
   const map = useRef(null);
 
@@ -46,10 +47,10 @@ const Result = ({ originGeocode, result }) => {
           travelMode: window.google.maps.TravelMode.WALKING,
         },
         (response, status) => {
-          if (status === "OK") {
+          if (status === 'OK') {
             directionsRenderer.setDirections(response);
           } else {
-            window.alert("Directions request failed due to " + status);
+            window.alert('Directions request failed due to ' + status);
           }
         }
       );
@@ -61,9 +62,9 @@ const Result = ({ originGeocode, result }) => {
   // 距離を表示用にフォーマットする
   const getDisplayDistance = (distance) => {
     if (distance >= 1000) {
-      distance = (distance / 1000).toFixed(1) + "km";
+      distance = (distance / 1000).toFixed(1) + 'km';
     } else {
-      distance += "m";
+      distance += 'm';
     }
 
     return distance;
@@ -95,48 +96,48 @@ const Result = ({ originGeocode, result }) => {
 
   return (
     <>
-      <p className="result-item-keyword">
+      <p className='result-item-keyword'>
         <b>最寄りの{keyword}</b>
       </p>
-      <li className="result-item">
-        <div className="result-item-data-box">
+      <li className='result-item'>
+        <div className='result-item-data-box'>
           {nearestPlace && (
             <div>
-              <p className="result-item-title">{name}</p>
-              <ul className="data-list">
-                <li className="data-list-item rating-box">
-                  <span className="rating-icon">
+              <p className='result-item-title'>{name}</p>
+              <ul className='data-list'>
+                <li className='data-list-item rating-box'>
+                  <span className='rating-icon'>
                     <FontAwesomeIcon icon={faSmile} />
                   </span>
                   {rating ? (
                     <>
-                      <span className="rating-num">{rating}</span>
-                      <span className="rating-star-list">
+                      <span className='rating-num'>{rating}</span>
+                      <span className='rating-star-list'>
                         {getRatingStars() &&
                           getRatingStars().map((star, i) => (
                             <img
                               key={i}
                               src={star}
-                              className="rating-star-item"
-                              alt="Rating Star"
+                              className='rating-star-item'
+                              alt='Rating Star'
                             />
                           ))}
                       </span>
                       <span>({reviewCount})</span>
                     </>
                   ) : (
-                    "まだ評価がありません"
+                    'まだ評価がありません'
                   )}
                 </li>
-                <li className="data-list-item">
-                  <span className="rating-icon">
+                <li className='data-list-item'>
+                  <span className='rating-icon'>
                     <FontAwesomeIcon icon={faMapMarkerAlt} />
                   </span>
                   <span>距離 : </span>
                   <span>{getDisplayDistance(distance)}</span>
                 </li>
-                <li className="data-list-item">
-                  <span className="rating-icon">
+                <li className='data-list-item'>
+                  <span className='rating-icon'>
                     <FontAwesomeIcon icon={faClock} />
                   </span>
                   <span>所要時間(徒歩) : </span>
@@ -146,12 +147,12 @@ const Result = ({ originGeocode, result }) => {
             </div>
           )}
           {nearbyPlaces.length > 0 && (
-            <div className="other-results__box">
-              <p className="other-results__title">検索にヒットした場所</p>
-              <ul className="other-results__list">
+            <div className='other-results__box'>
+              <p className='other-results__title'>検索にヒットした場所</p>
+              <ul className='other-results__list'>
                 {nearbyPlaces.map((place, i) => (
-                  <li key={i} className="other-results__item">
-                    {place.name} ( {getDisplayDistance(place.distance)} /{" "}
+                  <li key={i} className='other-results__item'>
+                    {place.name} ( {getDisplayDistance(place.distance)} /{' '}
                     {place.duration} )
                   </li>
                 ))}
@@ -159,8 +160,8 @@ const Result = ({ originGeocode, result }) => {
             </div>
           )}
         </div>
-        <div className="result-item-map">
-          <div id="map" ref={map}></div>
+        <div className='result-item-map'>
+          <div id='map' ref={map}></div>
         </div>
       </li>
     </>

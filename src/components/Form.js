@@ -8,9 +8,27 @@ import ErrorMessage from './ErrorMessage';
 
 const Form = () => {
   const resultContext = useContext(ResultContext);
-  const { loading, results, setResults, clearResults, setLoading } = resultContext;
+  const { loading, results, setResults, clearResults, setLoading } =
+    resultContext;
   const searchContext = useContext(SearchContext);
-  const { originAddress, originGeocode, freeKeyword, freeKeywords, radius, targetKeywords, recommendChecks, errorMessages, setOriginAddress, setOriginGeocode, setFreeKeyword, setFreeKeywords, setTargetKeywords, setRadius, setRecommendChecks, setErrorMessages } = searchContext;
+  const {
+    originAddress,
+    originGeocode,
+    freeKeyword,
+    freeKeywords,
+    radius,
+    targetKeywords,
+    recommendChecks,
+    errorMessages,
+    setOriginAddress,
+    setOriginGeocode,
+    setFreeKeyword,
+    setFreeKeywords,
+    setTargetKeywords,
+    setRadius,
+    setRecommendChecks,
+    setErrorMessages,
+  } = searchContext;
 
   const keywordMaxCount = 4;
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
@@ -34,7 +52,10 @@ const Form = () => {
     if (e.key !== 'Enter') return;
 
     if (freeKeywords.length + 1 > keywordMaxCount) {
-      setErrorMessages({...errorMessages, keyword: `一度に入力できるのは${keywordMaxCount}個までです` });
+      setErrorMessages({
+        ...errorMessages,
+        keyword: `一度に入力できるのは${keywordMaxCount}個までです`,
+      });
       return;
     }
 
@@ -42,11 +63,14 @@ const Form = () => {
     if (freeKeywords.indexOf(targetValue) === -1) {
       setErrorMessages(delete errorMessages.keyword);
     } else {
-      setErrorMessages({...errorMessages, keyword: `${targetValue}はすでに入力済みです`});
+      setErrorMessages({
+        ...errorMessages,
+        keyword: `${targetValue}はすでに入力済みです`,
+      });
       return;
     }
 
-    if ( targetValue ) {
+    if (targetValue) {
       setTargetKeywords([...targetKeywords, freeKeyword]);
       setFreeKeywords([...freeKeywords, freeKeyword]);
       setFreeKeyword('');
@@ -76,13 +100,17 @@ const Form = () => {
     if (!radius) {
       validationErrors.radius = '検索したい半径距離を入力してください';
     } else if (radius > process.env.REACT_APP_MAX_RADIUS) {
-      validationErrors.radius =  `半径${formattedMaxRadius}mより大きな値は指定できません`;
+      validationErrors.radius = `半径${formattedMaxRadius}mより大きな値は指定できません`;
     } else if (radius < process.env.REACT_APP_MIN_RADIUS) {
       validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
     } else if (String(radius).match(/\D+/)) {
       validationErrors.radius = '半角数字で入力してください';
     }
-    if (validationErrors.originAddress || validationErrors.keyword || validationErrors.radius) {
+    if (
+      validationErrors.originAddress ||
+      validationErrors.keyword ||
+      validationErrors.radius
+    ) {
       validationErrors.notice = '入力内容を確認してください';
     }
 
@@ -111,36 +139,38 @@ const Form = () => {
 
   // 周辺の施設を検索する
   const fetchNearbyPlaces = (geocode, keyword) => {
-      const div = document.createElement('div');
-      const service = new window.google.maps.places.PlacesService(div);
-      const searchConditions = {
-        location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-        radius,
-        keyword,
-      };
+    const div = document.createElement('div');
+    const service = new window.google.maps.places.PlacesService(div);
+    const searchConditions = {
+      location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
+      radius,
+      keyword,
+    };
 
-      return new Promise(resolve => {
-        service.nearbySearch(searchConditions, async (nearbyPlaces) => {
-          const formattedNearbyPlaces = nearbyPlaces.map((nearbyPlace) => {
-            return {
-              name: nearbyPlace.name,
-              rating: nearbyPlace.rating,
-              ratings_total: nearbyPlace.user_ratings_total,
-              lat: nearbyPlace.geometry.location.lat(),
-              lng: nearbyPlace.geometry.location.lng(),
-            };
-          });
-
-          const placeDistanceData = await getPlaceDistanceData(formattedNearbyPlaces);
-          const keywordWithResults = {
-            keyword,
-            ...placeDistanceData
-          }
-
-          resolve(keywordWithResults);
+    return new Promise((resolve) => {
+      service.nearbySearch(searchConditions, async (nearbyPlaces) => {
+        const formattedNearbyPlaces = nearbyPlaces.map((nearbyPlace) => {
+          return {
+            name: nearbyPlace.name,
+            rating: nearbyPlace.rating,
+            ratings_total: nearbyPlace.user_ratings_total,
+            lat: nearbyPlace.geometry.location.lat(),
+            lng: nearbyPlace.geometry.location.lng(),
+          };
         });
+
+        const placeDistanceData = await getPlaceDistanceData(
+          formattedNearbyPlaces
+        );
+        const keywordWithResults = {
+          keyword,
+          ...placeDistanceData,
+        };
+
+        resolve(keywordWithResults);
+      });
     });
-  }
+  };
 
   const getPlaceDistanceData = async (places) => {
     const placesWithDistance = await Promise.all(
@@ -154,15 +184,19 @@ const Form = () => {
             rating: place.rating,
             reviewCount: place.ratings_total,
             geocode: { lat: place.lat, lng: place.lng },
-            ...distanceData
-          }
+            ...distanceData,
+          };
         }
         return placeWithDistanceObj;
       })
     );
 
-    const filteredResults = placesWithDistance.filter(place => place.distance);
-    const sortedResults = filteredResults.sort((a, b) => a.distance - b.distance);
+    const filteredResults = placesWithDistance.filter(
+      (place) => place.distance
+    );
+    const sortedResults = filteredResults.sort(
+      (a, b) => a.distance - b.distance
+    );
     const [nearestPlace, ...nearbyPlaces] = sortedResults.slice(0, 4);
     const placeDistanceData = { nearestPlace, nearbyPlaces };
 
@@ -196,7 +230,7 @@ const Form = () => {
     let radiusVal = String(e.target.value).replace(',', '');
     if (radiusVal) radiusVal = parseInt(radiusVal);
     setRadius(radiusVal);
-  }
+  };
 
   // 検索ボタンを押した時の処理;
   const handleSearch = async (e) => {
@@ -210,13 +244,13 @@ const Form = () => {
 
     const originGeocode = await fetchOriginGeocode();
     const results = await Promise.all(
-      targetKeywords.map(keyword => {
-        return new Promise(resolve => {
+      targetKeywords.map((keyword) => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             const nearbyPlaces = fetchNearbyPlaces(originGeocode, keyword);
             resolve(nearbyPlaces);
           }, 1000);
-        })
+        });
       })
     );
 
@@ -261,7 +295,10 @@ const Form = () => {
         <span className='search-step__num'>STEP2</span>
         <p className='search-step__ttl'>検索したい施設を選ぶ</p>
         <p className='search-step__sub-ttl'>選択肢から選ぶ</p>
-        <CheckboxList recommendChecks={recommendChecks} onChange={handleCheckboxChange} />
+        <CheckboxList
+          recommendChecks={recommendChecks}
+          onChange={handleCheckboxChange}
+        />
         <p className='search-step__sub-ttl'>
           自由に入力する (最大{keywordMaxCount}個)
         </p>
@@ -298,10 +335,14 @@ const Form = () => {
           value={radius}
         />
         <span className='search-step__unit'>m</span>
-        <span className='search-step__range'>({formattedMinRadius} ~ {formattedMaxRadius}m)</span>
+        <span className='search-step__range'>
+          ({formattedMinRadius} ~ {formattedMaxRadius}m)
+        </span>
         <ErrorMessage message={errorMessages.radius} />
       </div>
-      <button onClick={handleSearch} className='btn-search'>検索する</button>
+      <button onClick={handleSearch} className='btn-search'>
+        検索する
+      </button>
       <ErrorMessage message={errorMessages.notice} className='text-center' />
     </form>
   );

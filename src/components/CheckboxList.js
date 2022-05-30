@@ -1,16 +1,16 @@
-import CheckboxItem from "./CheckboxItem";
-import "../styles/CheckboxList.css";
+import CheckboxItem from './CheckboxItem';
+import '../styles/CheckboxList.css';
 
 const checkboxList = ({ recommendChecks, onChange }) => {
   const placeList = [
-    { name: "checkbox1", value: "スターバックス", id: "starbucks" },
-    { name: "checkbox2", value: "タリーズ", id: "tullys" },
-    { name: "checkbox3", value: "コンビニ", id: "conveniencestore" },
-    { name: "checkbox4", value: "ジム", id: "gym" },
+    { name: 'checkbox1', value: 'スターバックス', id: 'starbucks' },
+    { name: 'checkbox2', value: 'タリーズ', id: 'tullys' },
+    { name: 'checkbox3', value: 'コンビニ', id: 'conveniencestore' },
+    { name: 'checkbox4', value: 'ジム', id: 'gym' },
   ];
 
   return (
-    <ul className="place__checkbox-list">
+    <ul className='place__checkbox-list'>
       {placeList.length > 0 &&
         placeList.map((place, i) => (
           <CheckboxItem

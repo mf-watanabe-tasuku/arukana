@@ -6,10 +6,10 @@
 
 body {
   color: #002200;
-  font-family: "Noto Sans JP", "游ゴシック Medium", "游ゴシック体",
-    "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN",
-    "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック",
-    "MS PGothic", sans-serif;
+  font-family: 'Noto Sans JP', '游ゴシック Medium', '游ゴシック体',
+    'Yu Gothic Medium', YuGothic, 'ヒラギノ角ゴ ProN',
+    'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック',
+    'MS PGothic', sans-serif;
   line-height: 1.6;
   padding: 50px 30px 100px;
   background-color: #f5f6f9;

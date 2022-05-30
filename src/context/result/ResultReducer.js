@@ -1,4 +1,4 @@
-import { SET_RESULTS, CLEAR_RESULTS, SET_LOADING } from "../types";
+import { SET_RESULTS, CLEAR_RESULTS, SET_LOADING } from '../types';
 
 const type = (state, action) => {
   switch (action.type) {

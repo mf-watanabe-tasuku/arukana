@@ -1,7 +1,16 @@
 import { useReducer } from 'react';
 import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
-import { SET_ORIGIN_ADDRESS, SET_ORIGIN_GEOCODE, SET_FREE_KEYWORD, SET_FREE_KEYWORDS, SET_TARGET_KEYWORDS, SET_RADIUS, SET_RECOMMEND_CHECKS, SET_ERROR_MESSAGES } from '../types';
+import {
+  SET_ORIGIN_ADDRESS,
+  SET_ORIGIN_GEOCODE,
+  SET_FREE_KEYWORD,
+  SET_FREE_KEYWORDS,
+  SET_TARGET_KEYWORDS,
+  SET_RADIUS,
+  SET_RECOMMEND_CHECKS,
+  SET_ERROR_MESSAGES,
+} from '../types';
 
 const SearchState = (props) => {
   const initialState = {
@@ -12,7 +21,7 @@ const SearchState = (props) => {
     targetKeywords: [],
     radius: process.env.REACT_APP_MAX_RADIUS,
     recommendChecks: {},
-    errorMessages: {}
+    errorMessages: {},
   };
 
   const [state, dispatch] = useReducer(SearchReducer, initialState);
@@ -33,43 +42,43 @@ const SearchState = (props) => {
     dispatch({
       type: SET_FREE_KEYWORD,
       payload: freeKeyword,
-    })
-  }
+    });
+  };
 
   const setFreeKeywords = (freeKeywords) => {
     dispatch({
       type: SET_FREE_KEYWORDS,
-      payload: freeKeywords
-    })
-  }
+      payload: freeKeywords,
+    });
+  };
 
   const setTargetKeywords = (targetKeywords) => {
     dispatch({
       type: SET_TARGET_KEYWORDS,
-      payload: targetKeywords
-    })
-  }
+      payload: targetKeywords,
+    });
+  };
 
   const setRadius = (radius) => {
     dispatch({
       type: SET_RADIUS,
-      payload: radius
-    })
-  }
+      payload: radius,
+    });
+  };
 
   const setRecommendChecks = (recommendChecks) => {
     dispatch({
       type: SET_RECOMMEND_CHECKS,
-      payload: recommendChecks
-    })
-  }
+      payload: recommendChecks,
+    });
+  };
 
   const setErrorMessages = (errorMessages) => {
     dispatch({
       type: SET_ERROR_MESSAGES,
-      payload: errorMessages
-    })
-  }
+      payload: errorMessages,
+    });
+  };
 
   return (
     <SearchContext.Provider
@@ -89,7 +98,7 @@ const SearchState = (props) => {
         setTargetKeywords,
         setRadius,
         setRecommendChecks,
-        setErrorMessages
+        setErrorMessages,
       }}
     >
       {props.children}
