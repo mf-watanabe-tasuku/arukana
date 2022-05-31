@@ -13,6 +13,8 @@ import {
 } from '../types';
 
 const SearchState = (props) => {
+  const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;
+
   const initialState = {
     originAddress: '',
     originGeocode: {},
@@ -94,6 +96,35 @@ const SearchState = (props) => {
     setRecommendChecks({ ...state.recommendChecks, [name]: checked });
   };
 
+  const addFreeKeywords = (e) => {
+    if (e.key !== 'Enter') return;
+
+    if (state.freeKeywords.length + 1 > keywordMaxCount) {
+      setErrorMessages({
+        ...state.errorMessages,
+        keyword: `一度に入力できるのは${keywordMaxCount}個までです`,
+      });
+      return;
+    }
+
+    const targetValue = e.target.value.trim();
+    if (state.freeKeywords.indexOf(targetValue) === -1) {
+      setErrorMessages(delete state.errorMessages.keyword);
+    } else {
+      setErrorMessages({
+        ...state.errorMessages,
+        keyword: `${targetValue}はすでに入力済みです`,
+      });
+      return;
+    }
+
+    if (targetValue) {
+      setTargetKeywords([...state.targetKeywords, state.freeKeyword]);
+      setFreeKeywords([...state.freeKeywords, state.freeKeyword]);
+      setFreeKeyword('');
+    }
+  };
+
   return (
     <SearchContext.Provider
       value={{
@@ -109,6 +140,7 @@ const SearchState = (props) => {
         setOriginGeocode,
         setFreeKeyword,
         setFreeKeywords,
+        addFreeKeywords,
         setTargetKeywords,
         setRadius,
         setRecommendChecks,

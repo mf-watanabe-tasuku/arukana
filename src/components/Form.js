@@ -25,44 +25,14 @@ const Form = () => {
     setFreeKeyword,
     setFreeKeywords,
     setTargetKeywords,
+    addFreeKeywords,
     setRadius,
-    setRecommendChecks,
     handleCheckboxChange,
     setErrorMessages,
   } = searchContext;
 
-  const keywordMaxCount = 4;
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
-
-  const addFreeKeywords = (e) => {
-    if (e.key !== 'Enter') return;
-
-    if (freeKeywords.length + 1 > keywordMaxCount) {
-      setErrorMessages({
-        ...errorMessages,
-        keyword: `一度に入力できるのは${keywordMaxCount}個までです`,
-      });
-      return;
-    }
-
-    const targetValue = e.target.value.trim();
-    if (freeKeywords.indexOf(targetValue) === -1) {
-      setErrorMessages(delete errorMessages.keyword);
-    } else {
-      setErrorMessages({
-        ...errorMessages,
-        keyword: `${targetValue}はすでに入力済みです`,
-      });
-      return;
-    }
-
-    if (targetValue) {
-      setTargetKeywords([...targetKeywords, freeKeyword]);
-      setFreeKeywords([...freeKeywords, freeKeyword]);
-      setFreeKeyword('');
-    }
-  };
 
   const removeFreeKeyword = (keyword) => {
     const keywordIndex = freeKeywords.indexOf(keyword);
@@ -287,7 +257,7 @@ const Form = () => {
           onChange={handleCheckboxChange}
         />
         <p className='search-step__sub-ttl'>
-          自由に入力する (最大{keywordMaxCount}個)
+          自由に入力する (最大{process.env.REACT_APP_KEYWORD_MAX_COUNT}個)
         </p>
         <input
           type='text'
