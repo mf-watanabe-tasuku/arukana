@@ -27,26 +27,13 @@ const Form = () => {
     setTargetKeywords,
     setRadius,
     setRecommendChecks,
+    handleCheckboxChange,
     setErrorMessages,
   } = searchContext;
 
   const keywordMaxCount = 4;
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
-
-  const handleCheckboxChange = (e) => {
-    const targetValue = e.target.value;
-    const { name, checked } = e.target;
-    const keywordIndex = targetKeywords.indexOf(targetValue);
-    if (checked && keywordIndex === -1) {
-      setTargetKeywords([...targetKeywords, targetValue]);
-    }
-    if (!checked && keywordIndex > -1) {
-      targetKeywords.splice(keywordIndex, 1);
-      setTargetKeywords([...targetKeywords]);
-    }
-    setRecommendChecks({ ...recommendChecks, [name]: checked });
-  };
 
   const addFreeKeywords = (e) => {
     if (e.key !== 'Enter') return;

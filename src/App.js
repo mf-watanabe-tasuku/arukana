@@ -4,7 +4,6 @@ import TopPage from './pages/TopPage';
 import NotFound from './pages/NotFound';
 import SearchState from './context/search/SearchState';
 import ResultState from './context/result/ResultState';
-
 import './styles/App.css';
 
 const App = () => {

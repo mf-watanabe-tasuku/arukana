@@ -80,6 +80,20 @@ const SearchState = (props) => {
     });
   };
 
+  const handleCheckboxChange = (e) => {
+    const targetValue = e.target.value;
+    const { name, checked } = e.target;
+    const keywordIndex = state.targetKeywords.indexOf(targetValue);
+    if (checked && keywordIndex === -1) {
+      setTargetKeywords([...state.targetKeywords, targetValue]);
+    }
+    if (!checked && keywordIndex > -1) {
+      state.targetKeywords.splice(keywordIndex, 1);
+      setTargetKeywords([...state.targetKeywords]);
+    }
+    setRecommendChecks({ ...state.recommendChecks, [name]: checked });
+  };
+
   return (
     <SearchContext.Provider
       value={{
@@ -98,6 +112,7 @@ const SearchState = (props) => {
         setTargetKeywords,
         setRadius,
         setRecommendChecks,
+        handleCheckboxChange,
         setErrorMessages,
       }}
     >
