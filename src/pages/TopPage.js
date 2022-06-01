@@ -1,7 +1,5 @@
 import Form from '../components/Form';
 
-const TopPage = () => {
-  return <Form />;
-};
+const TopPage = () => <Form />;
 
 export default TopPage;
