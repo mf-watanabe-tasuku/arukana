@@ -1,20 +1,20 @@
-import { SET_RESULTS, CLEAR_RESULTS, SET_LOADING } from '../types';
+import { ACTIONS } from '../types';
 
-const type = (state, action) => {
+const ResultReducer = (state, action) => {
   switch (action.type) {
-    case SET_RESULTS:
+    case ACTIONS.SET_RESULTS:
       return {
         ...state,
         loading: false,
         results: action.payload,
       };
-    case CLEAR_RESULTS:
+    case ACTIONS.CLEAR_RESULTS:
       return {
         ...state,
         loading: false,
         results: [],
       };
-    case SET_LOADING:
+    case ACTIONS.SET_LOADING:
       return {
         ...state,
         loading: true,
@@ -24,4 +24,4 @@ const type = (state, action) => {
   }
 };
 
-export default type;
+export default ResultReducer;

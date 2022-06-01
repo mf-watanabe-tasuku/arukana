@@ -1,52 +1,43 @@
-import {
-  SET_ORIGIN_ADDRESS,
-  SET_ORIGIN_GEOCODE,
-  SET_FREE_KEYWORD,
-  SET_FREE_KEYWORDS,
-  SET_TARGET_KEYWORDS,
-  SET_RADIUS,
-  SET_RECOMMEND_CHECKS,
-  SET_ERROR_MESSAGES,
-} from '../types';
+import { ACTIONS } from '../types';
 
-const type = (state, action) => {
+const SearchReducer = (state, action) => {
   switch (action.type) {
-    case SET_ORIGIN_ADDRESS:
+    case ACTIONS.SET_ORIGIN_ADDRESS:
       return {
         ...state,
         originAddress: action.payload,
       };
-    case SET_ORIGIN_GEOCODE:
+    case ACTIONS.SET_ORIGIN_GEOCODE:
       return {
         ...state,
         originGeocode: action.payload,
       };
-    case SET_FREE_KEYWORD:
+    case ACTIONS.SET_FREE_KEYWORD:
       return {
         ...state,
         freeKeyword: action.payload,
       };
-    case SET_FREE_KEYWORDS:
+    case ACTIONS.SET_FREE_KEYWORDS:
       return {
         ...state,
         freeKeywords: action.payload,
       };
-    case SET_TARGET_KEYWORDS:
+    case ACTIONS.SET_TARGET_KEYWORDS:
       return {
         ...state,
         targetKeywords: action.payload,
       };
-    case SET_RADIUS:
+    case ACTIONS.SET_RADIUS:
       return {
         ...state,
         radius: action.payload,
       };
-    case SET_RECOMMEND_CHECKS:
+    case ACTIONS.SET_RECOMMEND_CHECKS:
       return {
         ...state,
         recommendChecks: action.payload,
       };
-    case SET_ERROR_MESSAGES:
+    case ACTIONS.SET_ERROR_MESSAGES:
       return {
         ...state,
         errorMessages: action.payload,
@@ -56,4 +47,4 @@ const type = (state, action) => {
   }
 };
 
-export default type;
+export default SearchReducer;

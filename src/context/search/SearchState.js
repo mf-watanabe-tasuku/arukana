@@ -1,16 +1,7 @@
 import { useReducer } from 'react';
 import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
-import {
-  SET_ORIGIN_ADDRESS,
-  SET_ORIGIN_GEOCODE,
-  SET_FREE_KEYWORD,
-  SET_FREE_KEYWORDS,
-  SET_TARGET_KEYWORDS,
-  SET_RADIUS,
-  SET_RECOMMEND_CHECKS,
-  SET_ERROR_MESSAGES,
-} from '../types';
+import { ACTIONS } from '../types';
 
 const SearchState = (props) => {
   const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;
@@ -30,54 +21,54 @@ const SearchState = (props) => {
 
   const setOriginAddress = (originAddress) =>
     dispatch({
-      type: SET_ORIGIN_ADDRESS,
+      type: ACTIONS.SET_ORIGIN_ADDRESS,
       payload: originAddress,
     });
 
   const setOriginGeocode = (originGeocode) =>
     dispatch({
-      type: SET_ORIGIN_GEOCODE,
+      type: ACTIONS.SET_ORIGIN_GEOCODE,
       payload: originGeocode,
     });
 
   const setFreeKeyword = (freeKeyword) => {
     dispatch({
-      type: SET_FREE_KEYWORD,
+      type: ACTIONS.SET_FREE_KEYWORD,
       payload: freeKeyword,
     });
   };
 
   const setFreeKeywords = (freeKeywords) => {
     dispatch({
-      type: SET_FREE_KEYWORDS,
+      type: ACTIONS.SET_FREE_KEYWORDS,
       payload: freeKeywords,
     });
   };
 
   const setTargetKeywords = (targetKeywords) => {
     dispatch({
-      type: SET_TARGET_KEYWORDS,
+      type: ACTIONS.SET_TARGET_KEYWORDS,
       payload: targetKeywords,
     });
   };
 
   const setRadius = (radius) => {
     dispatch({
-      type: SET_RADIUS,
+      type: ACTIONS.SET_RADIUS,
       payload: radius,
     });
   };
 
   const setRecommendChecks = (recommendChecks) => {
     dispatch({
-      type: SET_RECOMMEND_CHECKS,
+      type: ACTIONS.SET_RECOMMEND_CHECKS,
       payload: recommendChecks,
     });
   };
 
   const setErrorMessages = (errorMessages) => {
     dispatch({
-      type: SET_ERROR_MESSAGES,
+      type: ACTIONS.SET_ERROR_MESSAGES,
       payload: errorMessages,
     });
   };

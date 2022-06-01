@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 import ResultContext from './ResultContext';
 import ResultReducer from './ResultReducer';
-import { SET_RESULTS, CLEAR_RESULTS, SET_LOADING } from '../types';
+import { ACTIONS } from '../types';
 
 const ResultState = (props) => {
   const initialState = {
@@ -19,11 +19,11 @@ const ResultState = (props) => {
   }, []);
 
   const setResults = (results) =>
-    dispatch({ type: SET_RESULTS, payload: results });
+    dispatch({ type: ACTIONS.SET_RESULTS, payload: results });
 
-  const clearResults = () => dispatch({ type: CLEAR_RESULTS });
+  const clearResults = () => dispatch({ type: ACTIONS.CLEAR_RESULTS });
 
-  const setLoading = () => dispatch({ type: SET_LOADING });
+  const setLoading = () => dispatch({ type: ACTIONS.SET_LOADING });
 
   return (
     <ResultContext.Provider
