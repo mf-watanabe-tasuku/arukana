@@ -5,13 +5,11 @@ const ResultReducer = (state, action) => {
     case ACTIONS.SET_RESULTS:
       return {
         ...state,
-        loading: false,
         results: action.payload,
       };
     case ACTIONS.CLEAR_RESULTS:
       return {
         ...state,
-        loading: false,
         results: [],
       };
     case ACTIONS.SET_LOADING:
