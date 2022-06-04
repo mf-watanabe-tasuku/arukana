@@ -19,11 +19,21 @@ const ResultState = (props) => {
   }, []);
 
   const setResults = (results) =>
-    dispatch({ type: ACTIONS.SET_RESULTS, payload: results });
+    dispatch({
+      type: ACTIONS.SET_RESULTS,
+      payload: results
+    });
 
-  const clearResults = () => dispatch({ type: ACTIONS.CLEAR_RESULTS });
+  const clearResults = () =>
+    dispatch({
+      type: ACTIONS.CLEAR_RESULTS,
+    });
 
-  const setLoading = () => dispatch({ type: ACTIONS.SET_LOADING });
+  const setLoading = (loading) =>
+    dispatch({
+      type: ACTIONS.SET_LOADING,
+      payload: loading
+    });
 
   return (
     <ResultContext.Provider

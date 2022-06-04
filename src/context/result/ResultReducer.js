@@ -15,7 +15,7 @@ const ResultReducer = (state, action) => {
     case ACTIONS.SET_LOADING:
       return {
         ...state,
-        loading: true,
+        loading: action.payload,
       };
     default:
       return state;
