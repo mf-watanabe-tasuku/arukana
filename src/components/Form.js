@@ -1,39 +1,45 @@
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Loading from './Loading';
-import CheckboxList from './CheckboxList';
+import RecommendChecks from './RecommendChecks';
 import Results from './Results';
 import ResultContext from '../context/result/ResultContext';
 import SearchContext from '../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 
 const Form = () => {
+  const [loading, setLoading] = useState(false);
+
   const resultContext = useContext(ResultContext);
-  const { loading, results, setResults, clearResults, setLoading } =
+  const { results, setResults, clearResults } =
     resultContext;
   const searchContext = useContext(SearchContext);
   const {
     originAddress,
-    originGeocode,
     freeKeyword,
     freeKeywords,
     radius,
-    recommendChecks,
     errorMessages,
     setOriginAddress,
     setFreeKeyword,
     addFreeKeywords,
-    handleCheckboxChange,
     removeFreeKeyword,
     validateSearchValues,
     handleInputRadius,
     getSearchResults
   } = searchContext;
 
+  useEffect(() => {
+    const googleMapScript = document.createElement('script');
+    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&v=weekly`;
+    googleMapScript.async = true;
+    document.body.appendChild(googleMapScript);
+  }, []);
+
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
 
   // 検索ボタンを押した時の処理;
-  const handleSearch = async (e) => {
+  const handleSubmit = async (e) => {
     if (e.key === 'Enter') return;
     e.preventDefault();
 
@@ -58,7 +64,7 @@ const Form = () => {
             トップへ戻る
           </p>
         </div>
-        <Results results={results} originGeocode={originGeocode} />
+        <Results />
         <button className='btn-back' onClick={clearResults}>
           トップへ戻る
         </button>
@@ -83,10 +89,7 @@ const Form = () => {
         <span className='search-step__num'>STEP2</span>
         <p className='search-step__ttl'>検索したい施設を選ぶ</p>
         <p className='search-step__sub-ttl'>選択肢から選ぶ</p>
-        <CheckboxList
-          recommendChecks={recommendChecks}
-          onChange={handleCheckboxChange}
-        />
+        <RecommendChecks />
         <p className='search-step__sub-ttl'>
           自由に入力する (最大{process.env.REACT_APP_KEYWORD_MAX_COUNT}個)
         </p>
@@ -128,7 +131,7 @@ const Form = () => {
         </span>
         <ErrorMessage message={errorMessages.radius} />
       </div>
-      <button onClick={handleSearch} type='button' className='btn-search'>
+      <button onClick={handleSubmit} type='button' className='btn-search'>
         検索する
       </button>
       <ErrorMessage message={errorMessages.notice} className='text-center' />

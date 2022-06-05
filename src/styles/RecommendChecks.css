@@ -1,3 +1,15 @@
+.place__checkbox-list {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 30px;
+  list-style-type: none;
+  padding-left: 0;
+}
+@media (max-width: 767px) {
+  .place__checkbox-list {
+    flex-wrap: wrap;
+  }
+}
 .place-checkbox__item {
   width: 24%;
   border: 2px solid #36759c;

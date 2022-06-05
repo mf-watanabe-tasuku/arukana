@@ -25,12 +25,6 @@ const SearchState = (props) => {
       payload: originAddress,
     });
 
-  const setOriginGeocode = (originGeocode) =>
-    dispatch({
-      type: ACTIONS.SET_ORIGIN_GEOCODE,
-      payload: originGeocode,
-    });
-
   const setFreeKeyword = (freeKeyword) => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORD,
@@ -49,20 +43,6 @@ const SearchState = (props) => {
     dispatch({
       type: ACTIONS.SET_TARGET_KEYWORDS,
       payload: targetKeywords,
-    });
-  };
-
-  const setRadius = (radius) => {
-    dispatch({
-      type: ACTIONS.SET_RADIUS,
-      payload: radius,
-    });
-  };
-
-  const setRecommendChecks = (recommendChecks) => {
-    dispatch({
-      type: ACTIONS.SET_RECOMMEND_CHECKS,
-      payload: recommendChecks,
     });
   };
 
@@ -87,7 +67,10 @@ const SearchState = (props) => {
     }
 
     setTargetKeywords(newTargetKeywords);
-    setRecommendChecks({ ...state.recommendChecks, [name]: checked });
+    dispatch({
+      type: ACTIONS.SET_RECOMMEND_CHECKS,
+      payload: { ...state.recommendChecks, [name]: checked },
+    });
   };
 
   const addFreeKeywords = (e) => {
@@ -165,7 +148,7 @@ const SearchState = (props) => {
   };
 
   // 基準地点の座標を取得する
-  const fetchOriginGeocode = async () => {
+  const setOriginGeocode = async () => {
     const geocoder = new window.google.maps.Geocoder();
     const originGeocode = await geocoder.geocode(
       { address: state.originAddress },
@@ -177,7 +160,10 @@ const SearchState = (props) => {
       lng: originGeocode.results[0].geometry.location.lng(),
     };
 
-    setOriginGeocode(formattedOriginGeocode);
+    dispatch({
+      type: ACTIONS.SET_ORIGIN_GEOCODE,
+      payload: formattedOriginGeocode,
+    });
 
     return formattedOriginGeocode;
   };
@@ -274,11 +260,14 @@ const SearchState = (props) => {
     e.preventDefault();
     let radiusVal = String(e.target.value).replace(',', '');
     if (radiusVal) radiusVal = parseInt(radiusVal);
-    setRadius(radiusVal);
+    dispatch({
+      type: ACTIONS.SET_RADIUS,
+      payload: radiusVal,
+    });
   }
 
   const getSearchResults = async () => {
-    const originGeocode = await fetchOriginGeocode();
+    const originGeocode = await setOriginGeocode();
     return await Promise.all(
       state.targetKeywords.map((keyword) => {
         return new Promise((resolve) => {
@@ -298,24 +287,15 @@ const SearchState = (props) => {
         originGeocode: state.originGeocode,
         freeKeyword: state.freeKeyword,
         freeKeywords: state.freeKeywords,
-        targetKeywords: state.targetKeywords,
         radius: state.radius,
         recommendChecks: state.recommendChecks,
         errorMessages: state.errorMessages,
         setOriginAddress,
-        setOriginGeocode,
         setFreeKeyword,
-        setFreeKeywords,
         addFreeKeywords,
-        setTargetKeywords,
-        setRadius,
-        setRecommendChecks,
         handleCheckboxChange,
-        setErrorMessages,
         removeFreeKeyword,
         validateSearchValues,
-        fetchOriginGeocode,
-        fetchNearbyPlaces,
         handleInputRadius,
         getSearchResults
       }}

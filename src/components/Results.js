@@ -1,34 +1,38 @@
+import { useContext } from 'react';
 import Result from './Result';
+import ResultContext from '../context/result/ResultContext';
 import '../styles/Results.css';
 
-const Results = ({ results, originGeocode }) => {
-  let noResults = [];
-  let withResults = [];
+const Results = () => {
+  const { results }= useContext(ResultContext);
+
+  let placeNotExistingResults = [];
+  let placeExistingResults = [];
 
   results.forEach((result) => {
     if (result.nearestPlace) {
-      withResults = [...withResults, result];
+      placeExistingResults = [...placeExistingResults, result];
     } else {
-      noResults = [...noResults, result];
+      placeNotExistingResults = [...placeNotExistingResults, result];
     }
   });
 
   return (
     <>
-      {noResults.length > 0 && (
+      {placeNotExistingResults.length > 0 && (
         <div className='no-results'>
           <ul className='no-results__list'>
-            {noResults.map((result, i) => (
+            {placeNotExistingResults.map((result, i) => (
               <li key={i}>{result.keyword}は見つかりませんでした</li>
             ))}
           </ul>
         </div>
       )}
       <ul className='result-list'>
-        {withResults.map((result, i) => {
+        {placeExistingResults.map((result, i) => {
           return (
             result.nearestPlace && (
-              <Result key={i} originGeocode={originGeocode} result={result} />
+              <Result key={i} result={result} />
             )
           );
         })}

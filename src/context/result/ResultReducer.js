@@ -12,11 +12,6 @@ const ResultReducer = (state, action) => {
         ...state,
         results: [],
       };
-    case ACTIONS.SET_LOADING:
-      return {
-        ...state,
-        loading: action.payload,
-      };
     default:
       return state;
   }

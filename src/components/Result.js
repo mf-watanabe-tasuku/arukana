@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
+import SearchContext from '../context/search/SearchContext';
 import {
   faSmile,
   faMapMarkerAlt,
@@ -12,10 +13,12 @@ import star_25 from '../images/star_25.svg';
 import star_0 from '../images/star_0.svg';
 import '../styles/Result.css';
 
-const Result = ({ originGeocode, result }) => {
+const Result = ({ result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
   const { name, rating, reviewCount, distance, duration, geocode } =
     nearestPlace;
+
+  const { originGeocode } = useContext(SearchContext);
 
   const map = useRef(null);
 
