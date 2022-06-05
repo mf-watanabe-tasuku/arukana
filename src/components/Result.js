@@ -11,7 +11,7 @@ import star_75 from '../images/star_75.svg';
 import star_50 from '../images/star_50.svg';
 import star_25 from '../images/star_25.svg';
 import star_0 from '../images/star_0.svg';
-import '../styles/Result.css';
+import '../styles/Results.css';
 
 const Result = ({ result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;

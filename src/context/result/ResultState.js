@@ -19,7 +19,7 @@ const ResultState = (props) => {
   const clearResults = () =>
     dispatch({
       type: ACTIONS.CLEAR_RESULTS,
-    });
+    })
 
   return (
     <ResultContext.Provider
