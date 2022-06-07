@@ -3,9 +3,15 @@ import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
 import { ACTIONS } from '../types';
 
-const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;
+type ErrorMessageType = {
+  originAddress: string,
+  keyword: string,
+  radius: string
+}
 
-const SearchState = (props) => {
+const SearchState = (props: any) => {
+  const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;
+
   const initialState = {
     originAddress: '',
     originGeocode: {},
@@ -19,41 +25,41 @@ const SearchState = (props) => {
 
   const [state, dispatch] = useReducer(SearchReducer, initialState);
 
-  const setOriginAddress = (originAddress) =>
+  const setOriginAddress = (originAddress: any) =>
     dispatch({
       type: ACTIONS.SET_ORIGIN_ADDRESS,
       payload: originAddress,
     });
 
-  const setFreeKeyword = (freeKeyword) => {
+  const setFreeKeyword = (freeKeyword: string) => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORD,
       payload: freeKeyword,
     });
   };
 
-  const setFreeKeywords = (freeKeywords) => {
+  const setFreeKeywords = (freeKeywords: string[]) => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORDS,
       payload: freeKeywords,
     });
   };
 
-  const setTargetKeywords = (targetKeywords) => {
+  const setTargetKeywords = (targetKeywords: string[]) => {
     dispatch({
       type: ACTIONS.SET_TARGET_KEYWORDS,
       payload: targetKeywords,
     });
   };
 
-  const setErrorMessages = (errorMessages) => {
+  const setErrorMessages = (errorMessages: ErrorMessageType) => {
     dispatch({
       type: ACTIONS.SET_ERROR_MESSAGES,
       payload: errorMessages,
     });
   };
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e: any) => {
     const targetValue = e.target.value;
     const { name, checked } = e.target;
     const keywordIndex = state.targetKeywords.indexOf(targetValue);
@@ -76,7 +82,7 @@ const SearchState = (props) => {
   const addFreeKeywords = (e) => {
     if (e.key !== 'Enter') return;
 
-    if (state.freeKeywords.length + 1 > keywordMaxCount) {
+    if (keywordMaxCount && state.freeKeywords.length + 1 > keywordMaxCount) {
       setErrorMessages({
         ...state.errorMessages,
         keyword: `一度に入力できるのは${keywordMaxCount}個までです`,
@@ -102,7 +108,7 @@ const SearchState = (props) => {
     }
   };
 
-  const removeFreeKeyword = (keyword) => {
+  const removeFreeKeyword = (keyword: string) => {
     const keywordIndex = state.freeKeywords.indexOf(keyword);
     if (keywordIndex === -1) return;
     state.freeKeywords.splice(keywordIndex, 1);
@@ -245,7 +251,7 @@ const SearchState = (props) => {
     };
 
     return new Promise((resolve) => {
-      service.getDistanceMatrix(distanceMatrixConditions, (res, status) => {
+      service.getDistanceMatrix(distanceMatrixConditions, (res) => {
         const data = res.rows[0].elements;
         const distanceDataObj = {
           distance: data[0].distance.value,
@@ -256,7 +262,7 @@ const SearchState = (props) => {
     });
   };
 
-  const handleInputRadius = (e) => {
+  const handleInputRadius = (e: any) => {
     e.preventDefault();
     let radiusVal = String(e.target.value).replace(',', '');
     if (radiusVal) radiusVal = parseInt(radiusVal);
@@ -269,7 +275,7 @@ const SearchState = (props) => {
   const getSearchResults = async () => {
     const originGeocode = await setOriginGeocode();
     return await Promise.all(
-      state.targetKeywords.map((keyword) => {
+      state.targetKeywords.map((keyword: string) => {
         return new Promise((resolve) => {
           setTimeout(() => {
             const nearbyPlaces = fetchNearbyPlaces(originGeocode, keyword);

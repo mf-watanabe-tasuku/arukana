@@ -1,9 +1,15 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import RecommendChecks from './RecommendChecks';
 import ResultContext from '../context/result/ResultContext';
 import SearchContext from '../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 import Loading from './Loading';
+
+type ErrorMessageType = {
+  originAddress: string,
+  keyword: string,
+  radius: string
+}
 
 function Form() {
   const [loading, setLoading] = useState(false);
@@ -15,6 +21,19 @@ function Form() {
     freeKeywords,
     radius,
     errorMessages,
+    setOriginAddress,
+    setFreeKeyword,
+    addFreeKeywords,
+    removeFreeKeyword,
+    validateSearchValues,
+    handleInputRadius,
+    getSearchResults,
+  }: {
+    originAddress: any,
+    freeKeyword: string,
+    freeKeywords: string[],
+    radius: number,
+    errorMessages: ErrorMessageType,
     setOriginAddress,
     setFreeKeyword,
     addFreeKeywords,
