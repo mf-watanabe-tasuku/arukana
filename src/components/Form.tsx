@@ -1,8 +1,8 @@
-import { useState, useContext } from 'react';
-import RecommendChecks from '../components/RecommendChecks';
+import React, { useState, useContext } from 'react';
+import RecommendChecks from './RecommendChecks';
 import ResultContext from '../context/result/ResultContext';
 import SearchContext from '../context/search/SearchContext';
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from './ErrorMessage';
 import Loading from './Loading';
 
 function Form() {
@@ -24,11 +24,11 @@ function Form() {
     getSearchResults,
   } = useContext(SearchContext);
 
-  const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
-  const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
+  const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS?.toLocaleString();
+  const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS?.toLocaleString();
 
   // 検索ボタンを押した時の処理;
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     if (e.key === 'Enter') return;
     e.preventDefault();
 
@@ -75,7 +75,7 @@ function Form() {
               value={freeKeyword}
             />
             <ul className='freeKeyword-list'>
-              {freeKeywords.map((keyword, i) => (
+              {freeKeywords.map((keyword: string, i: number) => (
                 <li key={i} className='freeKeyword-item'>
                   {keyword}{' '}
                   <span
@@ -107,10 +107,9 @@ function Form() {
           <button onClick={handleSubmit} type='button' className='btn-search'>
             検索する
           </button>
-          <ErrorMessage
-            message={errorMessages.notice}
-            className='text-center'
-          />
+          <div className="text-center">
+            <ErrorMessage message={errorMessages.notice} />
+          </div>
         </form>
       )}
     </>

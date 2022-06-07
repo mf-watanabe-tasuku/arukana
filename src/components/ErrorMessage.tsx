@@ -1,9 +1,13 @@
 import '../styles/Error.css';
 
-const ErrorMessage = ({ message, className }) => {
+type ErrorMessageType = {
+  message: string
+}
+
+const ErrorMessage = ({ message }: ErrorMessageType) => {
   return (
     <p
-      className={`error-text ${className}`}
+      className={`error-text`}
       style={{ display: message ? 'block' : 'none' }}
     >
       {message}
