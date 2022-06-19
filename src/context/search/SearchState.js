@@ -3,13 +3,7 @@ import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
 import { ACTIONS } from '../types';
 
-type ErrorMessageType = {
-  originAddress: string,
-  keyword: string,
-  radius: string
-}
-
-const SearchState = (props: any) => {
+const SearchState = (props) => {
   const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;
 
   const initialState = {
@@ -25,41 +19,41 @@ const SearchState = (props: any) => {
 
   const [state, dispatch] = useReducer(SearchReducer, initialState);
 
-  const setOriginAddress = (originAddress: any) =>
+  const setOriginAddress = (originAddress) =>
     dispatch({
       type: ACTIONS.SET_ORIGIN_ADDRESS,
       payload: originAddress,
     });
 
-  const setFreeKeyword = (freeKeyword: string) => {
+  const setFreeKeyword = (freeKeyword) => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORD,
       payload: freeKeyword,
     });
   };
 
-  const setFreeKeywords = (freeKeywords: string[]) => {
+  const setFreeKeywords = (freeKeywords) => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORDS,
       payload: freeKeywords,
     });
   };
 
-  const setTargetKeywords = (targetKeywords: string[]) => {
+  const setTargetKeywords = (targetKeywords) => {
     dispatch({
       type: ACTIONS.SET_TARGET_KEYWORDS,
       payload: targetKeywords,
     });
   };
 
-  const setErrorMessages = (errorMessages: ErrorMessageType) => {
+  const setErrorMessages = (errorMessages) => {
     dispatch({
       type: ACTIONS.SET_ERROR_MESSAGES,
       payload: errorMessages,
     });
   };
 
-  const handleCheckboxChange = (e: any) => {
+  const handleCheckboxChange = (e) => {
     const targetValue = e.target.value;
     const { name, checked } = e.target;
     const keywordIndex = state.targetKeywords.indexOf(targetValue);
@@ -108,7 +102,7 @@ const SearchState = (props: any) => {
     }
   };
 
-  const removeFreeKeyword = (keyword: string) => {
+  const removeFreeKeyword = (keyword) => {
     const keywordIndex = state.freeKeywords.indexOf(keyword);
     if (keywordIndex === -1) return;
     state.freeKeywords.splice(keywordIndex, 1);
@@ -262,7 +256,7 @@ const SearchState = (props: any) => {
     });
   };
 
-  const handleInputRadius = (e: any) => {
+  const handleInputRadius = (e) => {
     e.preventDefault();
     let radiusVal = String(e.target.value).replace(',', '');
     if (radiusVal) radiusVal = parseInt(radiusVal);
@@ -275,7 +269,7 @@ const SearchState = (props: any) => {
   const getSearchResults = async () => {
     const originGeocode = await setOriginGeocode();
     return await Promise.all(
-      state.targetKeywords.map((keyword: string) => {
+      state.targetKeywords.map((keyword) => {
         return new Promise((resolve) => {
           setTimeout(() => {
             const nearbyPlaces = fetchNearbyPlaces(originGeocode, keyword);
