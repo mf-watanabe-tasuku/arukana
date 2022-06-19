@@ -5,13 +5,7 @@ import SearchContext from '../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 import Loading from './Loading';
 
-type ErrorMessageType = {
-  originAddress: string,
-  keyword: string,
-  radius: string
-}
-
-function Form() {
+const Form: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const { setResults } = useContext(ResultContext);
@@ -21,19 +15,6 @@ function Form() {
     freeKeywords,
     radius,
     errorMessages,
-    setOriginAddress,
-    setFreeKeyword,
-    addFreeKeywords,
-    removeFreeKeyword,
-    validateSearchValues,
-    handleInputRadius,
-    getSearchResults,
-  }: {
-    originAddress: any,
-    freeKeyword: string,
-    freeKeywords: string[],
-    radius: number,
-    errorMessages: ErrorMessageType,
     setOriginAddress,
     setFreeKeyword,
     addFreeKeywords,
