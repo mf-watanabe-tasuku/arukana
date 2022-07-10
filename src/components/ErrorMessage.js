@@ -1,10 +1,6 @@
 import '../styles/Error.css';
 
-type ErrorMessageType = {
-  message: string
-}
-
-const ErrorMessage = ({ message }: ErrorMessageType) => {
+const ErrorMessage = ({ message }) => {
   return (
     <p
       className={`error-text`}

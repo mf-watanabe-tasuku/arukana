@@ -5,7 +5,7 @@ import SearchContext from '../context/search/SearchContext';
 import ErrorMessage from './ErrorMessage';
 import Loading from './Loading';
 
-const Form: React.FC = () => {
+const Form = () => {
   const [loading, setLoading] = useState(false);
 
   const { setResults } = useContext(ResultContext);
@@ -28,7 +28,7 @@ const Form: React.FC = () => {
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS?.toLocaleString();
 
   // 検索ボタンを押した時の処理;
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     if (e.key === 'Enter') return;
     e.preventDefault();
 
@@ -75,7 +75,7 @@ const Form: React.FC = () => {
               value={freeKeyword}
             />
             <ul className='freeKeyword-list'>
-              {freeKeywords.map((keyword: string, i: number) => (
+              {freeKeywords.map((keyword, i) => (
                 <li key={i} className='freeKeyword-item'>
                   {keyword}{' '}
                   <span
