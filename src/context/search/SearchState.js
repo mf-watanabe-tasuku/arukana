@@ -258,11 +258,10 @@ const SearchState = (props) => {
 
   const handleInputRadius = (e) => {
     e.preventDefault();
-    let radiusVal = String(e.target.value).replace(',', '');
-    if (radiusVal) radiusVal = parseInt(radiusVal);
+    const radius = parseInt(e.target.value.replace(/[^0-9]+/, ''));
     dispatch({
       type: ACTIONS.SET_RADIUS,
-      payload: radiusVal,
+      payload: radius,
     });
   }
 
