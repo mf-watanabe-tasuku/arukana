@@ -2,7 +2,7 @@
 
 周辺施設までの距離を一括検索できるサービスです。
 
-Site: [https://whimsical-belekoy-604536.netlify.app/](https://whimsical-belekoy-604536.netlify.app/)
+Site: [https://cerulean-hummingbird-ace5cd.netlify.app/](https://cerulean-hummingbird-ace5cd.netlify.app/)
 
 ## Technologies
 
