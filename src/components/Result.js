@@ -46,12 +46,6 @@ const StyledDataList = styled.ul`
   list-style: none;
 `;
 
-const StyledDataListItem = styled.li`
-  :not(:last-of-type) {
-    margin-bottom: 6px;
-  }
-`;
-
 const StyledResultItemMap = styled.div`
   width: 45%;
 
@@ -206,7 +200,7 @@ const Result = ({ result }) => {
             <div>
               <StyledResultItemTitle>{name}</StyledResultItemTitle>
               <StyledDataList>
-                <StyledDataListItem>
+                <li>
                   <StyledRatingBox>
                     <StyledRatingIcon>
                       <FontAwesomeIcon icon={faSmile} />
@@ -230,15 +224,15 @@ const Result = ({ result }) => {
                       'まだ評価がありません'
                     )}
                   </StyledRatingBox>
-                </StyledDataListItem>
-                <li className='data-list-item'>
+                </li>
+                <li>
                   <StyledRatingIcon>
                     <FontAwesomeIcon icon={faMapMarkerAlt} />
                   </StyledRatingIcon>
                   <span>距離 : </span>
                   <span>{getDisplayDistance(distance)}</span>
                 </li>
-                <li className='data-list-item'>
+                <li>
                   <StyledRatingIcon>
                     <FontAwesomeIcon icon={faClock} />
                   </StyledRatingIcon>

@@ -11,6 +11,7 @@ const StyleWrapper = styled.div`
   padding: 50px 30px 100px;
   background-color: #f5f6f9;
   height: 100%;
+  min-height: 100vh;
 
   @media (max-width: 767px) {
     padding: 30px 15px 50px;

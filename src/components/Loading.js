@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { styled } from 'styled-components';
 
 const StyledSpinnerCase = styled.div`
-  margin-top: 60px;
+  margin-top: 100px;
   text-align: center;
   font-size: 60px;
 `;

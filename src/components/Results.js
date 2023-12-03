@@ -51,7 +51,7 @@ const Results = () => {
           </StyledResultList>
         </StyledNoResults>
       )}
-      <ul className='result-list'>
+      <ul>
         {placeExistingResults.map((result, i) => {
           return result.nearestPlace && <Result key={i} result={result} />;
         })}
