@@ -1,6 +1,45 @@
 import { useContext } from 'react';
 import SearchContext from '../context/search/SearchContext';
-import '../styles/RecommendChecks.css';
+import { styled } from 'styled-components';
+
+const StyledPlaceCheckboxList = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 15px;
+  margin: 0 0 30px;
+  list-style-type: none;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const StyledPlaceCheckboxItem = styled.li`
+  border: 2px solid #36759c;
+  background: #fff;
+  border-radius: 5px;
+  text-align: center;
+`;
+
+const StyledPlaceCheckboxInput = styled.input`
+  display: none;
+
+  &:checked + label {
+    color: #fff;
+    background: #50b6f1;
+  }
+`;
+
+const StyledPlaceCheckboxLabel = styled.label`
+  padding: 12px 0;
+  display: block;
+  transition-duration: 0.2s;
+  cursor: pointer;
+
+  @media (max-width: 424px) {
+    font-size: 14px;
+  }
+`;
 
 const RecommendChecks = () => {
   const { recommendChecks, handleCheckboxChange } = useContext(SearchContext);
@@ -13,27 +52,26 @@ const RecommendChecks = () => {
   ];
 
   return (
-    <ul className='place__checkbox-list'>
+    <StyledPlaceCheckboxList>
       {placeList.length > 0 &&
         placeList.map((place, i) => {
           return (
-            <li className='place-checkbox__item' key={i}>
-              <input
+            <StyledPlaceCheckboxItem key={i}>
+              <StyledPlaceCheckboxInput
                 type='checkbox'
-                className='place-checkbox__input'
                 name={place.name}
                 value={place.value}
                 id={place.id}
                 onChange={handleCheckboxChange}
                 defaultChecked={recommendChecks[placeList[i].name]}
               />
-              <label className='place-checkbox__label' htmlFor={place.id}>
+              <StyledPlaceCheckboxLabel htmlFor={place.id}>
                 {place.value}
-              </label>
-            </li>
+              </StyledPlaceCheckboxLabel>
+            </StyledPlaceCheckboxItem>
           );
         })}
-    </ul>
+    </StyledPlaceCheckboxList>
   );
 };
 
