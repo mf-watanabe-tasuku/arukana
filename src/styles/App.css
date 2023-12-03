@@ -11,14 +11,6 @@ body {
     'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック',
     'MS PGothic', sans-serif;
   line-height: 1.6;
-  padding: 50px 30px 100px;
-  background-color: #f5f6f9;
-}
-
-@media (max-width: 767px) {
-  body {
-    padding: 30px 15px 50px;
-  }
 }
 
 .text-center {
@@ -35,10 +27,7 @@ body {
   }
 }
 
-.wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-}
+/* ----------------- */
 
 .search-step__item {
   background-color: #fff;
