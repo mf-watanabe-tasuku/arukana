@@ -25,6 +25,16 @@ body {
   text-align: center;
 }
 
+.show-sp {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .show-sp {
+    display: block;
+  }
+}
+
 .wrapper {
   width: 860px;
   margin: 0 auto;
