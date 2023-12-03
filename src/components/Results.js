@@ -1,8 +1,21 @@
 import { useContext } from 'react';
+import { styled } from 'styled-components';
 import ResultContext from '../context/result/ResultContext';
 import SearchContext from '../context/search/SearchContext';
 import Result from './Result';
-import '../styles/Results.css';
+
+const StyledNoResults = styled.div`
+  margin-bottom: 40px;
+  border: 2px solid tomato;
+  border-radius: 5px;
+  background-color: rgb(255, 194, 194);
+  padding: 30px 30px 30px 50px;
+`;
+
+const StyledResultList = styled.ul`
+  list-style-type: none;
+  margin: 0 auto;
+`;
 
 const Results = () => {
   const { results, clearResults } = useContext(ResultContext);
@@ -30,13 +43,13 @@ const Results = () => {
         </p>
       </div>
       {placeNotExistingResults.length > 0 && (
-        <div className='no-results'>
-          <ul className='no-results__list'>
+        <StyledNoResults>
+          <StyledResultList>
             {placeNotExistingResults.map((result, i) => (
               <li key={i}>{result.keyword}は見つかりませんでした</li>
             ))}
-          </ul>
-        </div>
+          </StyledResultList>
+        </StyledNoResults>
       )}
       <ul className='result-list'>
         {placeExistingResults.map((result, i) => {

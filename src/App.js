@@ -10,6 +10,7 @@ import { styled } from 'styled-components';
 const StyleWrapper = styled.div`
   padding: 50px 30px 100px;
   background-color: #f5f6f9;
+  height: 100%;
 
   @media (max-width: 767px) {
     padding: 30px 15px 50px;
@@ -17,7 +18,7 @@ const StyleWrapper = styled.div`
 `;
 
 const StyledContainer = styled.div`
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
 `;
 

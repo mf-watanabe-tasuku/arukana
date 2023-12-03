@@ -1,22 +1,120 @@
 import { useEffect, useRef, useContext } from 'react';
+import { styled } from 'styled-components';
 import SearchContext from '../context/search/SearchContext';
-import {
-  faSmile,
-  faMapMarkerAlt,
-  faClock,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSmile, faMapMarkerAlt, faClock, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import star_100 from '../images/star_100.svg';
 import star_75 from '../images/star_75.svg';
 import star_50 from '../images/star_50.svg';
 import star_25 from '../images/star_25.svg';
 import star_0 from '../images/star_0.svg';
-import '../styles/Results.css';
+
+const StyledResult = styled.li`
+  background-color: #fff;
+  min-height: 250px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #999;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 1px 5px #c0c0c0;
+  padding: 25px 30px;
+
+  @media (max-width: 767px) {
+    padding: 20px;
+    flex-direction: column;
+  }
+`;
+
+const StyleResultItemKeyword = styled.p`
+  margin-bottom: 5px;
+`;
+
+const StyledResultItemDataBox = styled.div`
+  width: 51%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const StyledResultItemTitle = styled.p`
+  margin-bottom: 15px;
+  font-size: 20px;
+`;
+
+const StyledDataList = styled.ul`
+  margin-bottom: 22px;
+  list-style: none;
+`;
+
+const StyledDataListItem = styled.li`
+  :not(:last-of-type) {
+    margin-bottom: 6px;
+  }
+`;
+
+const StyledResultItemMap = styled.div`
+  width: 45%;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 60vw;
+  }
+`;
+
+const StyledMap = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const StyledOtherResultsBox = styled.div`
+  background-color: #f0f0f0;
+  padding: 10px 20px 15px;
+  font-size: 0.8rem;
+`;
+const StyledOtherResultsTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const StyledOtherResultsList = styled.ul`
+  padding-left: 15px;
+  list-style-type: square;
+  color: #555;
+`;
+
+const StyledOtherResultsItem = styled.li`
+  font-size: 12px;
+`;
+
+const StyledRatingBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledRatingIcon = styled.span`
+  margin-right: 7px;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  color: #3795c0;
+`;
+
+const StyledRatingNum = styled.span`
+  margin-right: 7px;
+`;
+
+const StyledRatingStarList = styled.span`
+  margin-top: 2px;
+`;
+
+const StyledRatingStarItem = styled.img`
+  width: 20px;
+  margin-right: 3px;
+`;
 
 const Result = ({ result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
-  const { name, rating, reviewCount, distance, duration, geocode } =
-    nearestPlace;
+  const { name, rating, reviewCount, distance, duration, geocode } = nearestPlace;
 
   const { originGeocode } = useContext(SearchContext);
 
@@ -99,74 +197,75 @@ const Result = ({ result }) => {
 
   return (
     <>
-      <p className='result-item-keyword'>
+      <StyleResultItemKeyword>
         <b>最寄りの{keyword}</b>
-      </p>
-      <li className='result-item'>
-        <div className='result-item-data-box'>
+      </StyleResultItemKeyword>
+      <StyledResult>
+        <StyledResultItemDataBox>
           {nearestPlace && (
             <div>
-              <p className='result-item-title'>{name}</p>
-              <ul className='data-list'>
-                <li className='data-list-item rating-box'>
-                  <span className='rating-icon'>
-                    <FontAwesomeIcon icon={faSmile} />
-                  </span>
-                  {rating ? (
-                    <>
-                      <span className='rating-num'>{rating}</span>
-                      <span className='rating-star-list'>
-                        {getRatingStars() &&
-                          getRatingStars().map((star, i) => (
-                            <img
-                              key={i}
-                              src={star}
-                              className='rating-star-item'
-                              alt='Rating Star'
-                            />
-                          ))}
-                      </span>
-                      <span>({reviewCount})</span>
-                    </>
-                  ) : (
-                    'まだ評価がありません'
-                  )}
-                </li>
+              <StyledResultItemTitle>{name}</StyledResultItemTitle>
+              <StyledDataList>
+                <StyledDataListItem>
+                  <StyledRatingBox>
+                    <StyledRatingIcon>
+                      <FontAwesomeIcon icon={faSmile} />
+                    </StyledRatingIcon>
+                    {rating ? (
+                      <>
+                        <StyledRatingNum>{rating}</StyledRatingNum>
+                        <StyledRatingStarList>
+                          {getRatingStars() &&
+                            getRatingStars().map((star, i) => (
+                              <StyledRatingStarItem
+                                key={i}
+                                src={star}
+                                alt='Rating Star'
+                              />
+                            ))}
+                        </StyledRatingStarList>
+                        <span>({reviewCount})</span>
+                      </>
+                    ) : (
+                      'まだ評価がありません'
+                    )}
+                  </StyledRatingBox>
+                </StyledDataListItem>
                 <li className='data-list-item'>
-                  <span className='rating-icon'>
+                  <StyledRatingIcon>
                     <FontAwesomeIcon icon={faMapMarkerAlt} />
-                  </span>
+                  </StyledRatingIcon>
                   <span>距離 : </span>
                   <span>{getDisplayDistance(distance)}</span>
                 </li>
                 <li className='data-list-item'>
-                  <span className='rating-icon'>
+                  <StyledRatingIcon>
                     <FontAwesomeIcon icon={faClock} />
-                  </span>
+                  </StyledRatingIcon>
                   <span>所要時間(徒歩) : </span>
                   <span>{duration}</span>
                 </li>
-              </ul>
+              </StyledDataList>
             </div>
           )}
           {nearbyPlaces.length > 0 && (
-            <div className='other-results__box'>
-              <p className='other-results__title'>検索にヒットした場所</p>
-              <ul className='other-results__list'>
+            <StyledOtherResultsBox>
+              <StyledOtherResultsTitle>検索にヒットした場所</StyledOtherResultsTitle>
+              <StyledOtherResultsList>
                 {nearbyPlaces.map((place, i) => (
-                  <li key={i} className='other-results__item'>
+                  <StyledOtherResultsItem key={i}>
                     {place.name} ( {getDisplayDistance(place.distance)} /{' '}
                     {place.duration} )
-                  </li>
+                  </StyledOtherResultsItem>
                 ))}
-              </ul>
-            </div>
+              </StyledOtherResultsList>
+            </StyledOtherResultsBox>
           )}
-        </div>
-        <div className='result-item-map'>
-          <div id='map' ref={map}></div>
-        </div>
-      </li>
+        </StyledResultItemDataBox>
+        <StyledResultItemMap>
+          <StyledMap id='map' ref={map}></StyledMap>
+        </StyledResultItemMap>
+      </StyledResult>
     </>
   );
 };
