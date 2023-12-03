@@ -1,13 +1,40 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../styles/Loading.css';
+import { styled } from 'styled-components';
+
+const StyledSpinnerCase = styled.div`
+  margin-top: 60px;
+  text-align: center;
+  font-size: 60px;
+`;
+
+const StyledSpinnerIcon = styled.div`
+  opacity: 0.5;
+  animation: rotation 2s infinite linear;
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(359deg);
+    }
+  }
+`;
+
+const StyledSpinnerText = styled.p`
+  font-size: 18px;
+  margin-top: 10px;
+`;
 
 const Loading = () => {
   return (
-    <div className='spinner-case'>
-      <FontAwesomeIcon className='spinner-icon' icon={faSpinner} />
-      <p className='spinner-text'>検索中です...</p>
-    </div>
+    <StyledSpinnerCase>
+      <StyledSpinnerIcon>
+        <FontAwesomeIcon icon={faSpinner} />
+      </StyledSpinnerIcon>
+      <StyledSpinnerText>検索中です...</StyledSpinnerText>
+    </StyledSpinnerCase>
   );
 };
 
