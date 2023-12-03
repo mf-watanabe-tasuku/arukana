@@ -1,13 +1,14 @@
-import '../styles/Error.css';
+import { styled } from 'styled-components';
+
+const StyleErrorText = styled.p`
+  font-size: 14px;
+  color: red;
+  margin: 0 0 10px;
+`;
 
 const ErrorMessage = ({ message }) => {
   return (
-    <p
-      className={`error-text`}
-      style={{ display: message ? 'block' : 'none' }}
-    >
-      {message}
-    </p>
+    <StyleErrorText>{message}</StyleErrorText>
   );
 };
 
