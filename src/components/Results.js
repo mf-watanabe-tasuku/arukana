@@ -17,6 +17,45 @@ const StyledResultList = styled.ul`
   margin: 0 auto;
 `;
 
+const StyledBtnBack = styled.button`
+  width: 300px;
+  padding: 12px 0;
+  text-align: center;
+  color: #555;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  background-color: #ccc;
+  box-shadow: 0 6px 0 #777;
+  border: none;
+  border-radius: 5px;
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const StyledSearchResultsOriginText = styled.p`
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const StyledSearchResultsBackBox = styled.div`
+  margin-bottom: 40px;
+`;
+
+const StyledSearchResultsBackLink = styled.p`
+  cursor: pointer;
+  color: #0077c3;
+  display: inline-block;
+  text-decoration: underline;
+`;
+
 const Results = () => {
   const { results, clearResults } = useContext(ResultContext);
   const { originAddress, radius } = useContext(SearchContext);
@@ -34,14 +73,14 @@ const Results = () => {
 
   return (
     <>
-      <p className='search-results__origin-text'>
+      <StyledSearchResultsOriginText>
         「{originAddress}」から半径{radius}m以内の検索結果
-      </p>
-      <div className='search-results__back-box'>
-        <p className='search-results__back-link' onClick={clearResults}>
+      </StyledSearchResultsOriginText>
+      <StyledSearchResultsBackBox>
+        <StyledSearchResultsBackLink onClick={clearResults}>
           トップへ戻る
-        </p>
-      </div>
+        </StyledSearchResultsBackLink>
+      </StyledSearchResultsBackBox>
       {placeNotExistingResults.length > 0 && (
         <StyledNoResults>
           <StyledResultList>
@@ -56,9 +95,9 @@ const Results = () => {
           return result.nearestPlace && <Result key={i} result={result} />;
         })}
       </ul>
-      <button className='btn-back' onClick={clearResults}>
+      <StyledBtnBack onClick={clearResults}>
         トップへ戻る
-      </button>
+      </StyledBtnBack>
     </>
   );
 };

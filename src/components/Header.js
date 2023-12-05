@@ -16,13 +16,21 @@ const StyledHeaderDesc = styled.p`
   margin-bottom: 50px;
 `;
 
+const BrShowSp = styled.br`
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
+`
+
 const Header = () => {
   return (
     <StyledHeader>
       <StyledHeaderTitle>ARUKANA</StyledHeaderTitle>
       <StyledHeaderDesc>
         周辺施設までの距離を一括検索
-        <br className='show-sp'/>
+        <BrShowSp />
         できるサービスです。
         <br />
         引っ越しや旅行にお役立てください。
