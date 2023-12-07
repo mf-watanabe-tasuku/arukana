@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import SearchContext from '../context/search/SearchContext';
+import SearchContext from '../../context/search/SearchContext';
 import { styled } from 'styled-components';
 
 const StyledPlaceCheckboxList = styled.ul`

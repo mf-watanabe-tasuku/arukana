@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 import ResultContext from '../context/result/ResultContext';
-import Form from '../components/Form';
+import Form from '../components/Form/Form';
 import Results from '../components/Results';
 
 const TopPage = () => {
