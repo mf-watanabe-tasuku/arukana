@@ -1,13 +1,13 @@
 import { useEffect, useRef, useContext } from 'react';
 import { styled } from 'styled-components';
-import SearchContext from '../context/search/SearchContext';
+import SearchContext from '../../context/search/SearchContext';
 import { faSmile, faMapMarkerAlt, faClock, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import star_100 from '../images/star_100.svg';
-import star_75 from '../images/star_75.svg';
-import star_50 from '../images/star_50.svg';
-import star_25 from '../images/star_25.svg';
-import star_0 from '../images/star_0.svg';
+import star_100 from '../../images/star_100.svg';
+import star_75 from '../../images/star_75.svg';
+import star_50 from '../../images/star_50.svg';
+import star_25 from '../../images/star_25.svg';
+import star_0 from '../../images/star_0.svg';
 
 const StyledResult = styled.li`
   background-color: #fff;
