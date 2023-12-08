@@ -26,7 +26,7 @@ const StyledSearchStepItem = styled.div`
   }
 `;
 
-const StyledSeachStepNum = styled.span`
+const StyledSearchStepNum = styled.span`
   color: #999999;
   font-size: 16px;
   font-weight: bold;
@@ -65,13 +65,13 @@ const Form = () => {
     loading ? <Loading /> : (
       <StyledSearchForm>
         <StyledSearchStepItem>
-        <StyledSeachStepNum>STEP1</StyledSeachStepNum>
+        <StyledSearchStepNum>STEP1</StyledSearchStepNum>
           <StyledSearchStepTitle>調べたい住所を入力</StyledSearchStepTitle>
           <FormAddress />
           <ErrorMessage message={errorMessages.originAddress} />
         </StyledSearchStepItem>
         <StyledSearchStepItem>
-          <StyledSeachStepNum>STEP2</StyledSeachStepNum>
+          <StyledSearchStepNum>STEP2</StyledSearchStepNum>
           <StyledSearchStepTitle>検索したい施設を選ぶ</StyledSearchStepTitle>
           <StyledSearchStepSubTitle>選択肢から選ぶ</StyledSearchStepSubTitle>
           <FormRecommend />
@@ -79,7 +79,7 @@ const Form = () => {
           <ErrorMessage message={errorMessages.keyword} />
         </StyledSearchStepItem>
         <StyledSearchStepItem>
-          <StyledSeachStepNum>STEP3</StyledSeachStepNum>
+          <StyledSearchStepNum>STEP3</StyledSearchStepNum>
           <StyledSearchStepTitle>検索する半径距離</StyledSearchStepTitle>
           <FormRadius />
           <ErrorMessage message={errorMessages.radius} />
