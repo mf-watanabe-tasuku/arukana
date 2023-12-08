@@ -9,7 +9,7 @@ const StyledBtnSearch = styled.button`
   padding: 12px 0;
   text-align: center;
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   letter-spacing: 0.1em;
   background-color: #33aaee;
