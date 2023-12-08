@@ -30,7 +30,7 @@ const StyledBtnSearch = styled.button`
   }
 `;
 
-const FormAddress = ({ setLoading }) => {
+const FormSubmit = ({ setLoading }) => {
   const { setResults } = useContext(ResultContext);
   const {
     validateSearchValues,
@@ -59,4 +59,4 @@ const FormAddress = ({ setLoading }) => {
 }
 
 
-export default FormAddress;
+export default FormSubmit;

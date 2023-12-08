@@ -41,7 +41,7 @@ const StyledPlaceCheckboxLabel = styled.label`
   }
 `;
 
-const RecommendChecks = () => {
+const FormRecommend = () => {
   const { recommendChecks, handleCheckboxChange } = useContext(SearchContext);
 
   const placeList = [
@@ -75,4 +75,4 @@ const RecommendChecks = () => {
   );
 };
 
-export default RecommendChecks;
+export default FormRecommend;
