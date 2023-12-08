@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
-import TopPage from './pages/TopPage';
+import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import SearchState from './context/search/SearchState';
 import ResultState from './context/result/ResultState';
@@ -33,7 +33,7 @@ const App = () => {
               <Header />
               <main>
                 <Switch>
-                  <Route exact path='/' component={TopPage} />
+                  <Route exact path='/' component={Home} />
                   <Route component={NotFound} />
                 </Switch>
               </main>

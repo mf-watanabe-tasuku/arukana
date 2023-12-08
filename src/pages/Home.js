@@ -1,9 +1,9 @@
 import { useEffect, useContext } from 'react';
 import ResultContext from '../context/result/ResultContext';
 import Form from '../components/Form/Form';
-import Results from '../components/Results';
+import Results from '../components/Result/Result.js';
 
-const TopPage = () => {
+const Home = () => {
   const { results } = useContext(ResultContext);
 
   useEffect(() => {
@@ -18,4 +18,4 @@ const TopPage = () => {
   );
 };
 
-export default TopPage;
+export default Home;
