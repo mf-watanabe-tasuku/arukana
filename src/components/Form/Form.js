@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { styled } from 'styled-components';
 import SearchContext from '../../context/search/SearchContext';
 import FormAddress from './FormAddress';
@@ -7,6 +7,7 @@ import FormKeyword from './FormKeyword';
 import FormRadius from './FormRadius';
 import FormSubmit from './FormSubmit';
 import ErrorMessage from '../ErrorMessage';
+import Loading from '../Loading';
 
 const StyledSearchForm = styled.form`
   display: flex;
@@ -57,37 +58,38 @@ const StyledTextCenter = styled.div`
 `;
 
 const Form = () => {
-  const {
-    errorMessages
-  } = useContext(SearchContext);
+  const [loading, setLoading] = useState(false);
+  const { errorMessages } = useContext(SearchContext);
 
   return (
-    <StyledSearchForm>
-      <StyledSearchStepItem>
-      <StyledSeachStepNum>STEP1</StyledSeachStepNum>
-        <StyledSearchStepTitle>調べたい住所を入力</StyledSearchStepTitle>
-        <FormAddress />
-        <ErrorMessage message={errorMessages.originAddress} />
-      </StyledSearchStepItem>
-      <StyledSearchStepItem>
-        <StyledSeachStepNum>STEP2</StyledSeachStepNum>
-        <StyledSearchStepTitle>検索したい施設を選ぶ</StyledSearchStepTitle>
-        <StyledSearchStepSubTitle>選択肢から選ぶ</StyledSearchStepSubTitle>
-        <FormRecommend />
-        <FormKeyword />
-        <ErrorMessage message={errorMessages.keyword} />
-      </StyledSearchStepItem>
-      <StyledSearchStepItem>
-        <StyledSeachStepNum>STEP3</StyledSeachStepNum>
-        <StyledSearchStepTitle>検索する半径距離</StyledSearchStepTitle>
-        <FormRadius />
-        <ErrorMessage message={errorMessages.radius} />
-      </StyledSearchStepItem>
-      <FormSubmit />
-      <StyledTextCenter>
-        <ErrorMessage message={errorMessages.notice} />
-      </StyledTextCenter>
-    </StyledSearchForm>
+    loading ? <Loading /> : (
+      <StyledSearchForm>
+        <StyledSearchStepItem>
+        <StyledSeachStepNum>STEP1</StyledSeachStepNum>
+          <StyledSearchStepTitle>調べたい住所を入力</StyledSearchStepTitle>
+          <FormAddress />
+          <ErrorMessage message={errorMessages.originAddress} />
+        </StyledSearchStepItem>
+        <StyledSearchStepItem>
+          <StyledSeachStepNum>STEP2</StyledSeachStepNum>
+          <StyledSearchStepTitle>検索したい施設を選ぶ</StyledSearchStepTitle>
+          <StyledSearchStepSubTitle>選択肢から選ぶ</StyledSearchStepSubTitle>
+          <FormRecommend />
+          <FormKeyword />
+          <ErrorMessage message={errorMessages.keyword} />
+        </StyledSearchStepItem>
+        <StyledSearchStepItem>
+          <StyledSeachStepNum>STEP3</StyledSeachStepNum>
+          <StyledSearchStepTitle>検索する半径距離</StyledSearchStepTitle>
+          <FormRadius />
+          <ErrorMessage message={errorMessages.radius} />
+        </StyledSearchStepItem>
+        <FormSubmit setLoading={setLoading} />
+        <StyledTextCenter>
+          <ErrorMessage message={errorMessages.notice} />
+        </StyledTextCenter>
+      </StyledSearchForm>
+    )
   );
 }
 

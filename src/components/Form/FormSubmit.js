@@ -30,7 +30,7 @@ const StyledBtnSearch = styled.button`
   }
 `;
 
-const FormAddress = () => {
+const FormAddress = ({ setLoading }) => {
   const { setResults } = useContext(ResultContext);
   const {
     validateSearchValues,
@@ -45,7 +45,7 @@ const FormAddress = () => {
     const validationErrors = validateSearchValues();
     if (Object.keys(validationErrors).length !== 0) return;
 
-    // setLoading(true);
+    setLoading(true);
     window.scrollTo(0, 0);
     const results = await getSearchResults();
     setResults(results);
