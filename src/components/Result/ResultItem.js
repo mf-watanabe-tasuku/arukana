@@ -1,8 +1,9 @@
 import { useEffect, useRef, useContext } from 'react';
 import { styled } from 'styled-components';
-import SearchContext from '../../context/search/SearchContext';
 import { faSmile, faMapMarkerAlt, faClock, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SearchContext from '../../context/search/SearchContext';
+import ResultItemOtherPlaces from './ResultItemOtherPlaces';
 import star_100 from '../../images/star_100.svg';
 import star_75 from '../../images/star_75.svg';
 import star_50 from '../../images/star_50.svg';
@@ -60,26 +61,6 @@ const StyledMap = styled.div`
   height: 100%;
 `;
 
-const StyledOtherResultsBox = styled.div`
-  background-color: #f0f0f0;
-  padding: 10px 20px 15px;
-  font-size: 0.8rem;
-`;
-const StyledOtherResultsTitle = styled.div`
-  font-weight: bold;
-  margin-bottom: 5px;
-`;
-
-const StyledOtherResultsList = styled.ul`
-  padding-left: 15px;
-  list-style-type: square;
-  color: #555;
-`;
-
-const StyledOtherResultsItem = styled.li`
-  font-size: 12px;
-`;
-
 const StyledRatingBox = styled.div`
   display: flex;
   align-items: center;
@@ -106,7 +87,7 @@ const StyledRatingStarItem = styled.img`
   margin-right: 3px;
 `;
 
-const Result = ({ result }) => {
+const ResultItem = ({ result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
   const { name, rating, reviewCount, distance, duration, geocode } = nearestPlace;
 
@@ -242,19 +223,7 @@ const Result = ({ result }) => {
               </StyledDataList>
             </div>
           )}
-          {nearbyPlaces.length > 0 && (
-            <StyledOtherResultsBox>
-              <StyledOtherResultsTitle>検索にヒットした場所</StyledOtherResultsTitle>
-              <StyledOtherResultsList>
-                {nearbyPlaces.map((place, i) => (
-                  <StyledOtherResultsItem key={i}>
-                    {place.name} ( {getDisplayDistance(place.distance)} /{' '}
-                    {place.duration} )
-                  </StyledOtherResultsItem>
-                ))}
-              </StyledOtherResultsList>
-            </StyledOtherResultsBox>
-          )}
+          <ResultItemOtherPlaces places={nearbyPlaces} />
         </StyledResultItemDataBox>
         <StyledResultItemMap>
           <StyledMap id='map' ref={map}></StyledMap>
@@ -264,4 +233,4 @@ const Result = ({ result }) => {
   );
 };
 
-export default Result;
+export default ResultItem;
