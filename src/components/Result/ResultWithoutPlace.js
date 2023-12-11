@@ -15,7 +15,7 @@ const StyledResultList = styled.ul`
 const ResultWithoutPlace = ({ places }) => {
   return (
     <>
-      {places && (
+      {places.length > 0 && (
         <StyledNoResults>
           <StyledResultList>
             {places.map((place, i) => (
