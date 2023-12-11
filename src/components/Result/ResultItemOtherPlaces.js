@@ -22,7 +22,7 @@ const StyledOtherResultsItem = styled.li`
 
 const ResultItemOtherPlaces = ({ places }) => {
   // 距離を表示用にフォーマットする
-  const getDisplayDistance = (distance) => {
+  const formatDistanceWitchUnit = (distance) => {
     if (distance >= 1000) {
       distance = (distance / 1000).toFixed(1) + 'km';
     } else {
@@ -40,7 +40,7 @@ const ResultItemOtherPlaces = ({ places }) => {
           <StyledOtherResultsList>
             {places.map((place, i) => (
               <StyledOtherResultsItem key={i}>
-                {place.name} ( {getDisplayDistance(place.distance)} /{' '}
+                {place.name} ( {formatDistanceWitchUnit(place.distance)} /{' '}
                 {place.duration} )
               </StyledOtherResultsItem>
             ))}
