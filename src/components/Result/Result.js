@@ -22,8 +22,8 @@ const Results = () => {
   return (
     <>
       <ResultHeader />
-      {resultsWithoutPlace.length > 0 && <ResultWithoutPlace places={resultsWithoutPlace} />}
-      {resultsWithPlace.length > 0 && <ResultWithPlace places={resultsWithPlace} />}
+      <ResultWithoutPlace places={resultsWithoutPlace} />
+      <ResultWithPlace places={resultsWithPlace} />
       <ResultBtnBack />
     </>
   );

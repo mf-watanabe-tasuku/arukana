@@ -14,13 +14,17 @@ const StyledResultList = styled.ul`
 
 const ResultWithoutPlace = ({ places }) => {
   return (
-    <StyledNoResults>
-      <StyledResultList>
-        {places.map((place, i) => (
-          <li key={i}>{place.keyword}は見つかりませんでした</li>
-        ))}
-      </StyledResultList>
-    </StyledNoResults>
+    <>
+      {places && (
+        <StyledNoResults>
+          <StyledResultList>
+            {places.map((place, i) => (
+              <li key={i}>{place.keyword}は見つかりませんでした</li>
+            ))}
+          </StyledResultList>
+        </StyledNoResults>
+      )}
+    </>
   );
 };
 
