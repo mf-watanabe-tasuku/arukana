@@ -10,6 +10,9 @@ const ResultState = (props) => {
 
   const [state, dispatch] = useReducer(ResultReducer, initialState);
 
+  const resultsWithPlace = state.results.filter(result => result.nearestPlace);
+  const resultsWithoutPlace = state.results.filter(result => !result.nearestPlace);
+
   const setResults = (results) =>
     dispatch({
       type: ACTIONS.SET_RESULTS,
@@ -19,12 +22,14 @@ const ResultState = (props) => {
   const clearResults = () =>
     dispatch({
       type: ACTIONS.CLEAR_RESULTS,
-    })
+    });
 
   return (
     <ResultContext.Provider
       value={{
         results: state.results,
+        resultsWithPlace,
+        resultsWithoutPlace,
         setResults,
         clearResults,
       }}

@@ -6,18 +6,7 @@ import ResultWithoutPlace from './ResultWithoutPlace';
 import ResultBtnBack from './ResultBtnBack';
 
 const Results = () => {
-  const { results } = useContext(ResultContext);
-
-  let resultsWithPlace = [];
-  let resultsWithoutPlace = [];
-
-  results.forEach((result) => {
-    if (result.nearestPlace) {
-      resultsWithPlace = [...resultsWithPlace, result];
-    } else {
-      resultsWithoutPlace = [...resultsWithoutPlace, result];
-    }
-  });
+  const { resultsWithPlace, resultsWithoutPlace } = useContext(ResultContext);
 
   return (
     <>

@@ -222,12 +222,8 @@ const SearchState = (props) => {
       })
     );
 
-    const filteredResults = placesWithDistance.filter(
-      (place) => place.distance
-    );
-    const sortedResults = filteredResults.sort(
-      (a, b) => a.distance - b.distance
-    );
+    const filteredResults = placesWithDistance.filter(place => place.distance);
+    const sortedResults = filteredResults.sort((a, b) => a.distance - b.distance);
     const [nearestPlace, ...nearbyPlaces] = sortedResults.slice(0, 4);
     const placeDistanceData = { nearestPlace, nearbyPlaces };
 
