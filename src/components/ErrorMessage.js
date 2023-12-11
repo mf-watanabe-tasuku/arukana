@@ -6,10 +6,6 @@ const StyleErrorText = styled.p`
   margin: 0 0 10px;
 `;
 
-const ErrorMessage = ({ message }) => {
-  return (
-    <StyleErrorText>{message}</StyleErrorText>
-  );
-};
+const ErrorMessage = ({ message }) => <StyleErrorText>{message}</StyleErrorText>;
 
 export default ErrorMessage;
