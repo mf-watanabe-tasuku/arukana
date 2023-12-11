@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { styled } from 'styled-components';
+import ResultContext from '../../context/result/ResultContext';
 
 const StyledNoResults = styled.div`
   margin-bottom: 40px;
@@ -12,14 +14,16 @@ const StyledResultList = styled.ul`
   line-height: 2.2;
 `;
 
-const ResultWithoutPlace = ({ places }) => {
+const ResultWithoutPlace = () => {
+  const { resultsWithoutPlace } = useContext(ResultContext);
+
   return (
     <>
-      {places.length > 0 && (
+      {resultsWithoutPlace.length > 0 && (
         <StyledNoResults>
           <StyledResultList>
-            {places.map((place, i) => (
-              <li key={i}>{place.keyword}は見つかりませんでした</li>
+            {resultsWithoutPlace.map((result, i) => (
+              <li key={i}>{result.keyword}は見つかりませんでした</li>
             ))}
           </StyledResultList>
         </StyledNoResults>

@@ -1,12 +1,16 @@
+import { useContext } from 'react';
+import ResultContext from '../../context/result/ResultContext';
 import ResultItem from './ResultItem';
 
-const ResultWithPlace = ({ places }) => {
+const ResultWithPlace = () => {
+  const { resultsWithPlace } = useContext(ResultContext);
+
   return (
     <>
-      {places.length > 0 && (
+      {resultsWithPlace.length > 0 && (
         <ul>
-          {places.map((place, i) => {
-            return place.nearestPlace && <ResultItem key={i} result={place} />;
+          {resultsWithPlace.map((result, i) => {
+            return result.nearestPlace && <ResultItem key={i} result={result} />;
           })}
         </ul>
       )}

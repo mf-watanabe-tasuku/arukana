@@ -40,8 +40,7 @@ const ResultItemOtherPlaces = ({ places }) => {
           <StyledOtherResultsList>
             {places.map((place, i) => (
               <StyledOtherResultsItem key={i}>
-                {place.name} ( {formatDistanceWitchUnit(place.distance)} /{' '}
-                {place.duration} )
+                {place.name} ( {formatDistanceWitchUnit(place.distance)} / {place.duration} )
               </StyledOtherResultsItem>
             ))}
           </StyledOtherResultsList>
