@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  arukana:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+    command: npm start
+    ports:
+      - '3000:3000'
