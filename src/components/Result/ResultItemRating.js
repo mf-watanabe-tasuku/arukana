@@ -55,7 +55,7 @@ const ResultItemRating = ({ nearestPlace }) => {
   return (
     <li>
       <StyledRatingBox>
-        <span class="rating-icon">
+        <span className="rating-icon">
           <FontAwesomeIcon icon={faSmile} />
         </span>
         {rating ? (

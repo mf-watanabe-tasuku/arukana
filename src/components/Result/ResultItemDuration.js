@@ -6,7 +6,7 @@ const ResultItemDuration = ({ nearestPlace }) => {
 
   return (
     <li>
-      <span class="rating-icon">
+      <span className="rating-icon">
         <FontAwesomeIcon icon={faClock} />
       </span>
       <span>所要時間(徒歩) : </span>

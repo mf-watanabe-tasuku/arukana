@@ -17,7 +17,7 @@ const ResultItemDistance = ({ nearestPlace }) => {
 
   return (
     <li>
-      <span class="rating-icon">
+      <span className="rating-icon">
         <FontAwesomeIcon icon={faMapMarkerAlt} />
       </span>
       <span>距離 : </span>

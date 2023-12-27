@@ -123,23 +123,27 @@ const SearchState = (props) => {
 
     if (!state.originAddress)
       validationErrors.originAddress = '基準地点を入力してください';
+
     if (state.targetKeywords.length === 0)
       validationErrors.keyword = '検索する施設を選択または入力してください';
+
     if (!state.radius) {
       validationErrors.radius = '検索したい半径距離を入力してください';
-    } else if (state.radius > process.env.REACT_APP_MAX_RADIUS) {
-      validationErrors.radius = `半径${formattedMaxRadius}mより大きな値は指定できません`;
-    } else if (state.radius < process.env.REACT_APP_MIN_RADIUS) {
-      validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
-    } else if (String(state.radius).match(/\D+/)) {
+    } else if (String(state.radius).match(/[^0-9\.]+/) || !String(state.radius).match(/[0-9]+/)) {
       validationErrors.radius = '半角数字で入力してください';
-    }
-    if (
-      validationErrors.originAddress ||
-      validationErrors.keyword ||
-      validationErrors.radius
-    ) {
-      validationErrors.notice = '入力内容を確認してください';
+    } else {
+      const radiusInFloat = parseFloat(state.radius);
+
+      if (radiusInFloat > process.env.REACT_APP_MAX_RADIUS) {
+        validationErrors.radius = `半径${formattedMaxRadius}mより大きな値は指定できません`;
+      } else if (radiusInFloat < process.env.REACT_APP_MIN_RADIUS) {
+        validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
+      }
+
+      dispatch({
+        type: ACTIONS.SET_RADIUS,
+        payload: radiusInFloat,
+      });
     }
 
     setErrorMessages(validationErrors);
@@ -254,10 +258,25 @@ const SearchState = (props) => {
 
   const handleInputRadius = (e) => {
     e.preventDefault();
-    const radius = parseInt(e.target.value.replace(/[^0-9]+/, ''));
+    let inputRadius = e.target.value;
+
+    if (inputRadius.match(/[^0-9\.]+/)) {
+      setErrorMessages({
+        ...state.errorMessages,
+        radius: '半角数字で入力してください',
+      });
+    } else if (inputRadius.match(/\..*\./)) {
+      setErrorMessages({
+        ...state.errorMessages,
+        radius: '整数か小数で入力してください',
+      });
+    } else {
+      setErrorMessages(delete state.errorMessages.radius);
+    }
+
     dispatch({
       type: ACTIONS.SET_RADIUS,
-      payload: radius,
+      payload: inputRadius
     });
   }
 
