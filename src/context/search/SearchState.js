@@ -118,32 +118,41 @@ const SearchState = (props) => {
     setErrorMessages({});
     const validationErrors = {};
 
-    const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
-    const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
-
+    // 基準地点が空の場合はエラー
     if (!state.originAddress)
       validationErrors.originAddress = '基準地点を入力してください';
 
+    // 検索対象のキーワードが空の場合はエラー
     if (state.targetKeywords.length === 0)
       validationErrors.keyword = '検索する施設を選択または入力してください';
 
+    // 半径距離が空の場合はエラー
     if (!state.radius) {
       validationErrors.radius = '検索したい半径距離を入力してください';
+    // 半径距離が半角数字以外の場合はエラー
     } else if (String(state.radius).match(/[^0-9\.]+/) || !String(state.radius).match(/[0-9]+/)) {
       validationErrors.radius = '半角数字で入力してください';
+    // 半径距離が小数点を複数個含む場合はエラー
+    } else if (String(state.radius).match(/\..*\./)) {
+      validationErrors.radius = '整数か小数で入力してください';
     } else {
+      const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS.toLocaleString();
+      const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS.toLocaleString();
+
+      // stateに保持している半径距離をStringからFloatに変換
       const radiusInFloat = parseFloat(state.radius);
 
       if (radiusInFloat > process.env.REACT_APP_MAX_RADIUS) {
         validationErrors.radius = `半径${formattedMaxRadius}mより大きな値は指定できません`;
       } else if (radiusInFloat < process.env.REACT_APP_MIN_RADIUS) {
         validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
+      } else {
+        // Floatに変換した半径距離が最大値と最小値の間に収まっている場合は、state.radiusをFloat型の値で更新
+        dispatch({
+          type: ACTIONS.SET_RADIUS,
+          payload: radiusInFloat,
+        });
       }
-
-      dispatch({
-        type: ACTIONS.SET_RADIUS,
-        payload: radiusInFloat,
-      });
     }
 
     setErrorMessages(validationErrors);
