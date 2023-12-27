@@ -3,11 +3,8 @@ import { styled } from 'styled-components';
 import SearchContext from '../../context/search/SearchContext';
 
 const StyledResultItemMap = styled.div`
-  width: 45%;
-
   @media (max-width: 767px) {
-    width: 100%;
-    height: 60vw;
+    height: 50vw;
   }
 `;
 

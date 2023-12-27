@@ -5,7 +5,6 @@ import ResultItemDistance from './ResultItemDistance';
 import ResultItemDuration from './ResultItemDuration';
 
 const StyledResultItemData = styled.div`
-  width: 51%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

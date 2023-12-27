@@ -7,14 +7,15 @@ const StyledResultItem = styled.li`
   min-height: 250px;
   margin-bottom: 30px;
   border-bottom: 1px solid #999;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   box-shadow: 0 1px 5px #c0c0c0;
   padding: 25px 30px;
 
   @media (max-width: 767px) {
     padding: 20px;
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 `;
 
