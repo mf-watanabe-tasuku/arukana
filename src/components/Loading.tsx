@@ -1,4 +1,5 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { styled } from 'styled-components';
 
@@ -31,7 +32,7 @@ const Loading = () => {
   return (
     <StyledSpinnerCase>
       <StyledSpinnerIcon>
-        <FontAwesomeIcon icon={faSpinner} />
+        <FontAwesomeIcon icon={faSpinner as IconProp} />
       </StyledSpinnerIcon>
       <StyledSpinnerText>検索中です...</StyledSpinnerText>
     </StyledSpinnerCase>
