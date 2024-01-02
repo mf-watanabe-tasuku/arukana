@@ -30,7 +30,11 @@ const StyledBtnSearch = styled.button`
   }
 `;
 
-const FormSubmit = ({ setLoading }) => {
+type FormSubmitProps = {
+  setLoading: (loading: boolean) => void;
+}
+
+const FormSubmit = ({ setLoading }: FormSubmitProps) => {
   const { setResults } = useContext(ResultContext);
   const {
     validateSearchValues,
@@ -38,10 +42,7 @@ const FormSubmit = ({ setLoading }) => {
   } = useContext(SearchContext);
 
   // 検索ボタンを押した時の処理;
-  const handleSubmit = async (e) => {
-    if (e.key === 'Enter') return;
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     const validationErrors = validateSearchValues();
     if (Object.keys(validationErrors).length !== 0) return;
 
@@ -51,8 +52,12 @@ const FormSubmit = ({ setLoading }) => {
     setResults(results);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter') e.preventDefault();
+  }
+
   return(
-    <StyledBtnSearch type='button' onClick={handleSubmit}>
+    <StyledBtnSearch type='button' onClick={handleSubmit} onKeyDown={handleKeyDown}>
       検索する
     </StyledBtnSearch>
   )

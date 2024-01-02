@@ -78,7 +78,7 @@ const FormKeyword = () => {
         value={freeKeyword}
       />
       <StyledFreeKeywordList>
-        {freeKeywords.map((keyword, i) => (
+        {freeKeywords.map((keyword: string, i: number) => (
           <StyledFreeKeywordItem key={i}>
             {keyword}{' '}
             <StyledFreeKeywordCloseBtn onClick={() => removeFreeKeyword(keyword)}>
