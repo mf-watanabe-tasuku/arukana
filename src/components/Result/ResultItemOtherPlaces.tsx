@@ -20,16 +20,29 @@ const StyledOtherResultsItem = styled.li`
   font-size: 12px;
 `;
 
-const ResultItemOtherPlaces = ({ places }) => {
+type ResultItemOtherPlacesProps = {
+  places: {
+    name: string;
+    address: string;
+    distance: number;
+    duration: string;
+    lat: number;
+    lng: number;
+  }[];
+};
+
+const ResultItemOtherPlaces = ({ places }: ResultItemOtherPlacesProps) => {
   // 距離を表示用にフォーマットする
-  const formatDistanceWitchUnit = (distance) => {
+  const formatDistanceWithUnit = (distance: number) => {
+    let distanceWithUnit = '';
+
     if (distance >= 1000) {
-      distance = (distance / 1000).toFixed(1) + 'km';
+      distanceWithUnit = (distance / 1000).toFixed(1) + 'km';
     } else {
-      distance += 'm';
+      distanceWithUnit += 'm';
     }
 
-    return distance;
+    return distanceWithUnit;
   };
 
   return (
@@ -40,7 +53,7 @@ const ResultItemOtherPlaces = ({ places }) => {
           <StyledOtherResultsList>
             {places.map((place, i) => (
               <StyledOtherResultsItem key={i}>
-                {place.name} ( {formatDistanceWitchUnit(place.distance)} / {place.duration} )
+                {place.name} ( {formatDistanceWithUnit(place.distance)} / {place.duration} )
               </StyledOtherResultsItem>
             ))}
           </StyledOtherResultsList>

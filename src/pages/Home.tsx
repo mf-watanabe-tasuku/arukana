@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import ResultContext from '../context/result/ResultContext';
 import Form from '../components/Form/Form';
-import Results from '../components/Result/Result.js';
+import Results from '../components/Result/Result';
 
 const Home = () => {
   const { results } = useContext(ResultContext);

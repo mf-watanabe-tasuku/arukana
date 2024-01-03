@@ -14,6 +14,10 @@ const StyledResultList = styled.ul`
   line-height: 2.2;
 `;
 
+type ResultWithoutPlaceProps = {
+  keyword: string;
+};
+
 const ResultWithoutPlace = () => {
   const { resultsWithoutPlace } = useContext(ResultContext);
 
@@ -22,7 +26,7 @@ const ResultWithoutPlace = () => {
       {resultsWithoutPlace.length > 0 && (
         <StyledNoResults>
           <StyledResultList>
-            {resultsWithoutPlace.map((result, i) => (
+            {resultsWithoutPlace.map((result: ResultWithoutPlaceProps, i: number) => (
               <li key={i}>{result.keyword}は見つかりませんでした</li>
             ))}
           </StyledResultList>

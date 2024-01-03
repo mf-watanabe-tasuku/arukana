@@ -20,7 +20,28 @@ const StyledMetaList = styled.ul`
   list-style: none;
 `;
 
-const ResultItemData = ({ nearestPlace, nearbyPlaces }) => {
+type ResultItemDataProps = {
+  nearestPlace: {
+    name: string;
+    address: string;
+    distance: number;
+    duration: string;
+    lat: number;
+    lng: number;
+    rating: number;
+    reviewCount: number;
+  };
+  nearbyPlaces: {
+    name: string;
+    address: string;
+    distance: number;
+    duration: string;
+    lat: number;
+    lng: number;
+  }[];
+};
+
+const ResultItemData = ({ nearestPlace, nearbyPlaces }: ResultItemDataProps) => {
   const { name } = nearestPlace;
 
   return (

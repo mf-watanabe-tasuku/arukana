@@ -1,24 +1,27 @@
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const ResultItemDistance = ({ nearestPlace }) => {
+const ResultItemDistance = ({ nearestPlace }: any) => {
   const { distance } = nearestPlace;
 
   // 距離を表示用にフォーマットする
-  const getDisplayDistance = (distance) => {
+  const getDisplayDistance = (distance: number) => {
+    let distanceWithUnit = '';
+
     if (distance >= 1000) {
-      distance = (distance / 1000).toFixed(1) + 'km';
+      distanceWithUnit = (distance / 1000).toFixed(1) + 'km';
     } else {
-      distance += 'm';
+      distanceWithUnit += 'm';
     }
 
-    return distance;
+    return distanceWithUnit;
   };
 
   return (
     <li>
       <span className="rating-icon">
-        <FontAwesomeIcon icon={faMapMarkerAlt} />
+        <FontAwesomeIcon icon={faMapMarkerAlt as IconProp} />
       </span>
       <span>距離 : </span>
       <span>{getDisplayDistance(distance)}</span>

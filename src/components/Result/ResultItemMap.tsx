@@ -13,7 +13,16 @@ const StyledMap = styled.div`
   height: 100%;
 `;
 
-const ResultItemMap = ({ nearestPlace }) => {
+type ResultItemMapProps = {
+  nearestPlace: {
+    geocode: {
+      lat: number;
+      lng: number;
+    };
+  };
+};
+
+const ResultItemMap = ({ nearestPlace }: ResultItemMapProps) => {
   const { geocode } = nearestPlace;
 
   const { originGeocode } = useContext(SearchContext);
@@ -24,7 +33,7 @@ const ResultItemMap = ({ nearestPlace }) => {
     const drawMap = () => {
       const directionsService = new window.google.maps.DirectionsService();
       const directionsRenderer = new window.google.maps.DirectionsRenderer();
-      const displayMap = new window.google.maps.Map(map.current, {
+      const displayMap = new window.google.maps.Map(map.current!, {
         zoom: 13,
         center: { lat: originGeocode.lat, lng: originGeocode.lng },
         disableDefaultUI: true,
@@ -35,8 +44,8 @@ const ResultItemMap = ({ nearestPlace }) => {
     };
 
     const calculateAndDisplayRoute = (
-      directionsService,
-      directionsRenderer
+      directionsService: google.maps.DirectionsService,
+      directionsRenderer: google.maps.DirectionsRenderer
     ) => {
       directionsService.route(
         {
@@ -47,7 +56,7 @@ const ResultItemMap = ({ nearestPlace }) => {
           destination: new window.google.maps.LatLng(geocode.lat, geocode.lng),
           travelMode: window.google.maps.TravelMode.WALKING,
         },
-        (response, status) => {
+        (response, status: string) => {
           if (status === 'OK') {
             directionsRenderer.setDirections(response);
           } else {

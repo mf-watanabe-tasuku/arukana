@@ -6,6 +6,7 @@ import star_75 from '../../images/star_75.svg';
 import star_50 from '../../images/star_50.svg';
 import star_25 from '../../images/star_25.svg';
 import star_0 from '../../images/star_0.svg';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const StyledRatingBox = styled.div`
   display: flex;
@@ -25,7 +26,14 @@ const StyledRatingStarItem = styled.img`
   margin-right: 3px;
 `;
 
-const ResultItemRating = ({ nearestPlace }) => {
+type ResultItemRatingProps = {
+  nearestPlace: {
+    rating: number;
+    reviewCount: number;
+  };
+}
+
+const ResultItemRating = ({ nearestPlace }: ResultItemRatingProps) => {
   const { rating, reviewCount } = nearestPlace;
 
   const getRatingStars = () => {
@@ -51,19 +59,19 @@ const ResultItemRating = ({ nearestPlace }) => {
 
     return ratingStars;
   };
+  const ratingStarUrls = getRatingStars();
 
   return (
     <li>
       <StyledRatingBox>
         <span className="rating-icon">
-          <FontAwesomeIcon icon={faSmile} />
+          <FontAwesomeIcon icon={faSmile as IconProp} />
         </span>
         {rating ? (
           <>
             <StyledRatingNum>{rating}</StyledRatingNum>
             <StyledRatingStarList>
-              {getRatingStars() &&
-                getRatingStars().map((star, i) => (
+              {ratingStarUrls?.map((star: string, i: number) => (
                   <StyledRatingStarItem
                     key={i}
                     src={star}

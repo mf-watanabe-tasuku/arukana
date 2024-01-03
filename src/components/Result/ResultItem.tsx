@@ -24,7 +24,35 @@ const StyleResultItemKeyword = styled.p`
   font-weight: bold;
 `;
 
-const ResultItem = ({ result }) => {
+type ResultItemProps = {
+  result: {
+    keyword: string;
+    nearestPlace: {
+      name: string;
+      address: string;
+      distance: number;
+      duration: string;
+      lat: number;
+      lng: number;
+      geocode: {
+        lat: number;
+        lng: number;
+      };
+      rating: number;
+      reviewCount: number;
+    };
+    nearbyPlaces: {
+      name: string;
+      address: string;
+      distance: number;
+      duration: string;
+      lat: number;
+      lng: number;
+    }[];
+  };
+}
+
+const ResultItem = ({ result }: ResultItemProps) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
 
   return (
