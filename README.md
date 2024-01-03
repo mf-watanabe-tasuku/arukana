@@ -6,8 +6,8 @@ Site: [https://cerulean-hummingbird-ace5cd.netlify.app/](https://cerulean-hummin
 
 ## Technologies
 
-- React v18
-- react-router-dom v5
+- React v17.0.2
+- TypeScript v5.3.3
 
 ## Set up
 
