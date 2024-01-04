@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import ResultContext from './ResultContext';
 import ResultReducer from './ResultReducer';
-import { ACTIONS } from '../types';
+import { ACTIONS } from '../action-types';
 
 const ResultState = (props) => {
   const initialState = {

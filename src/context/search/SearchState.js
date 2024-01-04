@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
-import { ACTIONS } from '../types';
+import { ACTIONS } from '../action-types';
 
 const SearchState = (props) => {
   const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;

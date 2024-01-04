@@ -1,4 +1,4 @@
-import { ACTIONS } from '../types';
+import { ACTIONS } from '../action-types';
 
 const ResultReducer = (state, action) => {
   switch (action.type) {
