@@ -3,7 +3,7 @@ import ResultWithPlace from './ResultWithPlace';
 import ResultWithoutPlace from './ResultWithoutPlace';
 import ResultBtnBack from './ResultBtnBack';
 
-const Results = () => {
+const Results: React.FC = () => {
   return (
     <>
       <ResultHeader />

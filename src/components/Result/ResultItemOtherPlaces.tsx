@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import type { ResultProps } from './ResultItem';
 
 const StyledOtherResultsBox = styled.div`
   background-color: #f0f0f0;
@@ -20,18 +21,7 @@ const StyledOtherResultsItem = styled.li`
   font-size: 12px;
 `;
 
-type ResultItemOtherPlacesProps = {
-  places: {
-    name: string;
-    address: string;
-    distance: number;
-    duration: string;
-    lat: number;
-    lng: number;
-  }[];
-};
-
-const ResultItemOtherPlaces = ({ places }: ResultItemOtherPlacesProps) => {
+const ResultItemOtherPlaces: React.FC<ResultProps> = ({ nearbyPlaces }) => {
   // 距離を表示用にフォーマットする
   const formatDistanceWithUnit = (distance: number) => {
     let distanceWithUnit = '';
@@ -47,11 +37,11 @@ const ResultItemOtherPlaces = ({ places }: ResultItemOtherPlacesProps) => {
 
   return (
     <>
-      {places.length > 0 && (
+      {nearbyPlaces.length > 0 && (
         <StyledOtherResultsBox>
           <StyledOtherResultsTitle>検索にヒットした場所</StyledOtherResultsTitle>
           <StyledOtherResultsList>
-            {places.map((place, i) => (
+            {nearbyPlaces.map((place, i) => (
               <StyledOtherResultsItem key={i}>
                 {place.name} ( {formatDistanceWithUnit(place.distance)} / {place.duration} )
               </StyledOtherResultsItem>

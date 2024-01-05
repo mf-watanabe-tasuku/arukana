@@ -28,7 +28,7 @@ const StyledSpinnerText = styled.p`
   margin-top: 10px;
 `;
 
-const Loading = () => {
+const Loading: React.FC = () => {
   return (
     <StyledSpinnerCase>
       <StyledSpinnerIcon>

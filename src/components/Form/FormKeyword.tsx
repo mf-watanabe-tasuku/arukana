@@ -56,7 +56,7 @@ const StyledFreeKeywordCloseBtn = styled.span`
   cursor: pointer;
 `;
 
-const FormKeyword = () => {
+const FormKeyword: React.FC = () => {
   const {
     freeKeywords,
     setFreeKeyword,

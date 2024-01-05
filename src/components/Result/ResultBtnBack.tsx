@@ -24,7 +24,7 @@ const StyledBtnBack = styled.button`
   }
 `;
 
-const Results = () => {
+const Results: React.FC = () => {
   const { clearResults } = useContext(ResultContext);
 
   return (

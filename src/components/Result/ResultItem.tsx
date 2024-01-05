@@ -24,35 +24,41 @@ const StyleResultItemKeyword = styled.p`
   font-weight: bold;
 `;
 
-type ResultItemProps = {
-  result: {
-    keyword: string;
-    nearestPlace: {
-      name: string;
-      address: string;
-      distance: number;
-      duration: string;
-      lat: number;
-      lng: number;
-      geocode: {
-        lat: number;
-        lng: number;
-      };
-      rating: number;
-      reviewCount: number;
-    };
-    nearbyPlaces: {
-      name: string;
-      address: string;
-      distance: number;
-      duration: string;
-      lat: number;
-      lng: number;
-    }[];
-  };
+export type NearestPlace = {
+  name: string,
+  address: string,
+  distance: number,
+  duration: string,
+  lat: number,
+  lng: number,
+  geocode: {
+    lat: number,
+    lng: number
+  },
+  rating: number,
+  reviewCount: number
 }
 
-const ResultItem = ({ result }: ResultItemProps) => {
+export type NearbyPlace = {
+  name: string,
+  address: string,
+  distance: number,
+  duration: string,
+  lat: number,
+  lng: number
+}
+
+export type ResultProps = {
+  keyword?: string,
+  nearestPlace: NearestPlace,
+  nearbyPlaces: NearbyPlace[]
+}
+
+type ResultItemProps = {
+  result: ResultProps
+}
+
+const ResultItem: React.FC<ResultItemProps> = ({ result }) => {
   const { keyword, nearestPlace, nearbyPlaces } = result;
 
   return (

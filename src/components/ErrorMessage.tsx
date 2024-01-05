@@ -6,10 +6,10 @@ const StyleErrorText = styled.p`
   margin: 0 0 10px;
 `;
 
-type MessageType = {
+type ErrorMessageType = {
   message: string
-}
+};
 
-const ErrorMessage = ({ message }: MessageType) => <StyleErrorText>{message}</StyleErrorText>;
+const ErrorMessage: React.FC<ErrorMessageType> = ({ message }) => <StyleErrorText>{message}</StyleErrorText>;
 
 export default ErrorMessage;

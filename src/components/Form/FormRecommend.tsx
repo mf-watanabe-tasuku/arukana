@@ -41,7 +41,7 @@ const StyledPlaceCheckboxLabel = styled.label`
   }
 `;
 
-const FormRecommend = () => {
+const FormRecommend: React.FC = () => {
   const { recommendChecks, handleCheckboxChange } = useContext(SearchContext);
 
   const placeList = [

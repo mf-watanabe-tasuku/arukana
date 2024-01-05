@@ -24,7 +24,7 @@ const StyledSearchStepInput = styled.input`
   }
 `;
 
-const FormAddress = () => {
+const FormAddress: React.FC = () => {
   const { originAddress, setOriginAddress } = useContext(SearchContext);
 
   return(

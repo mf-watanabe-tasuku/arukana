@@ -20,7 +20,7 @@ const StyledSearchResultsBackLink = styled.p`
   text-decoration: underline;
 `;
 
-const ResultHeader = () => {
+const ResultHeader: React.FC = () => {
   const { clearResults } = useContext(ResultContext);
   const { originAddress, radius } = useContext(SearchContext);
 

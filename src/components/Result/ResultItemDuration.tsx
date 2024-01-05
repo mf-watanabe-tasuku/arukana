@@ -1,14 +1,13 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { NearestPlace } from './ResultItem';
 
 type ResultItemDurationProps = {
-  nearestPlace: {
-    duration: string;
-  };
+  nearestPlace: NearestPlace
 };
 
-const ResultItemDuration = ({ nearestPlace }: ResultItemDurationProps) => {
+const ResultItemDuration: React.FC<ResultItemDurationProps> = ({ nearestPlace }) => {
   const { duration } = nearestPlace;
 
   return (

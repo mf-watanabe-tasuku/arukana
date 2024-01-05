@@ -24,7 +24,7 @@ const BrShowSp = styled.br`
   }
 `
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <StyledHeader>
       <StyledHeaderTitle>ARUKANA</StyledHeaderTitle>

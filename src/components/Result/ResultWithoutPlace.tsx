@@ -15,10 +15,10 @@ const StyledResultList = styled.ul`
 `;
 
 type ResultWithoutPlaceProps = {
-  keyword: string;
+  keyword: string
 };
 
-const ResultWithoutPlace = () => {
+const ResultWithoutPlace: React.FC = () => {
   const { resultsWithoutPlace } = useContext(ResultContext);
 
   return (

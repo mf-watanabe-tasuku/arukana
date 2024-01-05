@@ -36,7 +36,7 @@ const StyledSearchStepRange = styled.span`
   color: #999;
 `;
 
-const FormRadius = () => {
+const FormRadius: React.FC = () => {
   const { radius, handleInputRadius } = useContext(SearchContext);
 
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS?.toLocaleString();

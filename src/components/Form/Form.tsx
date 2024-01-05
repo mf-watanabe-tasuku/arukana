@@ -57,7 +57,7 @@ const StyledTextCenter = styled.div`
   text-align: center;
 `;
 
-const Form = () => {
+const Form: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { errorMessages } = useContext(SearchContext);
 

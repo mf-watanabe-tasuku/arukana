@@ -31,10 +31,10 @@ const StyledBtnSearch = styled.button`
 `;
 
 type FormSubmitProps = {
-  setLoading: (loading: boolean) => void;
+  setLoading: (loading: boolean) => void
 }
 
-const FormSubmit = ({ setLoading }: FormSubmitProps) => {
+const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
   const { setResults } = useContext(ResultContext);
   const {
     validateSearchValues,
