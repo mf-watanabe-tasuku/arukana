@@ -1,14 +1,15 @@
+import { useContext } from 'react';
 import { styled } from 'styled-components';
 import type { ResultItemProps } from '../../types';
+import SearchContext from '../../context/search/SearchContext';
 
 const StyledOtherResultsBox = styled.div`
   background-color: #f0f0f0;
-  padding: 10px 20px 15px;
-  font-size: 0.8rem;
+  padding: 13px 20px 15px;
 `;
 const StyledOtherResultsTitle = styled.div`
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 `;
 
 const StyledOtherResultsList = styled.ul`
@@ -18,40 +19,28 @@ const StyledOtherResultsList = styled.ul`
 `;
 
 const StyledOtherResultsItem = styled.li`
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 const ResultItemOtherPlaces: React.FC<ResultItemProps> = ({ result }) => {
   const { nearbyPlaces } = result;
-
-  // 距離を表示用にフォーマットする
-  const formatDistanceWithUnit = (distance: number) => {
-    let distanceWithUnit = '';
-
-    if (distance >= 1000) {
-      distanceWithUnit = (distance / 1000).toFixed(1) + 'km';
-    } else {
-      distanceWithUnit += 'm';
-    }
-
-    return distanceWithUnit;
-  };
+  const { formatDistanceWithUnit } = useContext(SearchContext);
 
   return (
-    <>
-      {nearbyPlaces.length > 0 && (
-        <StyledOtherResultsBox>
-          <StyledOtherResultsTitle>検索にヒットした場所</StyledOtherResultsTitle>
-          <StyledOtherResultsList>
-            {nearbyPlaces.map((place, i) => (
-              <StyledOtherResultsItem key={i}>
-                {place.name} ( {formatDistanceWithUnit(place.distance)} / {place.duration} )
-              </StyledOtherResultsItem>
-            ))}
-          </StyledOtherResultsList>
-        </StyledOtherResultsBox>
+    <StyledOtherResultsBox>
+      <StyledOtherResultsTitle>検索にヒットした場所</StyledOtherResultsTitle>
+      {nearbyPlaces.length > 0 ? (
+        <StyledOtherResultsList>
+          {nearbyPlaces.map((place, i) => (
+            <StyledOtherResultsItem key={i}>
+              {place.name} ( {formatDistanceWithUnit(place.distance)} / {place.duration} )
+            </StyledOtherResultsItem>
+          ))}
+        </StyledOtherResultsList>
+      ) : (
+        <p>指定した距離圏内には、他にマッチする場所は見つかりませんでした。</p>
       )}
-    </>
+    </StyledOtherResultsBox>
   );
 };
 

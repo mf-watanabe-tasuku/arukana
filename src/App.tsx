@@ -19,7 +19,7 @@ const StyleWrapper = styled.div`
 `;
 
 const StyledContainer = styled.div`
-  max-width: 860px;
+  max-width: 900px;
   margin: 0 auto;
 `;
 

@@ -1,24 +1,15 @@
-import type { ResultItemProps } from '../../types';
+import { useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { ResultItemProps } from '../../types';
+import SearchContext from '../../context/search/SearchContext';
 
 const ResultItemDistance: React.FC<ResultItemProps> = ({ result }) => {
   const { nearestPlace } = result;
   const { distance } = nearestPlace;
 
-  // 距離を表示用にフォーマットする
-  const getDisplayDistance = (distance: number) => {
-    let distanceWithUnit = '';
-
-    if (distance >= 1000) {
-      distanceWithUnit = (distance / 1000).toFixed(1) + 'km';
-    } else {
-      distanceWithUnit += 'm';
-    }
-
-    return distanceWithUnit;
-  };
+  const { formatDistanceWithUnit } = useContext(SearchContext);
 
   return (
     <li>
@@ -26,7 +17,7 @@ const ResultItemDistance: React.FC<ResultItemProps> = ({ result }) => {
         <FontAwesomeIcon icon={faMapMarkerAlt as IconProp} />
       </span>
       <span>距離 : </span>
-      <span>{getDisplayDistance(distance)}</span>
+      <span>{formatDistanceWithUnit(distance)}</span>
     </li>
   );
 };

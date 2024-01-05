@@ -303,6 +303,19 @@ const SearchState = (props) => {
     );
   }
 
+  // 距離を表示用にフォーマットする
+  const formatDistanceWithUnit = (distance) => {
+    let distanceWithUnit = String(distance);
+
+    if (distance >= 1000) {
+      distanceWithUnit = (distance / 1000).toFixed(1) + 'km';
+    } else {
+      distanceWithUnit += 'm';
+    }
+
+    return distanceWithUnit;
+  };
+
   return (
     <SearchContext.Provider
       value={{
@@ -320,7 +333,8 @@ const SearchState = (props) => {
         removeFreeKeyword,
         validateSearchValues,
         handleInputRadius,
-        getSearchResults
+        getSearchResults,
+        formatDistanceWithUnit
       }}
     >
       {props.children}

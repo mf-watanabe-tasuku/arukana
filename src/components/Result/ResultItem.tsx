@@ -26,7 +26,7 @@ const StyleResultItemKeyword = styled.p`
 `;
 
 const ResultItem: React.FC<ResultItemProps> = ({ result }) => {
-  const { keyword, nearestPlace } = result;
+  const { keyword } = result;
 
   return (
     <>

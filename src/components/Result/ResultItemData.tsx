@@ -8,16 +8,16 @@ import ResultItemDuration from './ResultItemDuration';
 const StyledResultItemData = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  row-gap: 22px;
 `;
 
 const StyledResultItemTitle = styled.p`
-  margin-bottom: 15px;
+  margin-top: 2px;
   font-size: 20px;
+  line-height: 1.4;
 `;
 
 const StyledMetaList = styled.ul`
-  margin-bottom: 22px;
   list-style: none;
 `;
 
