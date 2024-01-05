@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { NearestPlace } from './ResultItem';
+import type { ResultItemProps } from './ResultItem';
 import star_100 from '../../images/star_100.svg';
 import star_75 from '../../images/star_75.svg';
 import star_50 from '../../images/star_50.svg';
@@ -27,11 +27,8 @@ const StyledRatingStarItem = styled.img`
   margin-right: 3px;
 `;
 
-type ResultItemRatingProps = {
-  nearestPlace: NearestPlace
-};
-
-const ResultItemRating: React.FC<ResultItemRatingProps> = ({ nearestPlace }) => {
+const ResultItemRating: React.FC<ResultItemProps> = ({ result }) => {
+  const { nearestPlace } = result;
   const { rating, reviewCount } = nearestPlace;
 
   const getRatingStars = () => {

@@ -49,23 +49,23 @@ export type NearbyPlace = {
 }
 
 export type ResultProps = {
-  keyword?: string,
+  keyword: string,
   nearestPlace: NearestPlace,
   nearbyPlaces: NearbyPlace[]
 }
 
-type ResultItemProps = {
+export type ResultItemProps = {
   result: ResultProps
 }
 
 const ResultItem: React.FC<ResultItemProps> = ({ result }) => {
-  const { keyword, nearestPlace, nearbyPlaces } = result;
+  const { keyword, nearestPlace } = result;
 
   return (
     <>
       <StyleResultItemKeyword>最寄りの{keyword}</StyleResultItemKeyword>
       <StyledResultItem>
-        <ResultItemData nearestPlace={nearestPlace} nearbyPlaces={nearbyPlaces} />
+        <ResultItemData result={result} />
         <ResultItemMap nearestPlace={nearestPlace} />
       </StyledResultItem>
     </>

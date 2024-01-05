@@ -25,10 +25,10 @@ const StyledBtnBack = styled.button`
 `;
 
 const Results: React.FC = () => {
-  const { clearResults } = useContext(ResultContext);
+  const { setResults } = useContext(ResultContext);
 
   return (
-    <StyledBtnBack onClick={clearResults}>
+    <StyledBtnBack onClick={() => setResults([])}>
       トップへ戻る
     </StyledBtnBack>
   );

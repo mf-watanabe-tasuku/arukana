@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import type { ResultProps } from './ResultItem';
+import type { ResultItemProps } from './ResultItem';
 
 const StyledOtherResultsBox = styled.div`
   background-color: #f0f0f0;
@@ -21,7 +21,9 @@ const StyledOtherResultsItem = styled.li`
   font-size: 12px;
 `;
 
-const ResultItemOtherPlaces: React.FC<ResultProps> = ({ nearbyPlaces }) => {
+const ResultItemOtherPlaces: React.FC<ResultItemProps> = ({ result }) => {
+  const { nearbyPlaces } = result;
+
   // 距離を表示用にフォーマットする
   const formatDistanceWithUnit = (distance: number) => {
     let distanceWithUnit = '';

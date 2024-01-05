@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import type { ResultProps } from './ResultItem';
 import ResultContext from '../../context/result/ResultContext';
 import ResultItem from './ResultItem';
 
@@ -10,7 +9,7 @@ const ResultWithPlace: React.FC = () => {
     <>
       {resultsWithPlace.length > 0 && (
         <ul>
-          {resultsWithPlace.map((result: ResultProps, i: number) => {
+          {resultsWithPlace.map((result, i) => {
             return result.nearestPlace && <ResultItem key={i} result={result} />;
           })}
         </ul>

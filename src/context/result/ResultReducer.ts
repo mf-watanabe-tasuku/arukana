@@ -1,16 +1,17 @@
 import { ACTIONS } from '../action-types';
+import type { ResultItemProps } from '../../components/Result/ResultItem';
 
-const ResultReducer = (state, action) => {
+type ActionProps = {
+  type: string,
+  payload: ResultItemProps[] | []
+};
+
+const ResultReducer = (state: ResultItemProps[], action: ActionProps) => {
   switch (action.type) {
     case ACTIONS.SET_RESULTS:
       return {
         ...state,
         results: action.payload,
-      };
-    case ACTIONS.CLEAR_RESULTS:
-      return {
-        ...state,
-        results: [],
       };
     default:
       return state;

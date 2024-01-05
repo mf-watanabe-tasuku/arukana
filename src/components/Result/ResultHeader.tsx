@@ -21,7 +21,7 @@ const StyledSearchResultsBackLink = styled.p`
 `;
 
 const ResultHeader: React.FC = () => {
-  const { clearResults } = useContext(ResultContext);
+  const { setResults } = useContext(ResultContext);
   const { originAddress, radius } = useContext(SearchContext);
 
   return (
@@ -30,7 +30,7 @@ const ResultHeader: React.FC = () => {
         「{originAddress}」から半径{radius}m以内の検索結果
       </StyledSearchResultsOriginText>
       <StyledSearchResultsBackBox>
-        <StyledSearchResultsBackLink onClick={clearResults}>
+        <StyledSearchResultsBackLink onClick={() => setResults([])}>
           トップへ戻る
         </StyledSearchResultsBackLink>
       </StyledSearchResultsBackBox>

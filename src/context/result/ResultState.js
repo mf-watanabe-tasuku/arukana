@@ -19,19 +19,13 @@ const ResultState = (props) => {
       payload: results
     });
 
-  const clearResults = () =>
-    dispatch({
-      type: ACTIONS.CLEAR_RESULTS,
-    });
-
   return (
     <ResultContext.Provider
       value={{
         results: state.results,
         resultsWithPlace,
         resultsWithoutPlace,
-        setResults,
-        clearResults,
+        setResults
       }}
     >
       {props.children}

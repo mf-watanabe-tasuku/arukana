@@ -1,13 +1,10 @@
-import type { NearestPlace } from './ResultItem';
+import type { ResultItemProps } from './ResultItem';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-type ResultItemDistanceProps = {
-  nearestPlace: NearestPlace
-};
-
-const ResultItemDistance: React.FC<ResultItemDistanceProps> = ({ nearestPlace }) => {
+const ResultItemDistance: React.FC<ResultItemProps> = ({ result }) => {
+  const { nearestPlace } = result;
   const { distance } = nearestPlace;
 
   // 距離を表示用にフォーマットする

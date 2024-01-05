@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import type { ResultProps } from './ResultItem';
+import type { ResultItemProps } from './ResultItem';
 import ResultItemOtherPlaces from './ResultItemOtherPlaces';
 import ResultItemRating from './ResultItemRating';
 import ResultItemDistance from './ResultItemDistance';
@@ -21,16 +21,18 @@ const StyledMetaList = styled.ul`
   list-style: none;
 `;
 
-const ResultItemData: React.FC<ResultProps> = ({ nearestPlace, nearbyPlaces }) => {
+const ResultItemData: React.FC<ResultItemProps> = ({ result }) => {
+  const { nearestPlace } = result;
+
   return (
     <StyledResultItemData>
       <StyledResultItemTitle>{nearestPlace.name}</StyledResultItemTitle>
       <StyledMetaList>
-        <ResultItemRating nearestPlace={nearestPlace} />
-        <ResultItemDistance nearestPlace={nearestPlace} />
-        <ResultItemDuration nearestPlace={nearestPlace} />
+        <ResultItemRating result={result} />
+        <ResultItemDistance result={result} />
+        <ResultItemDuration result={result} />
       </StyledMetaList>
-      <ResultItemOtherPlaces nearestPlace={nearestPlace} nearbyPlaces={nearbyPlaces} />
+      <ResultItemOtherPlaces result={result} />
     </StyledResultItemData>
   );
 };

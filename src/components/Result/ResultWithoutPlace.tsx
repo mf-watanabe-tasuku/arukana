@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
+import type { ResultProps } from './ResultItem';
 import ResultContext from '../../context/result/ResultContext';
 
 const StyledNoResults = styled.div`
@@ -14,10 +15,6 @@ const StyledResultList = styled.ul`
   line-height: 2.2;
 `;
 
-type ResultWithoutPlaceProps = {
-  keyword: string
-};
-
 const ResultWithoutPlace: React.FC = () => {
   const { resultsWithoutPlace } = useContext(ResultContext);
 
@@ -26,7 +23,7 @@ const ResultWithoutPlace: React.FC = () => {
       {resultsWithoutPlace.length > 0 && (
         <StyledNoResults>
           <StyledResultList>
-            {resultsWithoutPlace.map((result: ResultWithoutPlaceProps, i: number) => (
+            {resultsWithoutPlace.map((result: ResultProps, i: number) => (
               <li key={i}>{result.keyword}は見つかりませんでした</li>
             ))}
           </StyledResultList>
