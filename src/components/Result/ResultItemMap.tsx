@@ -1,6 +1,6 @@
 import { useEffect, useRef, useContext } from 'react';
 import { styled } from 'styled-components';
-import type { NearestPlace } from './ResultItem';
+import type { ResultItemProps } from '../../types';
 import SearchContext from '../../context/search/SearchContext';
 
 const StyledResultItemMap = styled.div`
@@ -14,11 +14,8 @@ const StyledMap = styled.div`
   height: 100%;
 `;
 
-type ResultItemMapProps = {
-  nearestPlace: NearestPlace
-};
-
-const ResultItemMap: React.FC<ResultItemMapProps> = ({ nearestPlace }) => {
+const ResultItemMap: React.FC<ResultItemProps> = ({ result }) => {
+  const { nearestPlace } = result;
   const { geocode } = nearestPlace;
 
   const { originGeocode } = useContext(SearchContext);

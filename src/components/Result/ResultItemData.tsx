@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import type { ResultItemProps } from './ResultItem';
+import type { ResultItemProps } from '../../types';
 import ResultItemOtherPlaces from './ResultItemOtherPlaces';
 import ResultItemRating from './ResultItemRating';
 import ResultItemDistance from './ResultItemDistance';

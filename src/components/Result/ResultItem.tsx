@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { ResultItemProps } from '../../types';
 import ResultItemData from './ResultItemData';
 import ResultItemMap from './ResultItemMap';
 
@@ -24,40 +25,6 @@ const StyleResultItemKeyword = styled.p`
   font-weight: bold;
 `;
 
-export type NearestPlace = {
-  name: string,
-  address: string,
-  distance: number,
-  duration: string,
-  lat: number,
-  lng: number,
-  geocode: {
-    lat: number,
-    lng: number
-  },
-  rating: number,
-  reviewCount: number
-}
-
-export type NearbyPlace = {
-  name: string,
-  address: string,
-  distance: number,
-  duration: string,
-  lat: number,
-  lng: number
-}
-
-export type ResultProps = {
-  keyword: string,
-  nearestPlace: NearestPlace,
-  nearbyPlaces: NearbyPlace[]
-}
-
-export type ResultItemProps = {
-  result: ResultProps
-}
-
 const ResultItem: React.FC<ResultItemProps> = ({ result }) => {
   const { keyword, nearestPlace } = result;
 
@@ -66,7 +33,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ result }) => {
       <StyleResultItemKeyword>最寄りの{keyword}</StyleResultItemKeyword>
       <StyledResultItem>
         <ResultItemData result={result} />
-        <ResultItemMap nearestPlace={nearestPlace} />
+        <ResultItemMap result={result} />
       </StyledResultItem>
     </>
   );

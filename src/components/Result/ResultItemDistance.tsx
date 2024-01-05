@@ -1,4 +1,4 @@
-import type { ResultItemProps } from './ResultItem';
+import type { ResultItemProps } from '../../types';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

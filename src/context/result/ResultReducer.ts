@@ -1,5 +1,5 @@
 import { ACTIONS } from '../action-types';
-import type { ResultItemProps } from '../../components/Result/ResultItem';
+import type { ResultItemProps } from '../../types';
 
 type ActionProps = {
   type: string,

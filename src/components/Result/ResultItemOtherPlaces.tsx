@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import type { ResultItemProps } from './ResultItem';
+import type { ResultItemProps } from '../../types';
 
 const StyledOtherResultsBox = styled.div`
   background-color: #f0f0f0;

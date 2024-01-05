@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { ResultProps, ResultItemProps } from '../../components/Result/ResultItem';
+import type { ResultProps, ResultItemProps } from '../../types';
 
 type ResultContextProps = {
   results: ResultItemProps[] | [],

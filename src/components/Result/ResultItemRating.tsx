@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { ResultItemProps } from './ResultItem';
+import type { ResultItemProps } from '../../types';
 import star_100 from '../../images/star_100.svg';
 import star_75 from '../../images/star_75.svg';
 import star_50 from '../../images/star_50.svg';

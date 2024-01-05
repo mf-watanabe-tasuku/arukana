@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import type { ResultProps } from './ResultItem';
+import type { ResultProps } from '../../types';
 import ResultContext from '../../context/result/ResultContext';
 
 const StyledNoResults = styled.div`
