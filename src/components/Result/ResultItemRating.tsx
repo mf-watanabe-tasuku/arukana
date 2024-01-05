@@ -14,6 +14,14 @@ const StyledRatingBox = styled.div`
   align-items: center;
 `;
 
+const StyledRatingIcon = styled.span`
+  margin-right: 7px;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  color: #3795c0;
+`;
+
 const StyledRatingNum = styled.span`
   margin-right: 7px;
 `;
@@ -59,9 +67,9 @@ const ResultItemRating: React.FC<ResultItemProps> = ({ result }) => {
   return (
     <li>
       <StyledRatingBox>
-        <span className="rating-icon">
+        <StyledRatingIcon>
           <FontAwesomeIcon icon={faSmile as IconProp} />
-        </span>
+        </StyledRatingIcon>
         {rating ? (
           <>
             <StyledRatingNum>{rating}</StyledRatingNum>
