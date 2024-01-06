@@ -58,11 +58,11 @@ const StyledFreeKeywordCloseBtn = styled.span`
 
 const FormKeyword: React.FC = () => {
   const {
+    freeKeyword,
     freeKeywords,
     setFreeKeyword,
-    removeFreeKeyword,
     addFreeKeywords,
-    freeKeyword
+    removeFreeKeyword
   } = useContext(SearchContext);
 
   return(
@@ -73,8 +73,8 @@ const FormKeyword: React.FC = () => {
       <StyledSearchStepInput
         type='text'
         placeholder='入力してEnterを押してください  例) セブンイレブン'
-        onChange={(e) => setFreeKeyword(e.target.value)}
-        onKeyPress={addFreeKeywords}
+        onChange={e => setFreeKeyword(e.target.value)}
+        onKeyDown={e => addFreeKeywords(e)}
         value={freeKeyword}
       />
       <StyledFreeKeywordList>

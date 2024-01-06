@@ -3,7 +3,7 @@ import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
 import { ACTIONS } from '../action-types';
 
-const SearchState = (props) => {
+const SearchState = props => {
   const keywordMaxCount = process.env.REACT_APP_KEYWORD_MAX_COUNT;
 
   const initialState = {
@@ -19,41 +19,41 @@ const SearchState = (props) => {
 
   const [state, dispatch] = useReducer(SearchReducer, initialState);
 
-  const setOriginAddress = (originAddress) =>
+  const setOriginAddress = originAddress =>
     dispatch({
       type: ACTIONS.SET_ORIGIN_ADDRESS,
       payload: originAddress,
     });
 
-  const setFreeKeyword = (freeKeyword) => {
+  const setFreeKeyword = freeKeyword => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORD,
       payload: freeKeyword,
     });
   };
 
-  const setFreeKeywords = (freeKeywords) => {
+  const setFreeKeywords = freeKeywords => {
     dispatch({
       type: ACTIONS.SET_FREE_KEYWORDS,
       payload: freeKeywords,
     });
   };
 
-  const setTargetKeywords = (targetKeywords) => {
+  const setTargetKeywords = targetKeywords => {
     dispatch({
       type: ACTIONS.SET_TARGET_KEYWORDS,
       payload: targetKeywords,
     });
   };
 
-  const setErrorMessages = (errorMessages) => {
+  const setErrorMessages = errorMessages => {
     dispatch({
       type: ACTIONS.SET_ERROR_MESSAGES,
       payload: errorMessages,
     });
   };
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = e => {
     const targetValue = e.target.value;
     const { name, checked } = e.target;
     const keywordIndex = state.targetKeywords.indexOf(targetValue);
@@ -73,7 +73,7 @@ const SearchState = (props) => {
     });
   };
 
-  const addFreeKeywords = (e) => {
+  const addFreeKeywords = e => {
     if (e.key !== 'Enter') return;
 
     if (keywordMaxCount && state.freeKeywords.length + 1 > keywordMaxCount) {
@@ -102,7 +102,7 @@ const SearchState = (props) => {
     }
   };
 
-  const removeFreeKeyword = (keyword) => {
+  const removeFreeKeyword = keyword => {
     const keywordIndex = state.freeKeywords.indexOf(keyword);
     if (keywordIndex === -1) return;
     state.freeKeywords.splice(keywordIndex, 1);
@@ -216,7 +216,7 @@ const SearchState = (props) => {
     });
   };
 
-  const getPlaceDistanceData = async (places) => {
+  const getPlaceDistanceData = async places => {
     const placesWithDistance = await Promise.all(
       places.map(async (place) => {
         const distanceData = await fetchDistanceData(place);
@@ -244,7 +244,7 @@ const SearchState = (props) => {
   };
 
   // 距離と所要時間を取得してオブジェクトで返す
-  const fetchDistanceData = (destination) => {
+  const fetchDistanceData = destination => {
     const service = new window.google.maps.DistanceMatrixService();
 
     const distanceMatrixConditions = {
@@ -265,7 +265,7 @@ const SearchState = (props) => {
     });
   };
 
-  const handleInputRadius = (e) => {
+  const handleInputRadius = e => {
     e.preventDefault();
     let inputRadius = e.target.value;
 
@@ -304,7 +304,7 @@ const SearchState = (props) => {
   }
 
   // 距離を表示用にフォーマットする
-  const formatDistanceWithUnit = (distance) => {
+  const formatDistanceWithUnit = distance => {
     let distanceWithUnit = String(distance);
 
     if (distance >= 1000) {
