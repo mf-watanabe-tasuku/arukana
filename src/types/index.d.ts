@@ -1,19 +1,49 @@
-export type NearestPlace = {
+// Node
+
+export type ChildrenNodeProps = {
+  children: React.ReactNode
+}
+
+// Context・Reducer
+
+export type ResultContextProps = {
+  results: ResultsProps,
+  setResults: SetResults
+}
+
+export type ResultReducerType = (state: State, action: Action) => State;
+
+export type State =
+  | {
+      results: ResultsProps
+    };
+
+export type Action =
+  | {
+      type: ACTIONS.SET_RESULTS,
+      payload: ResultsProps
+    };
+
+export type SetResults = (results: ResultsProps) => void;
+
+export type SetLoading = (loading: boolean) => void;
+
+// Result
+
+type NearestPlace = {
   name: string,
   address: string,
   distance: number,
   duration: string,
-  lat: number,
-  lng: number,
+  rating: number,
+  reviewCount: number,
   geocode: {
     lat: number,
     lng: number
-  },
-  rating: number,
-  reviewCount: number
+  }
 }
 
-export type NearbyPlace = {
+type NearbyPlace = {
   name: string,
   address: string,
   distance: number,
@@ -27,6 +57,8 @@ export type ResultProps = {
   nearestPlace: NearestPlace,
   nearbyPlaces: NearbyPlace[]
 }
+
+export type ResultsProps = ResultProps[] | [];
 
 export type ResultItemProps = {
   result: ResultProps

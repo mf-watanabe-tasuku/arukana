@@ -3,7 +3,9 @@ import ResultContext from '../../context/result/ResultContext';
 import ResultItem from './ResultItem';
 
 const ResultWithPlace: React.FC = () => {
-  const { resultsWithPlace } = useContext(ResultContext);
+  const { results } = useContext(ResultContext);
+
+  const resultsWithPlace = results.filter(result => result.nearestPlace);
 
   return (
     <>

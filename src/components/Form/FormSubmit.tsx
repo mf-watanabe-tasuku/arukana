@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
+import type { SetLoading } from '../../types';
 import SearchContext from '../../context/search/SearchContext';
 import ResultContext from '../../context/result/ResultContext';
 
@@ -31,7 +32,7 @@ const StyledBtnSearch = styled.button`
 `;
 
 type FormSubmitProps = {
-  setLoading: (loading: boolean) => void
+  setLoading: SetLoading
 }
 
 const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
