@@ -1,7 +1,7 @@
-import type { State, Action } from '../../types';
+import type { ResultState, Action } from '../../types';
 import { ACTIONS } from '../action-types';
 
-const ResultReducer = (state: State, action: Action): State => {
+const ResultReducer = (state: ResultState, action: Action): ResultState => {
   switch (action.type) {
     case ACTIONS.SET_RESULTS:
       return {

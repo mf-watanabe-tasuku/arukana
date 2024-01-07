@@ -37,9 +37,9 @@ export type SearchContextProps = {
   formatDistanceWithUnit: FormatDistanceWithUnit;
 }
 
-export type ResultReducerType = (state: State, action: Action) => State;
+export type ResultReducerType = (state: ResultState, action: Action) => State;
 
-export type State =
+export type ResultState =
   | {
       results: ResultsProps;
     };
