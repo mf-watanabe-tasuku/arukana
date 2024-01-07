@@ -2,14 +2,14 @@
 
 export type ChildrenNodeProps = {
   children: React.ReactNode;
-}
+};
 
 // Context・Reducer
 
 export type ResultContextProps = {
   results: ResultsProps;
   setResults: SetResults;
-}
+};
 
 export type SearchContextProps = {
   originAddress: string;
@@ -35,20 +35,18 @@ export type SearchContextProps = {
   handleInputRadius: ChangeEventType;
   getSearchResults: GetSearchResults;
   formatDistanceWithUnit: FormatDistanceWithUnit;
-}
+};
 
 export type ResultReducerType = (state: ResultState, action: Action) => State;
 
-export type ResultState =
-  | {
-      results: ResultsProps;
-    };
+export type ResultState = {
+  results: ResultsProps;
+};
 
-export type Action =
-  | {
-      type: ACTIONS.SET_RESULTS;
-      payload: ResultsProps
-    };
+export type ResultAction = {
+  type: ACTIONS.SET_RESULTS;
+  payload: ResultsProps;
+};
 
 // State
 export type SetOriginAddress = (originAddress: string) => void;
