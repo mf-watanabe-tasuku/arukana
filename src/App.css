@@ -12,11 +12,3 @@ body {
     'MS PGothic', sans-serif;
   line-height: 1.6;
 }
-
-.rating-icon {
-  margin-right: 7px;
-  display: inline-block;
-  width: 20px;
-  text-align: center;
-  color: #3795c0;
-}
