@@ -1,19 +1,18 @@
 import { useReducer } from 'react';
 import type { ChildrenNodeProps, ResultReducerType, SetResults } from '../../types';
-import { ACTIONS } from '../action-types';
 import ResultContext from './ResultContext';
 import ResultReducer from './ResultReducer';
 
 const ResultState: React.FC<ChildrenNodeProps> = (props) => {
-  const initialResultsState = {
+  const initialResultState = {
     results: []
   };
 
-  const [state, dispatch] = useReducer<ResultReducerType>(ResultReducer, initialResultsState);
+  const [state, dispatch] = useReducer<ResultReducerType>(ResultReducer, initialResultState);
 
   const setResults: SetResults = results => {
     dispatch({
-      type: ACTIONS.SET_RESULTS,
+      type: 'SET_RESULTS',
       payload: results
     });
   }

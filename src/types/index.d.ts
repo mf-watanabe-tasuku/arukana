@@ -11,15 +11,18 @@ export type ResultContextProps = {
   setResults: SetResults;
 };
 
+export type originGeocode = {
+  lat: number;
+  lng: number;
+}
+
 export type SearchContextProps = {
   originAddress: string;
-  originGeocode: {
-    lat: number;
-    lng: number;
-  };
+  originGeocode: originGeocode;
   freeKeyword: string;
   freeKeywords: string[];
-  radius: number;
+  targetKeywords: string[];
+  radius: string | number;
   recommendChecks: {
     [key: string]: boolean;
   };
@@ -28,56 +31,139 @@ export type SearchContextProps = {
   };
   setOriginAddress: SetOriginAddress;
   setFreeKeyword: SetFreeKeyword;
-  addFreeKeywords: KeyboardEventType;
-  handleCheckboxChange: ChangeEventType;
+  addFreeKeywords: KeyboardEvent;
+  handleCheckboxChange: ChangeEvent;
   removeFreeKeyword: RemoveFreeKeyword;
   validateSearchValues: ValidateSearchValues;
-  handleInputRadius: ChangeEventType;
+  handleInputRadius: ChangeEvent;
   getSearchResults: GetSearchResults;
   formatDistanceWithUnit: FormatDistanceWithUnit;
+  hasErrorMessages: HasErrorMessages;
 };
 
-export type ResultReducerType = (state: ResultState, action: Action) => State;
+export type ResultReducerType = (state: ResultState, action: ResultAction) => ResultState;
 
 export type ResultState = {
   results: ResultsProps;
 };
 
 export type ResultAction = {
-  type: ACTIONS.SET_RESULTS;
+  type: 'SET_RESULTS';
   payload: ResultsProps;
 };
 
+export type SearchReducerType = (state: SearchState, action: SearchAction) => SearchState;
+
+export type SearchState = {
+  originAddress: string;
+  originGeocode: {
+    lat: number;
+    lng: number;
+  };
+  freeKeyword: string;
+  freeKeywords: string[];
+  targetKeywords: string[];
+  radius: string;
+  recommendChecks: {
+    [key: string]: boolean;
+  };
+  errorMessages: {
+    [key: string]: string;
+  };
+};
+
+export type SearchAction =
+  | {
+      type: 'SET_ORIGIN_ADDRESS';
+      payload: string;
+    }
+  | {
+      type: 'SET_ORIGIN_GEOCODE';
+      payload: {
+        lat: number;
+        lng: number;
+      };
+    }
+  | {
+      type: 'SET_FREE_KEYWORD';
+      payload: string;
+    }
+  | {
+      type: 'SET_FREE_KEYWORDS';
+      payload: string[];
+    }
+  | {
+      type: 'SET_TARGET_KEYWORDS';
+      payload: string[];
+    }
+  | {
+      type: 'SET_RADIUS';
+      payload: string;
+    }
+  | {
+      type: 'SET_RECOMMEND_CHECKS';
+      payload: {
+        [key: string]: boolean;
+      };
+    }
+  | {
+      type: 'SET_ERROR_MESSAGES';
+      payload: {
+        [key: string]: string;
+      };
+    };
+
 // State
-export type SetOriginAddress = (originAddress: string) => void;
+export type SetOriginAddress = (address: string) => void;
 
-export type SetFreeKeyword = (freeKeyword: string) => void;
+export type SetFreeKeyword = (keyword: string) => void;
 
-export type KeyboardEventType = (e: React.KeyboardEvent<HTMLInputElement>) => void;
+export type KeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
-export type ChangeEventType = React.ChangeEventHandler<HTMLInputElement>;
+export type SetFreeKeywords = (freeKeywords: string[]) => void;
+
+export type SetTargetKeywords = (targetKeywords: string[]) => void;
+
+export type SetErrorMessages = (errorMessages: {}) => void;
+
+export type ChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void;
 
 export type RemoveFreeKeyword = (index: string) => void;
 
 export type ValidateSearchValues = () => {};
 
-export type HandleInputRadius = React.ChangeEventHandler<HTMLInputElement>;
-
 export type GetSearchResults = () => Promise;
 
-export type FormatDistanceWithUnit = (distance: number) => string;
+export type FormatDistanceWithUnit = (distance: number | undefined) => string | undefined;
 
 export type SetResults = (results: ResultsProps) => void;
 
 export type SetLoading = (loading: boolean) => void;
 
+export type GetPlaceDistanceData = (places: FormattedNearbyPlaces | undefined) => Promise<{ nearestPlace: NearestPlace | undefined; nearbyPlaces: NearestPlace[] | undefined; }> | undefined;
+
+type HasErrorMessages = () => boolean;
+
 // Result
+
+type FormattedNearbyPlace = {
+  name: string | undefined;
+  rating: number | undefined;
+  ratings_total: number | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
+  address?: string | undefined;
+  distance?: number | undefined;
+  duration?: number | undefined;
+};
+
+export type FormattedNearbyPlaces = FormattedNearbyPlace[];
 
 type NearestPlace = {
   name: string;
   address: string;
-  distance: number;
-  duration: string;
+  distance: number | undefined;
+  duration: string | undefined;
   rating: number;
   reviewCount: number;
   geocode: {
@@ -86,19 +172,19 @@ type NearestPlace = {
   };
 };
 
-type NearbyPlace = {
-  name: string;
-  address: string;
-  distance: number;
-  duration: string;
-  lat: number;
-  lng: number;
+export type NearbyPlace = {
+  name: string | undefined;
+  address: string | undefined;
+  distance: number | undefined;
+  duration: string | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
 };
 
 export type ResultProps = {
   keyword: string;
   nearestPlace: NearestPlace;
-  nearbyPlaces: NearbyPlace[];
+  nearbyPlaces: NearbyPlace[] | [];
 };
 
 export type ResultsProps = ResultProps[] | [];

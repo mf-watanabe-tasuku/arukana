@@ -62,7 +62,7 @@ const FormRecommend: React.FC = () => {
                 name={place.name}
                 value={place.value}
                 id={place.id}
-                onChange={e => handleCheckboxChange(e)}
+                onChange={handleCheckboxChange}
                 defaultChecked={recommendChecks[place.name]}
               />
               <StyledPlaceCheckboxLabel htmlFor={place.id}>

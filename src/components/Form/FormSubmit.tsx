@@ -39,13 +39,15 @@ const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
   const { setResults } = useContext(ResultContext);
   const {
     validateSearchValues,
-    getSearchResults
+    getSearchResults,
+    hasErrorMessages
   } = useContext(SearchContext);
 
   // 検索ボタンを押した時の処理;
   const handleSubmit = async () => {
-    const validationErrors = validateSearchValues();
-    if (Object.keys(validationErrors).length !== 0) return;
+    validateSearchValues();
+    const hasError = hasErrorMessages();
+    if (hasError) return;
 
     setLoading(true);
     window.scrollTo(0, 0);
