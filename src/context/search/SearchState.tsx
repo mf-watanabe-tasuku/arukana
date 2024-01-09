@@ -3,16 +3,15 @@ import type {
   ChildrenNodeProps,
   SearchReducerType,
   SetOriginAddress,
+  SetOriginGeocode,
   SetFreeKeyword,
   SetFreeKeywords,
   SetTargetKeywords,
+  SetRadius,
   SetErrorMessages,
   KeyboardEvent,
   RemoveFreeKeyword,
-  FormatDistanceWithUnit,
-  originGeocode,
-  FormattedNearbyPlace,
-  FormattedNearbyPlaces
+  SetRecommendChecks
 } from '../../types';
 import SearchContext from './SearchContext';
 import SearchReducer from './SearchReducer';
@@ -36,39 +35,61 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
 
   const [state, dispatch] = useReducer<SearchReducerType>(SearchReducer, initialState);
 
-  const setOriginAddress: SetOriginAddress = address =>
+  const setOriginAddress: SetOriginAddress = address => {
     dispatch({
       type: 'SET_ORIGIN_ADDRESS',
-      payload: address,
+      payload: address
     });
+  };
+
+  const setOriginGeocode: SetOriginGeocode = geocode => {
+    dispatch({
+      type: 'SET_ORIGIN_GEOCODE',
+      payload: geocode
+    });
+  };
 
   const setFreeKeyword: SetFreeKeyword = keyword => {
     dispatch({
       type: 'SET_FREE_KEYWORD',
-      payload: keyword,
+      payload: keyword
     });
   };
 
   const setFreeKeywords: SetFreeKeywords = freeKeywords => {
     dispatch({
       type: 'SET_FREE_KEYWORDS',
-      payload: freeKeywords,
+      payload: freeKeywords
     });
   };
 
   const setTargetKeywords: SetTargetKeywords = targetKeywords => {
     dispatch({
       type: 'SET_TARGET_KEYWORDS',
-      payload: targetKeywords,
+      payload: targetKeywords
     });
   };
+
+  const setRadius: SetRadius = radius => {
+    dispatch({
+      type: 'SET_RADIUS',
+      payload: radius,
+    });
+  }
 
   const setErrorMessages: SetErrorMessages = errorMessages => {
     dispatch({
       type: 'SET_ERROR_MESSAGES',
-      payload: errorMessages,
+      payload: errorMessages
     });
   };
+
+  const setRecommendChecks: SetRecommendChecks = recommendChecks => {
+    dispatch({
+      type: 'SET_RECOMMEND_CHECKS',
+      payload: recommendChecks,
+    });
+  }
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetValue = e.target.value;
@@ -84,10 +105,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
     }
 
     setTargetKeywords(newTargetKeywords);
-    dispatch({
-      type: 'SET_RECOMMEND_CHECKS',
-      payload: { ...state.recommendChecks, [name]: checked },
-    });
+    setRecommendChecks({ ...state.recommendChecks, [name]: checked });
   };
 
   const addFreeKeywords: KeyboardEvent = e => {
@@ -162,7 +180,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
       const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS?.toLocaleString();
 
       // stateに保持している半径距離をStringからFloatに変換
-      const radiusInFloat = parseFloat(state.radius);
+      const radiusInFloat = parseFloat(String(state.radius));
 
       if (radiusInFloat > Number(process.env.REACT_APP_MAX_RADIUS)) {
         validationErrors.radius = `半径${formattedMaxRadius}mより大きな値は指定できません`;
@@ -170,136 +188,13 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
         validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
       } else {
         // Floatに変換した半径距離が最大値と最小値の間に収まっている場合は、state.radiusをFloat型の値で更新
-        dispatch({
-          type: 'SET_RADIUS',
-          payload: String(radiusInFloat),
-        });
+        setRadius(String(radiusInFloat));
       }
     }
 
     setErrorMessages(validationErrors);
 
     return validationErrors;
-  };
-
-  // 基準地点の座標を取得する
-  const setOriginGeocode = async () => {
-    const geocoder = new window.google.maps.Geocoder();
-    const originGeocode = await geocoder.geocode(
-      { address: state.originAddress },
-      (results, status) => (status === 'OK' ? results : status)
-    );
-
-    const formattedOriginGeocode = {
-      lat: originGeocode.results[0].geometry.location.lat(),
-      lng: originGeocode.results[0].geometry.location.lng(),
-    };
-
-    dispatch({
-      type: 'SET_ORIGIN_GEOCODE',
-      payload: formattedOriginGeocode
-    });
-
-    return formattedOriginGeocode;
-  };
-
-  // 周辺の施設を検索する
-  const div = document.createElement('div');
-  const fetchNearbyPlaces = (geocode: originGeocode, keyword: string) => {
-    const service = new window.google.maps.places.PlacesService(div);
-    const searchConditions = {
-      location: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-      radius: Number(state.radius),
-      keyword
-    };
-
-    return new Promise(resolve => {
-      service.nearbySearch(searchConditions, async nearbyPlaces => {
-        const formattedNearbyPlaces: FormattedNearbyPlaces | undefined = nearbyPlaces?.map(nearbyPlace => {
-          return {
-            name: nearbyPlace.name,
-            rating: nearbyPlace.rating,
-            ratings_total: nearbyPlace.user_ratings_total,
-            lat: nearbyPlace?.geometry?.location?.lat(),
-            lng: nearbyPlace?.geometry?.location?.lng()
-          };
-        });
-
-        const placeDistanceData = await getPlaceDistanceData(formattedNearbyPlaces);
-        const keywordWithResults = {
-          keyword,
-          ...placeDistanceData
-        };
-
-        resolve(keywordWithResults);
-      });
-    });
-  };
-
-  const getPlaceDistanceData = async (places: FormattedNearbyPlaces | undefined) => {
-    if (!places) return;
-
-    const placesWithDistance = await Promise.all(
-      places.map(async place => {
-        const distanceData = await fetchDistanceData(place);
-
-        const placeWithDistanceObj = {
-          name: place.name,
-          rating: place.rating,
-          reviewCount: place.ratings_total,
-          geocode: { lat: place.lat, lng: place.lng },
-          ...distanceData
-        };
-        return placeWithDistanceObj;
-      })
-    );
-
-    const filteredResults = placesWithDistance.filter(place => {
-      return place.distance && place.distance <= Number(state.radius);
-    });
-
-    const sortedResults = filteredResults.sort((place_a, place_b) => {
-      if (place_a.distance === undefined || place_b.distance === undefined) return 0;
-
-      return place_a.distance - place_b.distance;
-    });
-
-    const [nearestPlace, ...nearbyPlaces] = sortedResults.slice(0, 4);
-
-    const placeDistanceData = { nearestPlace, nearbyPlaces };
-
-    return placeDistanceData;
-  };
-
-  // 距離と所要時間を取得してオブジェクトで返す
-  const fetchDistanceData = (place: FormattedNearbyPlace): Promise<{ distance: number | undefined; duration: string | undefined; }> => {
-    const service = new window.google.maps.DistanceMatrixService();
-    const distanceMatrixConditions = {
-      origins: [state.originAddress],
-      destinations: [place.name] as string[],
-      travelMode: window.google.maps.TravelMode.WALKING
-    };
-
-    return new Promise(resolve => {
-      service.getDistanceMatrix(distanceMatrixConditions, res => {
-        if (!res) return;
-
-        const data = res.rows[0].elements[0];
-        const distanceDataObj: {
-          distance: number | undefined;
-          duration: string | undefined;
-        } = {
-          distance: undefined,
-          duration: undefined
-        };
-        if (data.status === 'OK') {
-          distanceDataObj.distance = data.distance.value;
-          distanceDataObj.duration = data.duration.text;
-        }
-
-        resolve(distanceDataObj);
-      });
-    });
   };
 
   const handleInputRadius: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -321,50 +216,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
       setErrorMessages(errorMessages);
     }
 
-    dispatch({
-      type: 'SET_RADIUS',
-      payload: inputRadius
-    });
-  }
-
-  const getSearchResults = async () => {
-    const originGeocode = await setOriginGeocode();
-    return await Promise.all(
-      state.targetKeywords.map(keyword => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            const nearbyPlaces = fetchNearbyPlaces(originGeocode, keyword);
-            resolve(nearbyPlaces);
-          }, 1000);
-        });
-      })
-    );
-  }
-
-  // 距離を表示用にフォーマットする
-  const formatDistanceWithUnit: FormatDistanceWithUnit = distance => {
-    if (!distance) return;
-
-    let distanceWithUnit = String(distance);
-
-    if (distance >= 1000) {
-      distanceWithUnit = (distance / 1000).toFixed(1) + 'km';
-    } else {
-      distanceWithUnit += 'm';
-    }
-
-    return distanceWithUnit;
-  };
-
-  const hasErrorMessages = () => {
-    let hasError = false;
-
-    const errorMessagesInArray = Object.entries(state.errorMessages);
-    errorMessagesInArray.map(([, value]) => {
-      if (value) hasError = true;
-    });
-
-    return hasError;
+    setRadius(inputRadius);
   }
 
   return (
@@ -379,15 +231,13 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
         recommendChecks: state.recommendChecks,
         errorMessages: state.errorMessages,
         setOriginAddress,
+        setOriginGeocode,
         setFreeKeyword,
         addFreeKeywords,
         handleCheckboxChange,
         removeFreeKeyword,
         validateSearchValues,
-        handleInputRadius,
-        getSearchResults,
-        formatDistanceWithUnit,
-        hasErrorMessages
+        handleInputRadius
       }}
     >
       {props.children}

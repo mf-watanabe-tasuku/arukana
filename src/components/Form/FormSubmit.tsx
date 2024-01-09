@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import type { SetLoading } from '../../types';
 import SearchContext from '../../context/search/SearchContext';
 import ResultContext from '../../context/result/ResultContext';
+import { getSearchResults, hasErrorMessages } from '../../utils/search';
 
 const StyledBtnSearch = styled.button`
   width: 300px;
@@ -38,20 +39,23 @@ type FormSubmitProps = {
 const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
   const { setResults } = useContext(ResultContext);
   const {
-    validateSearchValues,
-    getSearchResults,
-    hasErrorMessages
+    originAddress,
+    radius,
+    targetKeywords,
+    errorMessages,
+    setOriginGeocode,
+    validateSearchValues
   } = useContext(SearchContext);
 
   // 検索ボタンを押した時の処理;
   const handleSubmit = async () => {
     validateSearchValues();
-    const hasError = hasErrorMessages();
+    const hasError = hasErrorMessages(errorMessages);
     if (hasError) return;
 
     setLoading(true);
     window.scrollTo(0, 0);
-    const results = await getSearchResults();
+    const results = await getSearchResults(setOriginGeocode, originAddress, targetKeywords, radius);
     setResults(results);
   };
 

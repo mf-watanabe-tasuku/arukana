@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
 import type { ResultItemProps } from '../../types';
-import SearchContext from '../../context/search/SearchContext';
+import { formatDistanceWithUnit } from '../../utils/search';
 
 const StyledOtherResultsBox = styled.div`
   background-color: #f0f0f0;
@@ -24,7 +23,6 @@ const StyledOtherResultsItem = styled.li`
 
 const ResultItemOtherPlaces: React.FC<ResultItemProps> = ({ result }) => {
   const { nearbyPlaces } = result;
-  const { formatDistanceWithUnit } = useContext(SearchContext);
 
   return (
     <StyledOtherResultsBox>

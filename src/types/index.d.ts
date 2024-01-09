@@ -11,34 +11,36 @@ export type ResultContextProps = {
   setResults: SetResults;
 };
 
-export type originGeocode = {
+export type OriginGeocode = {
   lat: number;
   lng: number;
 }
 
+export type Radius = string | number;
+
+type ErrorMessage = {
+  [key: string]: string;
+};
+
 export type SearchContextProps = {
   originAddress: string;
-  originGeocode: originGeocode;
+  originGeocode: OriginGeocode;
   freeKeyword: string;
   freeKeywords: string[];
   targetKeywords: string[];
-  radius: string | number;
+  radius: Radius;
   recommendChecks: {
     [key: string]: boolean;
   };
-  errorMessages: {
-    [key: string]: string;
-  };
+  errorMessages: ErrorMessage;
   setOriginAddress: SetOriginAddress;
+  setOriginGeocode: SetOriginGeocode;
   setFreeKeyword: SetFreeKeyword;
   addFreeKeywords: KeyboardEvent;
   handleCheckboxChange: ChangeEvent;
   removeFreeKeyword: RemoveFreeKeyword;
   validateSearchValues: ValidateSearchValues;
   handleInputRadius: ChangeEvent;
-  getSearchResults: GetSearchResults;
-  formatDistanceWithUnit: FormatDistanceWithUnit;
-  hasErrorMessages: HasErrorMessages;
 };
 
 export type ResultReducerType = (state: ResultState, action: ResultAction) => ResultState;
@@ -63,13 +65,11 @@ export type SearchState = {
   freeKeyword: string;
   freeKeywords: string[];
   targetKeywords: string[];
-  radius: string;
+  radius: Radius;
   recommendChecks: {
     [key: string]: boolean;
   };
-  errorMessages: {
-    [key: string]: string;
-  };
+  errorMessages: ErrorMessage;
 };
 
 export type SearchAction =
@@ -98,7 +98,7 @@ export type SearchAction =
     }
   | {
       type: 'SET_RADIUS';
-      payload: string;
+      payload: Radius;
     }
   | {
       type: 'SET_RECOMMEND_CHECKS';
@@ -108,13 +108,15 @@ export type SearchAction =
     }
   | {
       type: 'SET_ERROR_MESSAGES';
-      payload: {
-        [key: string]: string;
-      };
+      payload: ErrorMessage;
     };
 
 // State
 export type SetOriginAddress = (address: string) => void;
+
+export type GetOriginGeocode = (address: string) => originGeocode;
+
+export type SetOriginGeocode = (geocode: Geocode) => void;
 
 export type SetFreeKeyword = (keyword: string) => void;
 
@@ -124,6 +126,8 @@ export type SetFreeKeywords = (freeKeywords: string[]) => void;
 
 export type SetTargetKeywords = (targetKeywords: string[]) => void;
 
+export type SetRadius = (radius: string) => void;
+
 export type SetErrorMessages = (errorMessages: {}) => void;
 
 export type ChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -132,7 +136,7 @@ export type RemoveFreeKeyword = (index: string) => void;
 
 export type ValidateSearchValues = () => {};
 
-export type GetSearchResults = () => Promise;
+export type GetSearchResults = (setOriginGeocode, address: string, keywords: string[], radius: Radius) => Promise;
 
 export type FormatDistanceWithUnit = (distance: number | undefined) => string | undefined;
 
@@ -142,7 +146,9 @@ export type SetLoading = (loading: boolean) => void;
 
 export type GetPlaceDistanceData = (places: FormattedNearbyPlaces | undefined) => Promise<{ nearestPlace: NearestPlace | undefined; nearbyPlaces: NearestPlace[] | undefined; }> | undefined;
 
-type HasErrorMessages = () => boolean;
+export type HasErrorMessages = (messages: ErrorMessage) => boolean;
+
+export type SetRecommendChecks = (recommendChecks: {}) => void;
 
 // Result
 
