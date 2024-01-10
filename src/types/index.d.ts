@@ -41,6 +41,7 @@ export type SearchContextProps = {
   removeFreeKeyword: RemoveFreeKeyword;
   validateSearchValues: ValidateSearchValues;
   handleInputRadius: ChangeEvent;
+  setErrorMessages: SetErrorMessages;
 };
 
 export type ResultReducerType = (state: ResultState, action: ResultAction) => ResultState;

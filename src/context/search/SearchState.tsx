@@ -151,8 +151,6 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
   };
 
   const validateSearchValues = () => {
-    setErrorMessages({});
-
     const validationErrors = {
       originAddress: '',
       keyword: '',
@@ -177,23 +175,25 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
     } else if (String(state.radius).match(/\..*\./)) {
       validationErrors.radius = '整数か小数で入力してください';
     } else {
-      const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS?.toLocaleString();
-      const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS?.toLocaleString();
-
       // stateに保持している半径距離をStringからFloatに変換
       const radiusInFloat = parseFloat(String(state.radius));
 
-      if (radiusInFloat > Number(process.env.REACT_APP_MAX_RADIUS)) {
+      const maxRadius = process.env.REACT_APP_MAX_RADIUS;
+      const minRadius = process.env.REACT_APP_MIN_RADIUS;
+
+      // 半径距離が最大値より大きい場合はエラーをセット
+      if (radiusInFloat > Number(maxRadius)) {
+        const formattedMaxRadius = maxRadius?.toLocaleString();
         validationErrors.radius = `半径${formattedMaxRadius}mより大きな値は指定できません`;
-      } else if (radiusInFloat < Number(process.env.REACT_APP_MIN_RADIUS)) {
+      // 半径距離が最小値より小さい場合はエラーをセット
+      } else if (radiusInFloat < Number(minRadius)) {
+        const formattedMinRadius = minRadius?.toLocaleString();
         validationErrors.radius = `半径${formattedMinRadius}m未満は指定できません`;
+      // 半径距離が最大値以下・最小値以上である場合は、radius stateを文字列型の値で更新
       } else {
-        // Floatに変換した半径距離が最大値と最小値の間に収まっている場合は、state.radiusをFloat型の値で更新
         setRadius(String(radiusInFloat));
       }
     }
-
-    setErrorMessages(validationErrors);
 
     return validationErrors;
   };
@@ -251,7 +251,8 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
         handleCheckboxChange,
         removeFreeKeyword,
         validateSearchValues,
-        handleInputRadius
+        handleInputRadius,
+        setErrorMessages
       }}
     >
       {props.children}

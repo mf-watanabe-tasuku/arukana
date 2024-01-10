@@ -42,15 +42,19 @@ const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
     originAddress,
     radius,
     targetKeywords,
-    errorMessages,
     setOriginGeocode,
+    setErrorMessages,
     validateSearchValues
   } = useContext(SearchContext);
 
-  // 検索ボタンを押した時の処理;
+  // 検索ボタンを押した時の処理
   const handleSubmit = async () => {
-    validateSearchValues();
-    const hasError = hasErrorMessages(errorMessages);
+    // 検索条件のバリデーションを行い、返却された結果をerrorMessages stateにセット
+    const validationErrors = validateSearchValues();
+    setErrorMessages(validationErrors);
+
+    // エラーがある場合は検索処理を中断
+    const hasError = hasErrorMessages(validationErrors);
     if (hasError) return;
 
     setLoading(true);
