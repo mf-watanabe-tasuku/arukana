@@ -152,6 +152,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
 
   const validateSearchValues = () => {
     setErrorMessages({});
+
     const validationErrors = {
       originAddress: '',
       keyword: '',
@@ -169,7 +170,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
     // 半径距離が空の場合はエラー
     if (!state.radius) {
       validationErrors.radius = '検索したい半径距離を入力してください';
-    // 半径距離が半角数字以外の場合はエラー
+    // 半径距離が半角数字以外の場合、または半角数字を含まない場合(ピリオドのみ)はエラー
     } else if (String(state.radius).match(/[^0-9\.]+/) || !String(state.radius).match(/[0-9]+/)) {
       validationErrors.radius = '半角数字で入力してください';
     // 半径距離が小数点を複数個含む場合はエラー
