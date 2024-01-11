@@ -199,3 +199,7 @@ export type ResultsProps = ResultProps[] | [];
 export type ResultItemProps = {
   result: ResultProps;
 };
+
+export type FormSubmitProps = {
+  setLoading: SetLoading
+}

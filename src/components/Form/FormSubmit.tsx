@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import type { SetLoading } from '../../types';
+import type { FormSubmitProps } from '../../types';
 import SearchContext from '../../context/search/SearchContext';
 import ResultContext from '../../context/result/ResultContext';
 import { getSearchResults, hasErrorMessages } from '../../utils/search';
@@ -31,10 +31,6 @@ const StyledBtnSearch = styled.button`
     opacity: 0.7;
   }
 `;
-
-type FormSubmitProps = {
-  setLoading: SetLoading
-}
 
 const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
   const { setResults } = useContext(ResultContext);
