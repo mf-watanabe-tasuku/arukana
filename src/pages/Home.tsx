@@ -1,10 +1,11 @@
-import { useEffect, useContext } from 'react';
-import ResultContext from '../context/result/ResultContext';
+import { useEffect } from 'react';
+import type { ResultProps } from '../types';
+import { useResults } from '../context/ResultsContext';
 import Form from '../components/Form/Form';
 import Results from '../components/Result/Result';
 
 const Home = () => {
-  const { results } = useContext(ResultContext);
+  const results: ResultProps[] = useResults();
 
   useEffect(() => {
     const googleMapScript = document.createElement('script');

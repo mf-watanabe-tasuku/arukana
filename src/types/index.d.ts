@@ -8,6 +8,9 @@ export type ChildrenNodeProps = {
 
 export type ResultContextProps = {
   results: ResultsProps;
+};
+
+export type ResultDispatchContextProps = {
   setResults: SetResults;
 };
 
@@ -44,11 +47,7 @@ export type SearchContextProps = {
   setErrorMessages: SetErrorMessages;
 };
 
-export type ResultReducerType = (state: ResultState, action: ResultAction) => ResultState;
-
-export type ResultState = {
-  results: ResultsProps;
-};
+export type ResultReducerType = (state: ResultsProps, action: ResultAction) => ResultsProps;
 
 export type ResultAction = {
   type: 'SET_RESULTS';

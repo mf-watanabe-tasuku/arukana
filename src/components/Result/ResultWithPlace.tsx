@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import ResultContext from '../../context/result/ResultContext';
+import type { ResultProps } from '../../types';
+import { useResults } from '../../context/ResultsContext';
 import ResultItem from './ResultItem';
 
 const ResultWithPlace: React.FC = () => {
-  const { results } = useContext(ResultContext);
+  const results: ResultProps[] = useResults();
 
   const resultsWithPlace = results.filter(result => result.nearestPlace);
 

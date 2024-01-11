@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
 import type { ResultProps } from '../../types';
-import ResultContext from '../../context/result/ResultContext';
+import { useResults } from '../../context/ResultsContext';
 
 const StyledNoResults = styled.div`
   margin-bottom: 40px;
@@ -16,7 +15,7 @@ const StyledResultList = styled.ul`
 `;
 
 const ResultWithoutPlace: React.FC = () => {
-  const { results } = useContext(ResultContext);
+  const results: ResultProps[] = useResults();
 
   const resultsWithoutPlace = results.filter(result => !result.nearestPlace);
 

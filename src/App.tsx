@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import SearchState from './context/search/SearchState';
-import ResultState from './context/result/ResultState';
+import { ResultsProvider } from './context/ResultsContext';
 import './App.css';
 import { styled } from 'styled-components';
 
@@ -26,7 +26,7 @@ const StyledContainer = styled.div`
 const App = () => {
   return (
     <SearchState>
-      <ResultState>
+      <ResultsProvider>
         <Router>
           <StyleWrapper>
             <StyledContainer>
@@ -40,7 +40,7 @@ const App = () => {
             </StyledContainer>
           </StyleWrapper>
         </Router>
-      </ResultState>
+      </ResultsProvider>
     </SearchState>
   );
 };

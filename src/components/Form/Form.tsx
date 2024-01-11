@@ -65,7 +65,7 @@ const Form: React.FC = () => {
     loading ? <Loading /> : (
       <StyledSearchForm>
         <StyledSearchStepItem>
-        <StyledSearchStepNum>STEP1</StyledSearchStepNum>
+          <StyledSearchStepNum>STEP1</StyledSearchStepNum>
           <StyledSearchStepTitle>調べたい住所を入力</StyledSearchStepTitle>
           <FormAddress />
           <ErrorMessage message={errorMessages.originAddress} />

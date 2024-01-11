@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
-import ResultContext from '../../context/result/ResultContext';
+import { useResultsDispatch } from '../../context/ResultsContext';
 
 const StyledBtnBack = styled.button`
   width: 300px;
@@ -25,10 +24,10 @@ const StyledBtnBack = styled.button`
 `;
 
 const Results: React.FC = () => {
-  const { setResults } = useContext(ResultContext);
+  const resultsDispatch = useResultsDispatch();
 
   return (
-    <StyledBtnBack onClick={() => setResults([])}>
+    <StyledBtnBack onClick={() => resultsDispatch([])}>
       トップへ戻る
     </StyledBtnBack>
   );
