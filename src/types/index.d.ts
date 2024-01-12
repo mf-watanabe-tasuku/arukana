@@ -47,12 +47,13 @@ export type SearchContextProps = {
   setErrorMessages: SetErrorMessages;
 };
 
-export type ResultReducerType = (state: ResultsProps, action: ResultAction) => ResultsProps;
-
-export type ResultAction = {
-  type: 'SET_RESULTS';
-  payload: ResultsProps;
+export type ResultProps = {
+  keyword: string;
+  nearestPlace: NearestPlace;
+  nearbyPlaces: NearbyPlace[] | [];
 };
+
+export type ResultsState = ResultProps[] | [];
 
 export type SearchReducerType = (state: SearchState, action: SearchAction) => SearchState;
 
@@ -186,14 +187,6 @@ export type NearbyPlace = {
   lat: number | undefined;
   lng: number | undefined;
 };
-
-export type ResultProps = {
-  keyword: string;
-  nearestPlace: NearestPlace;
-  nearbyPlaces: NearbyPlace[] | [];
-};
-
-export type ResultsProps = ResultProps[] | [];
 
 export type ResultItemProps = {
   result: ResultProps;
