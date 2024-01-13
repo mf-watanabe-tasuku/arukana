@@ -15,7 +15,7 @@ const StyledResultList = styled.ul`
 `;
 
 const ResultWithoutPlace: React.FC = () => {
-  const results: ResultProps[] = useResults();
+  const { results } = useResults();
 
   const resultsWithoutPlace = results.filter(result => !result.nearestPlace);
 

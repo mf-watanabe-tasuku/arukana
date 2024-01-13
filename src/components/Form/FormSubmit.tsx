@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { styled } from 'styled-components';
 import type { FormSubmitProps } from '../../types';
 import SearchContext from '../../context/search/SearchContext';
-import { useResultsDispatch } from '../../context/ResultsContext';
+import { useResults } from '../../context/ResultsContext';
 import { getSearchResults, hasErrorMessages } from '../../utils/search';
 
 const StyledBtnSearch = styled.button`
@@ -33,7 +33,7 @@ const StyledBtnSearch = styled.button`
 `;
 
 const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
-  const resultsDispatch = useResultsDispatch();
+  const { setResults } = useResults();
   const {
     originAddress,
     radius,
@@ -58,7 +58,7 @@ const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
     const results = await getSearchResults(setOriginGeocode, originAddress, targetKeywords, radius);
 
     // 検索結果をResultsContextにセット
-    resultsDispatch(results);
+    setResults(results);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {

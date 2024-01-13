@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useResultsDispatch } from '../../context/ResultsContext';
+import { useResults } from '../../context/ResultsContext';
 
 const StyledBtnBack = styled.button`
   width: 300px;
@@ -24,10 +24,10 @@ const StyledBtnBack = styled.button`
 `;
 
 const Results: React.FC = () => {
-  const resultsDispatch = useResultsDispatch();
+  const { setResults } = useResults();
 
   return (
-    <StyledBtnBack onClick={() => resultsDispatch([])}>
+    <StyledBtnBack onClick={() => setResults([])}>
       トップへ戻る
     </StyledBtnBack>
   );

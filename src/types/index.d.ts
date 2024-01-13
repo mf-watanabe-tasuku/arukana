@@ -6,13 +6,10 @@ export type ChildrenNodeProps = {
 
 // Context・Reducer
 
-export type ResultContextProps = {
-  results: ResultsProps;
-};
-
-export type ResultDispatchContextProps = {
-  setResults: SetResults;
-};
+export type ResultsContextType = {
+  results: ResultsState;
+  setResults: React.Dispatch<ResultsState>;
+}
 
 export type OriginGeocode = {
   lat: number;

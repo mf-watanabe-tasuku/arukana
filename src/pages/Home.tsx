@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import type { ResultProps } from '../types';
 import { useResults } from '../context/ResultsContext';
 import Form from '../components/Form/Form';
 import Results from '../components/Result/Result';
 
 const Home = () => {
-  const results: ResultProps[] = useResults();
+  const { results } = useResults();
 
   useEffect(() => {
     const googleMapScript = document.createElement('script');

@@ -1,9 +1,8 @@
-import type { ResultProps } from '../../types';
 import { useResults } from '../../context/ResultsContext';
 import ResultItem from './ResultItem';
 
 const ResultWithPlace: React.FC = () => {
-  const results: ResultProps[] = useResults();
+  const { results } = useResults();
 
   const resultsWithPlace = results.filter(result => result.nearestPlace);
 

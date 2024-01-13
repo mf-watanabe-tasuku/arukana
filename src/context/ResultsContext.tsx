@@ -1,17 +1,19 @@
-import type { ChildrenNodeProps, ResultsState } from '../types';
+import type { ChildrenNodeProps, ResultsContextType, ResultsState } from '../types';
 import { createContext, useState, useContext } from 'react';
 
-const ResultsContext = createContext<ResultsState>([]);
-const ResultsDispatchContext = createContext<React.Dispatch<ResultsState>>(() => {});
+const initialState = {
+  results: [],
+  setResults: () => {}
+};
+
+const ResultsContext = createContext<ResultsContextType>(initialState);
 
 const ResultsProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
   const [results, setResults] = useState<ResultsState>([]);
 
   return (
-    <ResultsContext.Provider value={results}>
-      <ResultsDispatchContext.Provider value={setResults}>
-        {children}
-      </ResultsDispatchContext.Provider>
+    <ResultsContext.Provider value={{results, setResults}}>
+      {children}
     </ResultsContext.Provider>
   );
 };
@@ -20,8 +22,4 @@ const useResults = () => {
   return useContext(ResultsContext);
 }
 
-const useResultsDispatch = () => {
-  return useContext(ResultsDispatchContext);
-}
-
-export { ResultsProvider, useResults, useResultsDispatch };
+export { ResultsProvider, useResults };

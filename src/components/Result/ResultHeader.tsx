@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import { useResultsDispatch } from '../../context/ResultsContext';
+import { useResults } from '../../context/ResultsContext';
 import SearchContext from '../../context/search/SearchContext';
 
 const StyledSearchResultsOriginText = styled.p`
@@ -21,7 +21,7 @@ const StyledSearchResultsBackLink = styled.p`
 `;
 
 const ResultHeader: React.FC = () => {
-  const resultsDispatch = useResultsDispatch();
+  const { setResults } = useResults();
   const { originAddress, radius } = useContext(SearchContext);
 
   return (
@@ -30,7 +30,7 @@ const ResultHeader: React.FC = () => {
         「{originAddress}」から半径{radius}m以内の検索結果
       </StyledSearchResultsOriginText>
       <StyledSearchResultsBackBox>
-        <StyledSearchResultsBackLink onClick={() => resultsDispatch([])}>
+        <StyledSearchResultsBackLink onClick={() => setResults([])}>
           トップへ戻る
         </StyledSearchResultsBackLink>
       </StyledSearchResultsBackBox>
