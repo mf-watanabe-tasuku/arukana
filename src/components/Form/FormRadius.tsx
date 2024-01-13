@@ -37,10 +37,44 @@ const StyledSearchStepRange = styled.span`
 `;
 
 const FormRadius: React.FC = () => {
-  const { radius, handleInputRadius } = useContext(SearchContext);
+  const { radius, setRadius, errorMessages, setErrorMessages } = useContext(SearchContext);
 
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS?.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS?.toLocaleString();
+
+  /**
+   * 半径距離が入力された際の処理
+   * @param [React.ChangeEventHandler<HTMLInputElement>] e - イベントオブジェクト
+   * @returns [void]
+   */
+  const handleInputRadius: React.ChangeEventHandler<HTMLInputElement> = e => {
+    e.preventDefault();
+
+    // errorMessages stateを変数にコピー
+    let errorMessagesTemp = {...errorMessages};
+
+    // 半径距離に0から9までの数字およびピリオド以外が含まれている場合はエラー
+    const inputRadius = e.target.value;
+    if (inputRadius.match(/[^0-9\.]+/)) {
+      errorMessagesTemp = {
+        ...errorMessagesTemp,
+        radius: '半角数字で入力してください'
+      };
+    // 半径距離にピリオドが複数含まれている場合はエラー
+    } else if (inputRadius.match(/\..*\./)) {
+      errorMessagesTemp = {
+        ...errorMessagesTemp,
+        radius: '整数か小数で入力してください'
+      };
+    // 入力された半径距離に問題がない場合は、errorMessages stateからradiusプロパティを削除
+    } else {
+      delete errorMessagesTemp.radius;
+    }
+
+    // stateの更新
+    setErrorMessages(errorMessagesTemp);
+    setRadius(inputRadius);
+  }
 
   return(
     <>

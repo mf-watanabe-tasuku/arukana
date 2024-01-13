@@ -60,6 +60,7 @@ const FormSubmit: React.FC = () => {
 
     // 検索結果をResultsContextにセット
     setResults(results);
+    setLoading(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {

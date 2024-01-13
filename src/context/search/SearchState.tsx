@@ -250,6 +250,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
         addFreeKeywords,
         handleCheckboxChange,
         removeFreeKeyword,
+        setRadius,
         validateSearchValues,
         handleInputRadius,
         setErrorMessages

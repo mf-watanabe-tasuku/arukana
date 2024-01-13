@@ -44,6 +44,7 @@ export type SearchContextProps = {
   addFreeKeywords: KeyboardEvent;
   handleCheckboxChange: ChangeEvent;
   removeFreeKeyword: RemoveFreeKeyword;
+  setRadius: SetRadius;
   validateSearchValues: ValidateSearchValues;
   handleInputRadius: ChangeEvent;
   setErrorMessages: SetErrorMessages;
