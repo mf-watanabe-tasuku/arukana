@@ -1,6 +1,7 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { styled } from 'styled-components';
 import SearchContext from '../../context/search/SearchContext';
+import { useLoading } from '../../context/LoadingContext';
 import FormAddress from './FormAddress';
 import FormRecommend from './FormRecommend';
 import FormKeyword from './FormKeyword';
@@ -58,7 +59,7 @@ const StyledTextCenter = styled.div`
 `;
 
 const Form: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const { loading } = useLoading();
   const { errorMessages } = useContext(SearchContext);
 
   return (
@@ -84,7 +85,7 @@ const Form: React.FC = () => {
           <FormRadius />
           <ErrorMessage message={errorMessages.radius} />
         </StyledSearchStepItem>
-        <FormSubmit setLoading={setLoading} />
+        <FormSubmit />
         <StyledTextCenter>
           <ErrorMessage message={errorMessages.notice} />
         </StyledTextCenter>

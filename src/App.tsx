@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import SearchState from './context/search/SearchState';
 import { ResultsProvider } from './context/ResultsContext';
+import { LoadingProvider } from './context/LoadingContext';
 import './App.css';
 import { styled } from 'styled-components';
 
@@ -27,19 +28,21 @@ const App = () => {
   return (
     <SearchState>
       <ResultsProvider>
-        <Router>
-          <StyleWrapper>
-            <StyledContainer>
-              <Header />
-              <main>
-                <Switch>
-                  <Route exact path='/' component={Home} />
-                  <Route component={NotFound} />
-                </Switch>
-              </main>
-            </StyledContainer>
-          </StyleWrapper>
-        </Router>
+        <LoadingProvider>
+          <Router>
+            <StyleWrapper>
+              <StyledContainer>
+                <Header />
+                <main>
+                  <Switch>
+                    <Route exact path='/' component={Home} />
+                    <Route component={NotFound} />
+                  </Switch>
+                </main>
+              </StyledContainer>
+            </StyleWrapper>
+          </Router>
+        </LoadingProvider>
       </ResultsProvider>
     </SearchState>
   );

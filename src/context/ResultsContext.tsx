@@ -1,12 +1,12 @@
 import type { ChildrenNodeProps, ResultsContextType, ResultsState } from '../types';
 import { createContext, useState, useContext } from 'react';
 
-const initialState = {
+const defaultValue = {
   results: [],
   setResults: () => {}
 };
 
-const ResultsContext = createContext<ResultsContextType>(initialState);
+const ResultsContext = createContext<ResultsContextType>(defaultValue);
 
 const ResultsProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
   const [results, setResults] = useState<ResultsState>([]);

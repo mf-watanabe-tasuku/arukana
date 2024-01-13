@@ -11,6 +11,11 @@ export type ResultsContextType = {
   setResults: React.Dispatch<ResultsState>;
 }
 
+export type LoadingContextType = {
+  loading: LoadingState;
+  setLoading: React.Dispatch<LoadingState>;
+}
+
 export type OriginGeocode = {
   lat: number;
   lng: number;
@@ -188,7 +193,3 @@ export type NearbyPlace = {
 export type ResultItemProps = {
   result: ResultProps;
 };
-
-export type FormSubmitProps = {
-  setLoading: SetLoading
-}

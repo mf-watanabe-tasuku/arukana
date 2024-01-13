@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import type { FormSubmitProps } from '../../types';
 import SearchContext from '../../context/search/SearchContext';
+import { useLoading } from '../../context/LoadingContext';
 import { useResults } from '../../context/ResultsContext';
 import { getSearchResults, hasErrorMessages } from '../../utils/search';
 
@@ -32,8 +32,9 @@ const StyledBtnSearch = styled.button`
   }
 `;
 
-const FormSubmit: React.FC<FormSubmitProps> = ({ setLoading }) => {
+const FormSubmit: React.FC = () => {
   const { setResults } = useResults();
+  const { setLoading } = useLoading();
   const {
     originAddress,
     radius,
