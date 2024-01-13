@@ -46,7 +46,6 @@ export type FormContextProps = {
   removeFreeKeyword: RemoveFreeKeyword;
   setRadius: SetRadius;
   validateSearchValues: ValidateSearchValues;
-  handleInputRadius: ChangeEvent;
   setErrorMessages: SetErrorMessages;
 };
 

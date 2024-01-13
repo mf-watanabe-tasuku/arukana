@@ -198,41 +198,6 @@ const FormState: React.FC<ChildrenNodeProps> = props => {
     return validationErrors;
   };
 
-  /**
-   * 半径距離が入力された際の処理
-   * @param [React.ChangeEventHandler<HTMLInputElement>] e - イベントオブジェクト
-   * @returns [void]
-   */
-  const handleInputRadius: React.ChangeEventHandler<HTMLInputElement> = e => {
-    e.preventDefault();
-
-    const inputRadius = e.target.value;
-    // errorMessagesオブジェクトの初期化
-    let errorMessages = {};
-
-    // 半径距離に0から9までの数字およびピリオド以外が含まれている場合はエラー
-    if (inputRadius.match(/[^0-9\.]+/)) {
-      errorMessages = {
-        ...state.errorMessages,
-        radius: '半角数字で入力してください'
-      };
-    // 半径距離にピリオドが複数含まれている場合はエラー
-    } else if (inputRadius.match(/\..*\./)) {
-      errorMessages = {
-        ...state.errorMessages,
-        radius: '整数か小数で入力してください'
-      };
-    // 入力された半径距離に問題がない場合は、errorMessages stateからradiusプロパティを削除
-    } else {
-      const { radius, ...errorMessagesExceptRadius } = state.errorMessages;
-      errorMessages = errorMessagesExceptRadius;
-    }
-
-    // stateの更新
-    setErrorMessages(errorMessages);
-    setRadius(inputRadius);
-  }
-
   return (
     <FormContext.Provider
       value={{
@@ -252,7 +217,6 @@ const FormState: React.FC<ChildrenNodeProps> = props => {
         removeFreeKeyword,
         setRadius,
         validateSearchValues,
-        handleInputRadius,
         setErrorMessages
       }}
     >
