@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import type {
   ChildrenNodeProps,
-  SearchReducerType,
+  FormReducerType,
   SetOriginAddress,
   SetOriginGeocode,
   SetFreeKeyword,
@@ -13,10 +13,10 @@ import type {
   RemoveFreeKeyword,
   SetRecommendChecks
 } from '../../types';
-import SearchContext from './SearchContext';
-import SearchReducer from './SearchReducer';
+import FormContext from './FormContext';
+import FormReducer from './FormReducer';
 
-const SearchState: React.FC<ChildrenNodeProps> = props => {
+const FormState: React.FC<ChildrenNodeProps> = props => {
   const keywordMaxCount = Number(process.env.REACT_APP_KEYWORD_MAX_COUNT);
 
   const initialState = {
@@ -33,7 +33,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
     errorMessages: {},
   };
 
-  const [state, dispatch] = useReducer<SearchReducerType>(SearchReducer, initialState);
+  const [state, dispatch] = useReducer<FormReducerType>(FormReducer, initialState);
 
   const setOriginAddress: SetOriginAddress = address => {
     dispatch({
@@ -234,7 +234,7 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
   }
 
   return (
-    <SearchContext.Provider
+    <FormContext.Provider
       value={{
         originAddress: state.originAddress,
         originGeocode: state.originGeocode,
@@ -257,8 +257,8 @@ const SearchState: React.FC<ChildrenNodeProps> = props => {
       }}
     >
       {props.children}
-    </SearchContext.Provider>
+    </FormContext.Provider>
   );
 };
 
-export default SearchState;
+export default FormState;

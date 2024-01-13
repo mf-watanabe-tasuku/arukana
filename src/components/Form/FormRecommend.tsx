@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import SearchContext from '../../context/search/SearchContext';
+import FormContext from '../../context/form/FormContext';
 import { styled } from 'styled-components';
 
 const StyledPlaceCheckboxList = styled.ul`
@@ -42,7 +42,7 @@ const StyledPlaceCheckboxLabel = styled.label`
 `;
 
 const FormRecommend: React.FC = () => {
-  const { recommendChecks, handleCheckboxChange } = useContext(SearchContext);
+  const { recommendChecks, handleCheckboxChange } = useContext(FormContext);
 
   const placeList = [
     { name: 'checkbox1', value: 'スターバックス', id: 'starbucks' },

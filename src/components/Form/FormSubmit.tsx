@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import SearchContext from '../../context/search/SearchContext';
+import FormContext from '../../context/form/FormContext';
 import { useLoading } from '../../context/LoadingContext';
 import { useResults } from '../../context/ResultsContext';
 import { getSearchResults, hasErrorMessages } from '../../utils/search';
@@ -42,7 +42,7 @@ const FormSubmit: React.FC = () => {
     setOriginGeocode,
     setErrorMessages,
     validateSearchValues
-  } = useContext(SearchContext);
+  } = useContext(FormContext);
 
   // 検索ボタンを押した時の処理
   const handleSubmit = async () => {

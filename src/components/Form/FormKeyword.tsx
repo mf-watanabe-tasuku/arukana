@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import SearchContext from '../../context/search/SearchContext';
+import FormContext from '../../context/form/FormContext';
 
 const StyledSearchStepSubTitle = styled.p`
   color: #666;
@@ -63,7 +63,7 @@ const FormKeyword: React.FC = () => {
     setFreeKeyword,
     addFreeKeywords,
     removeFreeKeyword
-  } = useContext(SearchContext);
+  } = useContext(FormContext);
 
   return(
     <>

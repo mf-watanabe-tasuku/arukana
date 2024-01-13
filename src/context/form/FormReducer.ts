@@ -1,6 +1,6 @@
-import type { SearchState, SearchAction } from '../../types';
+import type { FormState, FormAction } from '../../types';
 
-const SearchReducer = (state: SearchState, action: SearchAction): SearchState => {
+const FormReducer = (state: FormState, action: FormAction): FormState => {
   switch (action.type) {
     case 'SET_ORIGIN_ADDRESS':
       return {
@@ -47,4 +47,4 @@ const SearchReducer = (state: SearchState, action: SearchAction): SearchState =>
   }
 };
 
-export default SearchReducer;
+export default FormReducer;

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
 import { useResults } from '../../context/ResultsContext';
-import SearchContext from '../../context/search/SearchContext';
+import FormContext from '../../context/form/FormContext';
 
 const StyledSearchResultsOriginText = styled.p`
   font-size: 20px;
@@ -22,7 +22,7 @@ const StyledSearchResultsBackLink = styled.p`
 
 const ResultHeader: React.FC = () => {
   const { setResults } = useResults();
-  const { originAddress, radius } = useContext(SearchContext);
+  const { originAddress, radius } = useContext(FormContext);
 
   return (
     <>

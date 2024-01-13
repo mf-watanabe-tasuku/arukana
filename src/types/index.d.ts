@@ -27,7 +27,7 @@ type ErrorMessage = {
   [key: string]: string;
 };
 
-export type SearchContextProps = {
+export type FormContextProps = {
   originAddress: string;
   originGeocode: OriginGeocode;
   freeKeyword: string;
@@ -58,9 +58,9 @@ export type ResultProps = {
 
 export type ResultsState = ResultProps[] | [];
 
-export type SearchReducerType = (state: SearchState, action: SearchAction) => SearchState;
+export type FormReducerType = (state: FormState, action: FormAction) => FormState;
 
-export type SearchState = {
+export type FormState = {
   originAddress: string;
   originGeocode: {
     lat: number;
@@ -76,7 +76,11 @@ export type SearchState = {
   errorMessages: ErrorMessage;
 };
 
-export type SearchAction =
+export type ErrorMessageType = {
+  message: string
+};
+
+export type FormAction =
   | {
       type: 'SET_ORIGIN_ADDRESS';
       payload: string;
