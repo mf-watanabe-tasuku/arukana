@@ -23,7 +23,7 @@ export type OriginGeocode = {
 
 export type Radius = string | number;
 
-type ErrorMessage = {
+export type ErrorMessage = {
   [key: string]: string;
 };
 
@@ -120,7 +120,7 @@ export type FormAction =
 // State
 export type SetOriginAddress = (address: string) => void;
 
-export type GetOriginGeocode = (address: string) => originGeocode;
+export type GetOriginGeocode = () => originGeocode;
 
 export type SetOriginGeocode = (geocode: Geocode) => void;
 
@@ -140,7 +140,11 @@ export type ChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void;
 
 export type RemoveFreeKeyword = (index: string) => void;
 
-export type GetSearchResults = (setOriginGeocode, address: string, keywords: string[], radius: Radius) => Promise;
+export type GetSearchResults = () => Promise;
+
+export type FetchDistanceData = (place: FormattedNearbyPlace) => Promise<{ distance: number | undefined; duration: string | undefined; }>;
+
+export type FetchNearbyPlaces =  (geocode: OriginGeocode, keyword: string) => Promise;
 
 export type FormatDistanceWithUnit = (distance: number | undefined) => string | undefined;
 
@@ -148,7 +152,7 @@ export type SetResults = (results: ResultsProps) => void;
 
 export type SetLoading = (loading: boolean) => void;
 
-export type GetPlaceDistanceData = (places: FormattedNearbyPlaces | undefined) => Promise<{ nearestPlace: NearestPlace | undefined; nearbyPlaces: NearestPlace[] | undefined; }> | undefined;
+export type GetPlaceDistanceData = (places: FormattedNearbyPlace[] | undefined) => Promise<{ nearestPlace: NearestPlace | undefined; nearbyPlaces: NearestPlace[] | undefined; }> | undefined;
 
 export type HasErrorMessages = (messages: ErrorMessage) => boolean;
 
@@ -166,8 +170,6 @@ type FormattedNearbyPlace = {
   distance?: number | undefined;
   duration?: number | undefined;
 };
-
-export type FormattedNearbyPlaces = FormattedNearbyPlace[];
 
 type NearestPlace = {
   name: string;

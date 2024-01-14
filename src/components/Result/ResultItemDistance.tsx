@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import type { ResultItemProps } from '../../types';
-import { formatDistanceWithUnit } from '../../utils/search';
+import { formatDistanceWithUnit } from '../../utils/form';
 
 const StyledRatingIcon = styled.span`
   margin-right: 7px;

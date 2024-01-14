@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import type { ResultItemProps } from '../../types';
-import { formatDistanceWithUnit } from '../../utils/search';
+import { formatDistanceWithUnit } from '../../utils/form';
 
 const StyledOtherResultsBox = styled.div`
   background-color: #f0f0f0;
