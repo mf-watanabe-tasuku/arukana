@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
+import type { KeyboardEvent, RemoveFreeKeyword } from '../../types';
 import FormContext from '../../context/form/FormContext';
 
 const StyledSearchStepSubTitle = styled.p`
@@ -60,10 +61,56 @@ const FormKeyword: React.FC = () => {
   const {
     freeKeyword,
     freeKeywords,
+    targetKeywords,
     setFreeKeyword,
-    addFreeKeywords,
-    removeFreeKeyword
+    setFreeKeywords,
+    setTargetKeywords,
+    errorMessages,
+    setErrorMessages
   } = useContext(FormContext);
+
+  const addFreeKeywords: KeyboardEvent = e => {
+    if (e.key !== 'Enter') return;
+
+    const keywordMaxCount = Number(process.env.REACT_APP_KEYWORD_MAX_COUNT);
+
+    if (keywordMaxCount && freeKeywords.length + 1 > keywordMaxCount) {
+      setErrorMessages({
+        ...errorMessages,
+        keyword: `一度に入力できるのは${keywordMaxCount}個までです`,
+      });
+      return;
+    }
+
+    const targetValue = e.currentTarget.value.trim();
+    if (freeKeywords.indexOf(targetValue) === -1) {
+      setErrorMessages(delete errorMessages.keyword);
+    } else {
+      setErrorMessages({
+        ...errorMessages,
+        keyword: `${targetValue}はすでに入力済みです`,
+      });
+      return;
+    }
+
+    if (targetValue) {
+      setTargetKeywords([...targetKeywords, freeKeyword]);
+      setFreeKeywords([...freeKeywords, freeKeyword]);
+      setFreeKeyword('');
+    }
+  };
+
+  const removeFreeKeyword: RemoveFreeKeyword = keyword => {
+    const keywordIndex = freeKeywords.indexOf(keyword);
+    if (keywordIndex === -1) return;
+    freeKeywords.splice(keywordIndex, 1);
+    setFreeKeywords([...freeKeywords]);
+
+    const targetKeywordsIndex = targetKeywords.indexOf(keyword);
+    if (targetKeywordsIndex === -1) return;
+    targetKeywords.splice(targetKeywordsIndex, 1);
+    setTargetKeywords([...targetKeywords]);
+  };
 
   return(
     <>

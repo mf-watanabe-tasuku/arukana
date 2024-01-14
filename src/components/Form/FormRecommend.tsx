@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import FormContext from '../../context/form/FormContext';
 import { styled } from 'styled-components';
+import type { ChangeEvent } from '../../types';
+import FormContext from '../../context/form/FormContext';
 
 const StyledPlaceCheckboxList = styled.ul`
   display: grid;
@@ -42,19 +43,41 @@ const StyledPlaceCheckboxLabel = styled.label`
 `;
 
 const FormRecommend: React.FC = () => {
-  const { recommendChecks, handleCheckboxChange } = useContext(FormContext);
+  const {
+    recommendChecks,
+    setRecommendChecks,
+    targetKeywords,
+    setTargetKeywords
+  } = useContext(FormContext);
 
-  const placeList = [
+  const defaultPlaces = [
     { name: 'checkbox1', value: 'スターバックス', id: 'starbucks' },
     { name: 'checkbox2', value: 'タリーズ', id: 'tullys' },
     { name: 'checkbox3', value: 'コンビニ', id: 'conveniencestore' },
     { name: 'checkbox4', value: 'ジム', id: 'gym' },
   ];
 
+  const handleCheckboxChange: ChangeEvent = e => {
+    const targetValue = e.target.value;
+    const { name, checked } = e.target;
+    const keywordIndex = targetKeywords.indexOf(targetValue);
+
+    let newTargetKeywords: string[] | [] = [];
+    if (checked && keywordIndex === -1) {
+      newTargetKeywords = [...targetKeywords, targetValue]
+    }
+    if (!checked && keywordIndex > -1) {
+      newTargetKeywords = targetKeywords.filter((_, i) => i !== keywordIndex)
+    }
+
+    setTargetKeywords(newTargetKeywords);
+    setRecommendChecks({...recommendChecks, [name]: checked});
+  };
+
   return (
     <StyledPlaceCheckboxList>
-      {placeList.length > 0 &&
-        placeList.map((place, i) => {
+      {defaultPlaces.length > 0 &&
+        defaultPlaces.map((place, i) => {
           return (
             <StyledPlaceCheckboxItem key={i}>
               <StyledPlaceCheckboxInput

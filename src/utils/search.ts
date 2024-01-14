@@ -5,8 +5,7 @@ import {
   FormattedNearbyPlaces,
   FormattedNearbyPlace,
   GetSearchResults,
-  FormatDistanceWithUnit,
-  HasErrorMessages
+  FormatDistanceWithUnit
 } from "../types";
 
 /**
@@ -184,21 +183,4 @@ const formatDistanceWithUnit: FormatDistanceWithUnit = distance => {
 };
 
 
-/**
- * エラーメッセージがあるかどうかを判定する関数
- * @param {object} messages - エラーメッセージ
- * @return {boolean} hasError - エラーメッセージがあるかどうか
- */
-const hasErrorMessages: HasErrorMessages = messages => {
-  let hasError = false;
-
-  const errorMessagesInArray = Object.entries(messages);
-  errorMessagesInArray.map(([, value]) => {
-    if (value) hasError = true;
-  });
-
-  return hasError;
-}
-
-
-export { getSearchResults, formatDistanceWithUnit, hasErrorMessages };
+export { getSearchResults, formatDistanceWithUnit };

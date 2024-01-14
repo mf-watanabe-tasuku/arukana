@@ -41,12 +41,11 @@ export type FormContextProps = {
   setOriginAddress: SetOriginAddress;
   setOriginGeocode: SetOriginGeocode;
   setFreeKeyword: SetFreeKeyword;
-  addFreeKeywords: KeyboardEvent;
-  handleCheckboxChange: ChangeEvent;
-  removeFreeKeyword: RemoveFreeKeyword;
+  setFreeKeywords: SetFreeKeywords;
   setRadius: SetRadius;
-  validateSearchValues: ValidateSearchValues;
   setErrorMessages: SetErrorMessages;
+  setRecommendChecks: any;
+  setTargetKeywords: any;
 };
 
 export type ResultProps = {
@@ -140,8 +139,6 @@ export type SetErrorMessages = (errorMessages: {}) => void;
 export type ChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void;
 
 export type RemoveFreeKeyword = (index: string) => void;
-
-export type ValidateSearchValues = () => {};
 
 export type GetSearchResults = (setOriginGeocode, address: string, keywords: string[], radius: Radius) => Promise;
 
