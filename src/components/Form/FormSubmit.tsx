@@ -163,7 +163,6 @@ const FormSubmit: React.FC = () => {
       };
 
       placesService.nearbySearch(searchConditions, async nearbyPlaces => {
-        console.log(nearbyPlaces);
         const formattedNearbyPlaces: FormattedNearbyPlace[] | undefined = nearbyPlaces?.map(nearbyPlace => {
           return {
             name: nearbyPlace.name,
