@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 
 const StyledSearchStepInput = styled.input`
   width: 150px;
@@ -37,7 +36,7 @@ const StyledSearchStepRange = styled.span`
 `;
 
 const FormRadius: React.FC = () => {
-  const { radius, setRadius, errorMessages, setErrorMessages } = useContext(FormContext);
+  const { radius, setRadius, errorMessages, setErrorMessages } = useForm();
 
   const formattedMaxRadius = process.env.REACT_APP_MAX_RADIUS?.toLocaleString();
   const formattedMinRadius = process.env.REACT_APP_MIN_RADIUS?.toLocaleString();

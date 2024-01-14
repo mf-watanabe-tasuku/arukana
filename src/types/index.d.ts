@@ -27,7 +27,7 @@ export type ErrorMessage = {
   [key: string]: string;
 };
 
-export type FormContextProps = {
+export type FormContextType = {
   originAddress: string;
   originGeocode: OriginGeocode;
   freeKeyword: string;

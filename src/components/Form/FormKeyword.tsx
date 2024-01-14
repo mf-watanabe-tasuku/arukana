@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
 import type { KeyboardEvent, RemoveFreeKeyword } from '../../types';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 
 const StyledSearchStepSubTitle = styled.p`
   color: #666;
@@ -67,7 +66,7 @@ const FormKeyword: React.FC = () => {
     setTargetKeywords,
     errorMessages,
     setErrorMessages
-  } = useContext(FormContext);
+  } = useForm();
 
   const addFreeKeywords: KeyboardEvent = e => {
     if (e.key !== 'Enter') return;

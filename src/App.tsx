@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { styled } from 'styled-components';
 import './App.css';
+import { FormProvider } from './context/FormContext';
 import { LoadingProvider } from './context/LoadingContext';
 import { ResultsProvider } from './context/ResultsContext';
 import Header from './components/Header';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import FormState from './context/form/FormState';
 
 const StyleWrapper = styled.div`
   padding: 50px 30px 100px;
@@ -26,7 +26,7 @@ const StyledContainer = styled.div`
 
 const App = () => {
   return (
-    <FormState>
+    <FormProvider>
       <ResultsProvider>
         <LoadingProvider>
           <Router>
@@ -44,7 +44,7 @@ const App = () => {
           </Router>
         </LoadingProvider>
       </ResultsProvider>
-    </FormState>
+    </FormProvider>
   );
 };
 

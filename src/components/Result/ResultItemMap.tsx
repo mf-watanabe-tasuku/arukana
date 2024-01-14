@@ -1,7 +1,7 @@
-import { useEffect, useRef, useContext } from 'react';
+import { useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
 import type { ResultItemProps } from '../../types';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 
 const StyledResultItemMap = styled.div`
   @media (max-width: 767px) {
@@ -18,7 +18,7 @@ const ResultItemMap: React.FC<ResultItemProps> = ({ result }) => {
   const { nearestPlace } = result;
   const { geocode } = nearestPlace;
 
-  const { originGeocode } = useContext(FormContext);
+  const { originGeocode } = useForm();
 
   const map = useRef(null);
 

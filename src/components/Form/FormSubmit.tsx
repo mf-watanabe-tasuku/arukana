@@ -1,8 +1,5 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
 import {
-  OriginGeocode,
-  Radius,
   GetOriginGeocode,
   FetchDistanceData,
   FormattedNearbyPlace,
@@ -10,7 +7,7 @@ import {
   HasErrorMessages,
   FetchNearbyPlaces
 } from '../../types';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 import { useLoading } from '../../context/LoadingContext';
 import { useResults } from '../../context/ResultsContext';
 
@@ -52,7 +49,7 @@ const FormSubmit: React.FC = () => {
     setOriginGeocode,
     setRadius,
     setErrorMessages
-  } = useContext(FormContext);
+  } = useForm();
 
   /**
    * フォーム入力値のバリデーションを行う関数

@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
 import type { ChangeEvent } from '../../types';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 
 const StyledPlaceCheckboxList = styled.ul`
   display: grid;
@@ -48,7 +47,7 @@ const FormRecommend: React.FC = () => {
     setRecommendChecks,
     targetKeywords,
     setTargetKeywords
-  } = useContext(FormContext);
+  } = useForm();
 
   const defaultPlaces = [
     { name: 'checkbox1', value: 'スターバックス', id: 'starbucks' },

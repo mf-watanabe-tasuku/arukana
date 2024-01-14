@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 
 const StyledSearchStepInput = styled.input`
   font-size: 18px;
@@ -25,7 +24,7 @@ const StyledSearchStepInput = styled.input`
 `;
 
 const FormAddress: React.FC = () => {
-  const { originAddress, setOriginAddress } = useContext(FormContext);
+  const { originAddress, setOriginAddress } = useForm();
 
   return(
     <StyledSearchStepInput

@@ -18,8 +18,6 @@ const ResultsProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
   );
 };
 
-const useResults = () => {
-  return useContext(ResultsContext);
-}
+const useResults = () => useContext(ResultsContext);
 
 export { ResultsProvider, useResults };

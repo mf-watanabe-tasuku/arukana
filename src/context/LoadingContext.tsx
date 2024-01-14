@@ -18,8 +18,6 @@ const LoadingProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
   );
 };
 
-const useLoading = () => {
-  return useContext(LoadingContext);
-}
+const useLoading = () => useContext(LoadingContext);
 
 export { LoadingProvider, useLoading };

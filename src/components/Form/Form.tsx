@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
-import FormContext from '../../context/form/FormContext';
+import { useForm } from '../../context/FormContext';
 import { useLoading } from '../../context/LoadingContext';
 import FormAddress from './FormAddress';
 import FormRecommend from './FormRecommend';
@@ -60,7 +59,7 @@ const StyledTextCenter = styled.div`
 
 const Form: React.FC = () => {
   const { loading } = useLoading();
-  const { errorMessages } = useContext(FormContext);
+  const { errorMessages } = useForm();
 
   return (
     loading ? <Loading /> : (
