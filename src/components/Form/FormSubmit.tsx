@@ -43,7 +43,6 @@ const FormSubmit: React.FC = () => {
   const { setLoading } = useLoading();
   const {
     originAddress,
-    originGeocode,
     radius,
     targetKeywords,
     setOriginGeocode,

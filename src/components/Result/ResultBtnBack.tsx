@@ -23,7 +23,7 @@ const StyledBtnBack = styled.button`
   }
 `;
 
-const Results: React.FC = () => {
+const Result: React.FC = () => {
   const { setResults } = useResults();
 
   return (
@@ -33,4 +33,4 @@ const Results: React.FC = () => {
   );
 };
 
-export default Results;
+export default Result;
