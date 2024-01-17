@@ -19,7 +19,7 @@ export type LoadingContextType = {
 export type FormContextType = {
   originAddress: string;
   originGeocode: Geocode;
-  freeKeyword: string;
+  typingKeyword: string;
   freeKeywords: string[];
   targetKeywords: string[];
   radius: Radius;
@@ -52,7 +52,7 @@ export type FormAction =
       };
     }
   | {
-      type: 'SET_FREE_KEYWORD';
+      type: 'SET_TYPING_KEYWORD';
       payload: string;
     }
   | {
@@ -148,7 +148,7 @@ export type ResultsState = ResultProps[] | [];
 export type FormState = {
   originAddress: string;
   originGeocode: Geocode;
-  freeKeyword: string;
+  typingKeyword: string;
   freeKeywords: string[];
   targetKeywords: string[];
   radius: Radius;
@@ -165,7 +165,7 @@ type GetOriginGeocode = () => Promise<Geocode>;
 
 type SetOriginGeocode = (geocode: Geocode) => void;
 
-type SetFreeKeyword = (keyword: string) => void;
+type SetTypingKeyword = (keyword: string) => void;
 
 type KeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>) => void;
 

@@ -6,7 +6,7 @@ import type {
   FormAction,
   SetOriginAddress,
   SetOriginGeocode,
-  SetFreeKeyword,
+  SetTypingKeyword,
   SetFreeKeywords,
   SetTargetKeywords,
   SetRadius,
@@ -21,7 +21,7 @@ const defaultValue = {
     lat: 0,
     lng: 0
   },
-  freeKeyword: '',
+  typingKeyword: '',
   freeKeywords: [],
   targetKeywords: [],
   radius: String(process.env.REACT_APP_MAX_RADIUS),
@@ -51,10 +51,10 @@ const formReducer = (state: FormState, action: FormAction) => {
         ...state,
         originGeocode: action.payload
       };
-    case 'SET_FREE_KEYWORD':
+    case 'SET_TYPING_KEYWORD':
       return {
         ...state,
-        freeKeyword: action.payload
+        typingKeyword: action.payload
       };
     case 'SET_FREE_KEYWORDS':
       return {
@@ -103,9 +103,9 @@ const FormProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
     });
   };
 
-  const setFreeKeyword: SetFreeKeyword = keyword => {
+  const setFreeKeyword: SetTypingKeyword = keyword => {
     formDispatch({
-      type: 'SET_FREE_KEYWORD',
+      type: 'SET_TYPING_KEYWORD',
       payload: keyword
     });
   };
@@ -149,7 +149,7 @@ const FormProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
     <FormContext.Provider value={{
       originAddress: formState.originAddress,
       originGeocode: formState.originGeocode,
-      freeKeyword: formState.freeKeyword,
+      typingKeyword: formState.typingKeyword,
       freeKeywords: formState.freeKeywords,
       targetKeywords: formState.targetKeywords,
       radius: formState.radius,

@@ -58,7 +58,7 @@ const StyledFreeKeywordCloseBtn = styled.span`
 
 const FormKeyword: React.FC = () => {
   const {
-    freeKeyword,
+    typingKeyword,
     freeKeywords,
     targetKeywords,
     setFreeKeyword,
@@ -93,8 +93,8 @@ const FormKeyword: React.FC = () => {
     }
 
     if (targetValue) {
-      setTargetKeywords([...targetKeywords, freeKeyword]);
-      setFreeKeywords([...freeKeywords, freeKeyword]);
+      setTargetKeywords([...targetKeywords, typingKeyword]);
+      setFreeKeywords([...freeKeywords, typingKeyword]);
       setFreeKeyword('');
     }
   };
@@ -123,7 +123,7 @@ const FormKeyword: React.FC = () => {
         placeholder={placeholderValue}
         onChange={e => setFreeKeyword(e.target.value)}
         onKeyDown={e => addFreeKeywords(e)}
-        value={freeKeyword}
+        value={typingKeyword}
       />
       <StyledFreeKeywordList>
         {freeKeywords.map((keyword: string, i: number) => (
