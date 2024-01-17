@@ -20,51 +20,42 @@ const ResultItemMap: React.FC<ResultItemProps> = ({ result }) => {
 
   const { originGeocode } = useForm();
 
-  const map = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const drawMap = () => {
-      const directionsService = new window.google.maps.DirectionsService();
-      const directionsRenderer = new window.google.maps.DirectionsRenderer();
-      const displayMap = new window.google.maps.Map(map.current!, {
-        zoom: 13,
-        center: { lat: originGeocode.lat, lng: originGeocode.lng },
-        disableDefaultUI: true,
-      });
-      directionsRenderer.setMap(displayMap);
+    // Google MapをDOMに描画する処理
+    const displayMap = new window.google.maps.Map(ref.current!, {
+      zoom: 13,
+      center: { lat: originGeocode.lat, lng: originGeocode.lng },
+      disableDefaultUI: true,
+    });
+    const directionsRenderer = new window.google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(displayMap);
 
-      calculateAndDisplayRoute(directionsService, directionsRenderer);
-    };
-
-    const calculateAndDisplayRoute = (
-      directionsService: google.maps.DirectionsService,
-      directionsRenderer: google.maps.DirectionsRenderer
-    ) => {
-      directionsService.route(
-        {
-          origin: new window.google.maps.LatLng(
-            originGeocode.lat,
-            originGeocode.lng
-          ),
-          destination: new window.google.maps.LatLng(geocode.lat, geocode.lng),
-          travelMode: window.google.maps.TravelMode.WALKING,
-        },
-        (response, status: string) => {
-          if (status === 'OK') {
-            directionsRenderer.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
+    // Google Mapにルートを描画する処理
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: new window.google.maps.LatLng(
+          originGeocode.lat,
+          originGeocode.lng
+        ),
+        destination: new window.google.maps.LatLng(geocode.lat, geocode.lng),
+        travelMode: window.google.maps.TravelMode.WALKING,
+      },
+      (response, status: string) => {
+        if (status === 'OK') {
+          directionsRenderer.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
         }
-      );
-    };
-
-    drawMap();
+      }
+    );
   }, [originGeocode, geocode]);
 
   return (
     <StyledResultItemMap>
-      <StyledMap id='map' ref={map}></StyledMap>
+      <StyledMap id='map' ref={ref}></StyledMap>
     </StyledResultItemMap>
   );
 };
