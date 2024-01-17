@@ -16,17 +16,6 @@ export type LoadingContextType = {
   setLoading: React.Dispatch<LoadingState>;
 }
 
-export type OriginGeocode = {
-  lat: number;
-  lng: number;
-}
-
-export type Radius = string | number;
-
-export type ErrorMessage = {
-  [key: string]: string;
-};
-
 export type FormContextType = {
   originAddress: string;
   originGeocode: OriginGeocode;
@@ -48,35 +37,7 @@ export type FormContextType = {
   setTargetKeywords: any;
 };
 
-export type ResultProps = {
-  keyword: string;
-  nearestPlace: NearestPlace;
-  nearbyPlaces: NearbyPlace[] | [];
-};
-
-export type ResultsState = ResultProps[] | [];
-
 export type FormReducerType = (state: FormState, action: FormAction) => FormState;
-
-export type FormState = {
-  originAddress: string;
-  originGeocode: {
-    lat: number;
-    lng: number;
-  };
-  freeKeyword: string;
-  freeKeywords: string[];
-  targetKeywords: string[];
-  radius: Radius;
-  recommendChecks: {
-    [key: string]: boolean;
-  };
-  errorMessages: ErrorMessage;
-};
-
-export type ErrorMessageType = {
-  message: string
-};
 
 export type FormAction =
   | {
@@ -118,6 +79,80 @@ export type FormAction =
     };
 
 // State
+
+type OriginGeocode = {
+  lat: number;
+  lng: number;
+}
+
+type Radius = string | number;
+
+type ErrorMessage = {
+  [key: string]: string;
+};
+
+type NearestPlace = {
+  name: string;
+  address: string;
+  distance: number | undefined;
+  duration: string | undefined;
+  rating: number;
+  reviewCount: number;
+  geocode: {
+    lat: number;
+    lng: number;
+  };
+};
+
+type NearbyPlace = {
+  name: string | undefined;
+  address: string | undefined;
+  distance: number | undefined;
+  duration: string | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
+};
+
+type FormattedNearbyPlace = {
+  name: string | undefined;
+  rating: number | undefined;
+  ratings_total: number | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
+  address?: string | undefined;
+  distance?: number | undefined;
+  duration?: number | undefined;
+};
+
+export type ResultItemProps = {
+  result: ResultProps;
+};
+
+export type ResultProps = {
+  keyword: string;
+  nearestPlace: NearestPlace;
+  nearbyPlaces: NearbyPlace[] | [];
+};
+
+export type ResultsState = ResultProps[] | [];
+
+export type FormState = {
+  originAddress: string;
+  originGeocode: {
+    lat: number;
+    lng: number;
+  };
+  freeKeyword: string;
+  freeKeywords: string[];
+  targetKeywords: string[];
+  radius: Radius;
+  recommendChecks: {
+    [key: string]: boolean;
+  };
+  errorMessages: ErrorMessage;
+};
+
+// Function
 export type SetOriginAddress = (address: string) => void;
 
 export type GetOriginGeocode = () => originGeocode;
@@ -157,42 +192,3 @@ export type GetPlaceDistanceData = (places: FormattedNearbyPlace[] | undefined) 
 export type HasErrorMessages = (messages: ErrorMessage) => boolean;
 
 export type SetRecommendChecks = (recommendChecks: {}) => void;
-
-// Result
-
-type FormattedNearbyPlace = {
-  name: string | undefined;
-  rating: number | undefined;
-  ratings_total: number | undefined;
-  lat: number | undefined;
-  lng: number | undefined;
-  address?: string | undefined;
-  distance?: number | undefined;
-  duration?: number | undefined;
-};
-
-type NearestPlace = {
-  name: string;
-  address: string;
-  distance: number | undefined;
-  duration: string | undefined;
-  rating: number;
-  reviewCount: number;
-  geocode: {
-    lat: number;
-    lng: number;
-  };
-};
-
-export type NearbyPlace = {
-  name: string | undefined;
-  address: string | undefined;
-  distance: number | undefined;
-  duration: string | undefined;
-  lat: number | undefined;
-  lng: number | undefined;
-};
-
-export type ResultItemProps = {
-  result: ResultProps;
-};
