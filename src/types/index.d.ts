@@ -150,42 +150,42 @@ export type FormState = {
 };
 
 // Function
-export type SetOriginAddress = (address: string) => void;
+type SetOriginAddress = (address: string) => void;
 
-export type GetOriginGeocode = () => Promise<Geocode>;
+type GetOriginGeocode = () => Promise<Geocode>;
 
-export type SetOriginGeocode = (geocode: Geocode) => void;
+type SetOriginGeocode = (geocode: Geocode) => void;
 
-export type SetFreeKeyword = (keyword: string) => void;
+type SetFreeKeyword = (keyword: string) => void;
 
-export type KeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>) => void;
+type KeyboardEvent = (e: React.KeyboardEvent<HTMLInputElement>) => void;
 
-export type SetFreeKeywords = (freeKeywords: string[]) => void;
+type SetFreeKeywords = (freeKeywords: string[]) => void;
 
-export type SetTargetKeywords = (targetKeywords: string[]) => void;
+type SetTargetKeywords = (targetKeywords: string[]) => void;
 
-export type SetRadius = (radius: string) => void;
+type SetRadius = (radius: string) => void;
 
-export type SetErrorMessages = (errorMessages: {}) => void;
+type SetErrorMessages = (errorMessages: {}) => void;
 
-export type ChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void;
+type ChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void;
 
-export type RemoveFreeKeyword = (index: string) => void;
+type RemoveFreeKeyword = (index: string) => void;
 
-export type GetSearchResults = () => Promise;
+type GetSearchResults = () => Promise;
 
-export type FetchDistanceData = (place: FormattedNearbyPlace) => Promise<{ distance: number | undefined; duration: string | undefined; }>;
+type FetchDistanceData = (place: FormattedNearbyPlace) => Promise<{ distance: number | undefined; duration: string | undefined; }>;
 
-export type FetchNearbyPlaces =  (geocode: Geocode, keyword: string) => Promise;
+type FetchNearbyPlaces =  (geocode: Geocode, keyword: string) => Promise;
 
-export type FormatDistanceWithUnit = (distance: number | undefined) => string | undefined;
+type FormatDistanceWithUnit = (distance: number | undefined) => string | undefined;
 
-export type SetResults = (results: ResultsProps) => void;
+type SetResults = (results: ResultsProps) => void;
 
-export type SetLoading = (loading: boolean) => void;
+type SetLoading = (loading: boolean) => void;
 
-export type GetPlaceDistanceData = (places: FormattedNearbyPlace[] | undefined) => Promise<{ nearestPlace: NearestPlace | undefined; nearbyPlaces: NearestPlace[] | undefined; }> | undefined;
+type GetPlaceDistanceData = (places: FormattedNearbyPlace[] | undefined) => Promise<{ nearestPlace: NearestPlace | undefined; nearbyPlaces: NearestPlace[] | undefined; }> | undefined;
 
-export type HasErrorMessages = (messages: ErrorMessage) => boolean;
+type HasErrorMessages = (messages: ErrorMessage) => boolean;
 
-export type SetRecommendChecks = (recommendChecks: {}) => void;
+type SetRecommendChecks = (recommendChecks: {}) => void;
