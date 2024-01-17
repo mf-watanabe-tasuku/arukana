@@ -87,6 +87,15 @@ export type Geocode = {
 
 type Radius = string | number;
 
+type Distance = number | undefined;
+
+type Duration = string | undefined;
+
+export type DistanceData = {
+  distance: Distance;
+  duration: Duration;
+}
+
 export type ErrorMessage = {
   [key: string]: string;
 };
@@ -94,8 +103,8 @@ export type ErrorMessage = {
 type NearestPlace = {
   name: string;
   address: string;
-  distance: number | undefined;
-  duration: string | undefined;
+  distance: Distance;
+  duration: Duration;
   rating: number;
   reviewCount: number;
   geocode: {
@@ -107,8 +116,8 @@ type NearestPlace = {
 type NearbyPlace = {
   name: string | undefined;
   address: string | undefined;
-  distance: number | undefined;
-  duration: string | undefined;
+  distance: Distance;
+  duration: Duration;
   lat: number | undefined;
   lng: number | undefined;
 };
@@ -120,8 +129,8 @@ type FormattedNearbyPlace = {
   lat: number | undefined;
   lng: number | undefined;
   address?: string | undefined;
-  distance?: number | undefined;
-  duration?: number | undefined;
+  distance?: Distance;
+  duration?: Duration;
 };
 
 export type ResultItemProps = {
@@ -174,7 +183,7 @@ type RemoveFreeKeyword = (index: string) => void;
 
 type GetSearchResults = () => Promise;
 
-type FetchDistanceData = (place: FormattedNearbyPlace) => Promise<{ distance: number | undefined; duration: string | undefined; }>;
+type FetchDistanceData = (place: FormattedNearbyPlace) => Promise<{ distance: Distance; duration: Duration; }>;
 
 type FetchNearbyPlaces =  (geocode: Geocode, keyword: string) => Promise;
 

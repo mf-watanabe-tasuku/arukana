@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import {
+  DistanceData,
   GetOriginGeocode,
   FetchDistanceData,
   FormattedNearbyPlace,
@@ -236,19 +237,16 @@ const FormSubmit: React.FC = () => {
         if (!res) return;
 
         const data = res.rows[0].elements[0];
-        const distanceDataObj: {
-          distance: number | undefined;
-          duration: string | undefined;
-        } = {
+        const distanceData: DistanceData = {
           distance: undefined,
           duration: undefined
         };
         if (data.status === 'OK') {
-          distanceDataObj.distance = data.distance.value;
-          distanceDataObj.duration = data.duration.text;
+          distanceData.distance = data.distance.value;
+          distanceData.duration = data.duration.text;
         }
 
-        resolve(distanceDataObj);
+        resolve(distanceData);
       });
     });
   };
