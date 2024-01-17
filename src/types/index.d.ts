@@ -33,8 +33,8 @@ export type FormContextType = {
   setFreeKeywords: SetFreeKeywords;
   setRadius: SetRadius;
   setErrorMessages: SetErrorMessages;
-  setRecommendChecks: any;
-  setTargetKeywords: any;
+  setRecommendChecks: SetRecommendChecks;
+  setTargetKeywords: SetTargetKeywords;
 };
 
 export type FormReducerType = (state: FormState, action: FormAction) => FormState;
