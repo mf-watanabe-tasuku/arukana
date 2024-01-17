@@ -111,6 +111,8 @@ const FormKeyword: React.FC = () => {
     setTargetKeywords([...targetKeywords]);
   };
 
+  const placeholderValue = '入力してEnterを押してください  例) セブンイレブン';
+
   return(
     <>
       <StyledSearchStepSubTitle>
@@ -118,7 +120,7 @@ const FormKeyword: React.FC = () => {
       </StyledSearchStepSubTitle>
       <StyledSearchStepInput
         type='text'
-        placeholder='入力してEnterを押してください  例) セブンイレブン'
+        placeholder={placeholderValue}
         onChange={e => setFreeKeyword(e.target.value)}
         onKeyDown={e => addFreeKeywords(e)}
         value={freeKeyword}
