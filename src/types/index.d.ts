@@ -18,7 +18,7 @@ export type LoadingContextType = {
 
 export type FormContextType = {
   originAddress: string;
-  originGeocode: OriginGeocode;
+  originGeocode: Geocode;
   freeKeyword: string;
   freeKeywords: string[];
   targetKeywords: string[];
@@ -80,14 +80,14 @@ export type FormAction =
 
 // State
 
-type OriginGeocode = {
+export type Geocode = {
   lat: number;
   lng: number;
 }
 
 type Radius = string | number;
 
-type ErrorMessage = {
+export type ErrorMessage = {
   [key: string]: string;
 };
 
@@ -138,10 +138,7 @@ export type ResultsState = ResultProps[] | [];
 
 export type FormState = {
   originAddress: string;
-  originGeocode: {
-    lat: number;
-    lng: number;
-  };
+  originGeocode: Geocode;
   freeKeyword: string;
   freeKeywords: string[];
   targetKeywords: string[];
@@ -155,7 +152,7 @@ export type FormState = {
 // Function
 export type SetOriginAddress = (address: string) => void;
 
-export type GetOriginGeocode = () => originGeocode;
+export type GetOriginGeocode = () => Promise<Geocode>;
 
 export type SetOriginGeocode = (geocode: Geocode) => void;
 
@@ -179,7 +176,7 @@ export type GetSearchResults = () => Promise;
 
 export type FetchDistanceData = (place: FormattedNearbyPlace) => Promise<{ distance: number | undefined; duration: string | undefined; }>;
 
-export type FetchNearbyPlaces =  (geocode: OriginGeocode, keyword: string) => Promise;
+export type FetchNearbyPlaces =  (geocode: Geocode, keyword: string) => Promise;
 
 export type FormatDistanceWithUnit = (distance: number | undefined) => string | undefined;
 
