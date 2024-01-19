@@ -29,7 +29,7 @@ const defaultValue = {
   errorMessages: {},
   setOriginAddress: () => {},
   setOriginGeocode: () => {},
-  setFreeKeyword: () => {},
+  setTypingKeyword: () => {},
   setFreeKeywords: () => {},
   setRadius: () => {},
   setRecommendChecks: () => {},
@@ -103,7 +103,7 @@ const FormProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
     });
   };
 
-  const setFreeKeyword: SetTypingKeyword = keyword => {
+  const setTypingKeyword: SetTypingKeyword = keyword => {
     formDispatch({
       type: 'SET_TYPING_KEYWORD',
       payload: keyword
@@ -157,7 +157,7 @@ const FormProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
       errorMessages: formState.errorMessages,
       setOriginAddress,
       setOriginGeocode,
-      setFreeKeyword,
+      setTypingKeyword,
       setFreeKeywords,
       setRadius,
       setRecommendChecks,

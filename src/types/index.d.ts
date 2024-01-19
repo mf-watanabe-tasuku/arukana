@@ -29,7 +29,7 @@ export type FormContextType = {
   errorMessages: ErrorMessage;
   setOriginAddress: SetOriginAddress;
   setOriginGeocode: SetOriginGeocode;
-  setFreeKeyword: SetFreeKeyword;
+  setTypingKeyword: SetTypingKeyword;
   setFreeKeywords: SetFreeKeywords;
   setRadius: SetRadius;
   setErrorMessages: SetErrorMessages;

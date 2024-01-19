@@ -61,7 +61,7 @@ const FormKeyword: React.FC = () => {
     typingKeyword,
     freeKeywords,
     targetKeywords,
-    setFreeKeyword,
+    setTypingKeyword,
     setFreeKeywords,
     setTargetKeywords,
     errorMessages,
@@ -95,7 +95,7 @@ const FormKeyword: React.FC = () => {
     if (targetValue) {
       setTargetKeywords([...targetKeywords, typingKeyword]);
       setFreeKeywords([...freeKeywords, typingKeyword]);
-      setFreeKeyword('');
+      setTypingKeyword('');
     }
   };
 
@@ -121,7 +121,7 @@ const FormKeyword: React.FC = () => {
       <StyledSearchStepInput
         type='text'
         placeholder={placeholderValue}
-        onChange={e => setFreeKeyword(e.target.value)}
+        onChange={e => setTypingKeyword(e.target.value)}
         onKeyDown={e => addFreeKeywords(e)}
         value={typingKeyword}
       />
