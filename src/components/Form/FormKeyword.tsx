@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import type { KeyboardEvent, RemoveFreeKeyword } from '../../types';
 import { useForm } from '../../context/FormContext';
@@ -57,6 +58,8 @@ const StyledFreeKeywordCloseBtn = styled.span`
 `;
 
 const FormKeyword: React.FC = () => {
+  const [isComposing, setIsComposing] = useState(false);
+
   const {
     typingKeyword,
     freeKeywords,
@@ -69,7 +72,8 @@ const FormKeyword: React.FC = () => {
   } = useForm();
 
   const addFreeKeywords: KeyboardEvent = e => {
-    if (e.key !== 'Enter') return;
+    // Enterキー以外の押下または、日本語変換中は処理を中断
+    if (e.key !== 'Enter' || isComposing) return;
 
     const keywordMaxCount = Number(process.env.REACT_APP_KEYWORD_MAX_COUNT);
 
@@ -123,6 +127,8 @@ const FormKeyword: React.FC = () => {
         placeholder={placeholderValue}
         onChange={e => setTypingKeyword(e.target.value)}
         onKeyDown={e => addFreeKeywords(e)}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
         value={typingKeyword}
       />
       <StyledFreeKeywordList>
