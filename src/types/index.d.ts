@@ -7,8 +7,8 @@ export type ChildrenNodeProps = {
 // Context・Reducer
 
 export type ResultsContextType = {
-  results: ResultsState;
-  setResults: React.Dispatch<ResultsState>;
+  results: ResultProps[];
+  setResults: React.Dispatch<ResultProps[]>;
 }
 
 export type LoadingContextType = {
@@ -140,10 +140,8 @@ export type ResultItemProps = {
 export type ResultProps = {
   keyword: string;
   nearestPlace: NearestPlace;
-  nearbyPlaces: NearbyPlace[] | [];
+  nearbyPlaces: NearbyPlace[];
 };
-
-export type ResultsState = ResultProps[] | [];
 
 export type FormState = {
   originAddress: string;

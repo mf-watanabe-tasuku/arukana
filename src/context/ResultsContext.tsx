@@ -1,4 +1,4 @@
-import type { ChildrenNodeProps, ResultsContextType, ResultsState } from '../types';
+import type { ChildrenNodeProps, ResultsContextType, ResultProps } from '../types';
 import { createContext, useState, useContext } from 'react';
 
 const defaultValue = {
@@ -9,7 +9,7 @@ const defaultValue = {
 const ResultsContext = createContext<ResultsContextType>(defaultValue);
 
 const ResultsProvider: React.FC<ChildrenNodeProps> = ({ children }) => {
-  const [results, setResults] = useState<ResultsState>([]);
+  const [results, setResults] = useState<ResultProps[]>([]);
 
   return (
     <ResultsContext.Provider value={{results, setResults}}>
